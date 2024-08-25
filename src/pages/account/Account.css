@@ -1,0 +1,51 @@
+#account-page > div{
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    margin-top: 1rem;
+    padding: 1rem;
+
+}
+.breadcrumbs{
+    font-size: 0.8rem;
+    margin-top: 1rem;
+}
+#account-page h1{
+    font-size: 1.5rem;
+}
+.breadcrumbs span{
+    color: var(--primary-color);
+}
+
+#account-page > div:first-child>div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+#account-page  a{
+    width: 32%;
+    aspect-ratio: 3/1;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.8rem;
+    
+    
+}
+#account-page  a.active{
+    border: 2px solid var(--primary-color);
+}
+#account-page  a:hover{
+    background-color: rgba(245, 245, 245, 0.582);
+}
+#account-page  .nav-active-box{
+    outline: 2px solid var(--primary-color);
+} 
+#account-page  .nav-default-box{
+    outline: 1px solid var(--primary-border);
+}
+#account-page a p{
+    color: #565959;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}

@@ -1,0 +1,46 @@
+#products-page{
+    display: flex;
+}
+#products-page aside{
+    background-color: rgb(255, 230, 234);
+    flex: 1 ;
+   
+}
+#products-page section{
+    flex: 4;
+   
+}
+#products-page section{
+    display: grid;
+    gap: 0.5rem;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(4,minmax(100px,1fr));
+    height: min-content;
+    padding: 0.5rem;
+   
+}
+#products-page section div{
+    background-color: rgb(255, 255, 255);
+    aspect-ratio: 1/1.2;
+    border: 1px solid #efefef;
+    border-radius: 0.2rem;
+}
+
+@media screen and (max-width:576px) {
+    #products-page section{
+       
+        grid-template-columns: repeat(2,minmax(100px,1fr));
+        
+       
+    } 
+    
+}
+@media screen and (max-width:768px) and (min-width:577px) {
+    #products-page section{
+       
+        grid-template-columns: repeat(3,minmax(100px,1fr));
+        
+       
+    } 
+    
+}

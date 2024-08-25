@@ -1,0 +1,125 @@
+#home{
+    max-width: 1500px;
+    margin: auto;
+    position: relative;
+    
+}
+#slide-show{
+    aspect-ratio: 5/2;
+    position: relative;
+    z-index: 1;
+}
+#slide-show img{
+    object-fit:cover;
+   
+}
+#slide-show::after{
+    content: "";
+    width: 100%;
+    aspect-ratio: 5/2;
+    background:linear-gradient(rgba(236, 5, 5, 0) 50%,#E3E6E6 );
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    
+}
+#slide-show button{
+    position: absolute;
+    top: 5px;
+    width: 3rem;
+    height: 50%;
+    font-size: 2rem;
+    background-color: transparent;
+    z-index: 1;   
+}
+#slide-show button:active{
+    
+    border: 2px solid rgb(83, 163, 255);
+    outline: 2px solid white;
+}
+#slide-prev-button{
+    left: 0px;
+}
+#slide-next-button{
+    right: 0px;
+}
+#categories{
+   
+    padding: 0.8rem;
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(2,1fr);
+    grid-template-columns:repeat(4 , minmax(100px,1fr));     
+    gap: 0.8rem;  
+    background-color: coral;
+    aspect-ratio: 1/0.5;
+    grid-auto-flow: dense;
+    
+}     
+#categories > div{
+    
+   background-color: white;
+   display: flex;
+   flex-direction: column; 
+   padding: 0.8rem;
+   overflow: hidden;
+   
+   
+}
+#categories > div:nth-child(5){
+    grid-column: 1 / span 2;
+}
+
+#categories > div >.image-wrapper{
+    flex: 1;
+    overflow: hidden;
+}
+#categories > div > h2{
+    font-size: 1rem;
+    margin: 0.4rem;
+    margin-bottom: 0.8rem;
+}
+#categories > div > .action{
+    font-size: 1rem;
+    margin: 0.4rem;
+    margin-top: 0.8rem;
+    background-color: transparent;
+    color: rgb(11, 160, 197);
+    text-align: left;
+}
+
+
+@media only screen and (max-width: 576px) {
+    #slide-show{
+        aspect-ratio: 5/3;
+    }
+    #slide-show::after{
+        aspect-ratio: 5/3;
+    }
+    #categories{
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 1fr;
+      aspect-ratio: 1/2;
+      gap:0.4rem ;
+      padding: 0.4rem;
+    }
+  }
+
+
+@media only screen and (max-width: 768px) and (min-width:577px) {
+    
+    
+    #categories{
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      aspect-ratio: 1;
+      gap:0.6rem ;
+      padding: 0.6rem;
+    }
+    #categories > div:nth-child(5){
+        grid-column: 1 / span 1;
+    }
+    #categories > div:nth-child(4){
+        grid-column: 1 / span 2;
+    }
+  }

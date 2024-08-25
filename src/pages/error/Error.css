@@ -1,0 +1,22 @@
+#error-page {
+  height: 100vh;
+
+  flex-direction: column;
+}
+#error-page p{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+#error-page p i:nth-child(1){
+    color: red;
+}
+#error-page p i:nth-child(1) strong{
+    color: black;
+}
+#error-page button{
+    border: 1px solid black;
+    padding: 1rem;
+    text-transform: capitalize;
+    font-size: 1rem;
+}

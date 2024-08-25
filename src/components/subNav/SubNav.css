@@ -1,0 +1,21 @@
+#sub-nav{
+    background-color: #232f3e;
+    color: white;
+    display: flex;
+    /* position: fixed;
+    top: 3.8rem;
+    left: 0px;
+    right: 0px;
+    z-index: 3; */
+}
+#sub-nav li{
+    margin: 0.3rem;
+    height: 100%;
+    padding: 0.3rem;
+    border-radius: 0.2rem;
+    font-weight: 300;
+    font-size: 0.9rem;
+}
+#sub-nav li:hover{
+    outline: 0.5px solid white;
+}

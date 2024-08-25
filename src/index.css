@@ -1,13 +1,57 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+:root{
+  --primary-background:#E3E6E6;
+  --primary-border:#d5d9d9;
+
+  --primary-color:#c7511f;
+  --secondary-color:#007185;
+  
+}
+body{
+  font-family: "Inter", sans-serif;
+  background-color: var(--primary-background);
+}
+*{
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.all-centered{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button{
+  cursor: pointer;
+  border: none;
+}
+
+button:disabled{
+  cursor:not-allowed;
+}
+
+li{
+  list-style: none;
+  cursor: pointer;
+}
+img{
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+.primary-btn{
+  background-color: #ffd814;
+  color: black;
+}
+.primary-btn:hover{
+  background-color: #F7CA00;
+}
+.primary-btn:active{
+  outline: 1px solid #008296;
+}
+a{
+  text-decoration: none;
+  color: black;
 }

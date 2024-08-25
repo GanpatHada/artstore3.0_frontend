@@ -1,0 +1,70 @@
+import { createBrowserRouter } from "react-router-dom";
+import App from "./App";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import Products from "./pages/products/Products";
+import Error from "./pages/error/Error";
+import Home from "./pages/home/Home";
+import Account from "./pages/account/Account";
+import Profile from "./pages/account/components/profile/Profile";
+import Address from "./pages/account/components/address/Address";
+import Order from "./pages/account/components/orders/Order";
+import AddAddress from "./pages/add_address/AddAddress";
+
+const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path:"/",
+      element:<App />,
+      errorElement:<Error/>,
+      children:[
+        {
+          path: "/",
+          element: <Home />,
+        },
+        {
+          path: "/products",
+          element: <Products />,
+        },
+        {
+          path:"/my_account",
+          element:<Account />,
+          children:[
+            {
+              path: "/my_account/profile",
+              element: <Profile />,
+            },
+            {
+              path: "/my_account/address",
+              element: <Address />,
+            },
+            {
+              path: "/my_account/orders",
+              element: <Order />,
+            },
+            
+          ]
+        },
+        {
+          path: "/my_account/address/add_address",
+          element: <AddAddress />,
+        },
+        {
+          path: "/my_account/address/edit_address",
+          element: <AddAddress />,
+        },
+        
+      ]
+    },
+    {
+      path:"/signup",
+      element:<Signup />
+    },
+    
+    
+  ]);
+
+export default router;
