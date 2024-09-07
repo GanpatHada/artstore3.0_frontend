@@ -1,0 +1,94 @@
+.product{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #efefef;
+    border-radius: 0.2rem;
+    position: relative;
+    align-items: stretch;
+    min-height: 20vw; 
+}
+.product-image-section{
+    background-color: #e3e3e377;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1/1;
+    
+}
+.product-info-section{
+    padding: 0.5rem;
+    flex: 1;
+}
+.product-button-section{
+    padding-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.product-info-section h4{
+    font-weight: normal;
+    font-size: 1rem;
+    color: rgb(54, 54, 54);
+}
+.product-info-section .product-category{
+    font-size: 0.75rem;
+
+}
+.product-info-section .ratings-count{
+    margin-left: 0.5rem;
+    font-size: 0.8rem!important;
+    color: var(--secondary-color);
+    position: relative;
+    top: 0.1rem;
+}
+.product-info-section .mrp{
+    font-size: 0.7rem;
+    color: gray;
+}
+.product-info-section .mrp strike::before{
+    content: '\20B9';
+}
+.product-info-section .stars{
+    height: 2rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+.product-info-section section.stars >*{
+    font-size: 1.2rem;
+}
+.product-info-section #price{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.product-info-section #price::before{
+    content: '\20B9';
+    font-weight: normal;
+    font-size: 0.8rem;
+    position: relative;
+    top: -0.2rem;
+    color: gray;
+}
+.product-info-section button{
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 0.6rem;
+    /* margin-top: 0.8rem;
+    margin-bottom: 0.5rem; */
+}
+.product-info-section .add-to-wishlist{
+    background-color: transparent;
+    border: 1px solid rgb(179, 179, 179);
+}
+
+.product-info-section .add-to-wishlist:hover{
+    background-color: whitesmoke;
+}
+.basket-text{
+    text-align: center;
+    padding: 0.5rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}

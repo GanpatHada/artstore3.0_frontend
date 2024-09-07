@@ -22,7 +22,7 @@ async function getCurrentPositionAsync() {
   }
   
   function handleAddressFetchFailure(error) {
-    return null;
+     return null
   }
   
   async function getLocationCordinates() {
@@ -42,7 +42,7 @@ async function getCurrentPositionAsync() {
       const addressJson = await address.json();
       return addressJson.address;
     } catch (error) {
-      console.log(error);
+       throw error;
     }
   };
   

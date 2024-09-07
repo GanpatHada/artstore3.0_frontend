@@ -1,0 +1,13 @@
+/* HTML: <div class="loader"></div> */
+#spin-loader-wrapper{
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: 1;
+        background-color: rgba(255, 255, 255, 0.774);
+}
+#spin-loader {
+       width: 20%;
+       aspect-ratio: 1/1;
+  }
+  @keyframes l3 {to{transform: rotate(1turn)}}

@@ -1,0 +1,9 @@
+#no-item{
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+}
+#no-item .image-section{
+    height: 20%;
+    aspect-ratio: 1/1;
+}

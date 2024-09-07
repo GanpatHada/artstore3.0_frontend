@@ -1,0 +1,47 @@
+.wishlist-item{
+    border: 1px solid var(--primary-border);
+    position: relative;
+    aspect-ratio: 1/1.5;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.delete-from-wishlist{
+    width: 20%;
+    aspect-ratio: 1/1;
+    background-color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    border: 1px solid var(--primary-border);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color: #CC0C39;
+    transition:transform 0.2s ease-in-out;
+    transform: scale(1);
+
+}
+.delete-from-wishlist:hover{
+    color: #990a2b;
+}
+.wishlist-item .image-section{
+    flex: 1;
+   
+}
+.wishlist-item .price-section{
+    padding: 0.2rem 1rem;
+    padding-top: 0.4rem;
+}
+.wishlist-item .button-section{
+    padding: 1rem;
+    padding-top: 0.2rem;
+}
+.wishlist-item .button-section button{
+    font-size: 0.9rem;
+    width: 100%;
+    padding: 0.4rem;
+    border-radius: 0.8rem;
+
+}

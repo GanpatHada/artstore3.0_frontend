@@ -7,11 +7,14 @@ import reportWebVitals from "./reportWebVitals";
 
 import router from "./Router";
 import { UserProvider } from "./context/userContext";
+import ProductProvider from "./context/ProductContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <UserProvider>
-    <RouterProvider router={router} />
+    <ProductProvider>
+      <RouterProvider router={router} />
+    </ProductProvider>
   </UserProvider>
 );
 

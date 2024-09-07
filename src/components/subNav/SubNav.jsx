@@ -1,5 +1,6 @@
 import React from 'react'
 import './SubNav.css'
+import DotLoader from '../dot-loader/DotLoader'
 const SubNav = () => {
   return (
     <section id='sub-nav'>

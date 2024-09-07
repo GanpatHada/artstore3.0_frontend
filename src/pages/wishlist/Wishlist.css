@@ -1,0 +1,20 @@
+#wishlist-page{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    
+}
+#wishlist-header{
+     background-color: pink;
+     height: 40px;
+}
+#wishlist-item-wrapper{
+    flex: 1;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,calc(15vw - 0rem));
+    /* grid-auto-rows: auto; */
+    justify-content: center;
+    align-content:start;
+    gap: 1rem;
+}

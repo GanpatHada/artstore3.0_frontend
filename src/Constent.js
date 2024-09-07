@@ -1,0 +1,1 @@
+export const BACKEND_BASE_URL="https://artstore3-0-backend-1.onrender.com"

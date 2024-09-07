@@ -63,6 +63,14 @@
     font-size: 0.8rem;
     
 }
+.auth-box #show-password{
+    accent-color: var(--primary-color);
+}
+.auth-box #show-password + label{
+    font-weight: normal;
+    position: relative;
+    top: -0.1rem;
+}
 .auth-box h1{
     margin-bottom: 1rem;
     font-size: 1.3rem;
@@ -113,12 +121,14 @@
     transition: all 0.1s ease-in;
 }
 .auth-button{
-    display: block;
     width: 100%;
     border-radius: 0.3em;
     color: black;
-    padding: 0.4em;
     font-size: 1em;
+    height: 2.2em;
+}
+.auth-button img{
+    height: 1.8em;
 }
 .auth-buttons-wrapper{
     
@@ -139,6 +149,16 @@ input:focus{
     
 }.error-input:focus{
     box-shadow:0 0 0px 3px rgba(255, 156, 156, 0.404)
+}
+.auth-box p{
+    font-size: 0.8rem;
+    margin: 0.5rem 0px;
+}
+.auth-box p a{
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    
+    
 }
 
 

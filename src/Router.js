@@ -10,61 +10,76 @@ import Profile from "./pages/account/components/profile/Profile";
 import Address from "./pages/account/components/address/Address";
 import Order from "./pages/account/components/orders/Order";
 import AddAddress from "./pages/add_address/AddAddress";
+import PrivateRoute from "./components/private_route/PrivateRoute";
+import Cart from "./pages/cart/Cart";
+import Wishlist from "./pages/wishlist/Wishlist";
 
 const router = createBrowserRouter([
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path:"/",
-      element:<App />,
-      errorElement:<Error/>,
-      children:[
-        {
-          path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/products",
-          element: <Products />,
-        },
-        {
-          path:"/my_account",
-          element:<Account />,
-          children:[
-            {
-              path: "/my_account/profile",
-              element: <Profile />,
-            },
-            {
-              path: "/my_account/address",
-              element: <Address />,
-            },
-            {
-              path: "/my_account/orders",
-              element: <Order />,
-            },
-            
-          ]
-        },
-        {
-          path: "/my_account/address/add_address",
-          element: <AddAddress />,
-        },
-        {
-          path: "/my_account/address/edit_address",
-          element: <AddAddress />,
-        },
-        
-      ]
-    },
-    {
-      path:"/signup",
-      element:<Signup />
-    },
-    
-    
-  ]);
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
+      },
+      {
+        path: "/cart",
+        element: (
+          <PrivateRoute>
+            <Cart />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/wishlist",
+        element: (
+          <PrivateRoute>
+            <Wishlist />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my_account",
+        element: <Account />,
+        children: [
+          {
+            path: "/my_account/profile",
+            element: <Profile />,
+          },
+          {
+            path: "/my_account/address",
+            element: <Address />,
+          },
+          {
+            path: "/my_account/orders",
+            element: <Order />,
+          },
+        ],
+      },
+      {
+        path: "/my_account/address/add_address",
+        element: <AddAddress />,
+      },
+      {
+        path: "/my_account/address/edit_address",
+        element: <AddAddress />,
+      },
+    ],
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+]);
 
 export default router;

@@ -40,19 +40,29 @@ const AddAddress = () => {
   const stopLoading=()=>setLoading(false);
 
   const handleAutoFill = async () => {
-    setAutoFillText("Auto filling...");
-    const autoFilledAddress = await getAutoLocation();
-    const { city, state, country, postcode, road, county } = autoFilledAddress;
-    setAddress({
-      ...address,
-      city,
-      country,
-      pinCode: postcode,
-      state,
-      address2: `${road || ""}${road ? "," : ""}${county || ""}`,
-    });
-    setAutoFillText("Auto fill");
-  };
+    setAutoFillText('Auto filling ...')
+    try {
+      const autoFilledAddress = await getAutoLocation();
+      const { city, state, country, postcode, road, county } = autoFilledAddress;
+      setAddress({
+        ...address,
+        city,
+        country,
+        pinCode: postcode,
+        state,
+        address2: `${road || ""}${road ? "," : ""}${county || ""}`,
+      });
+    } catch (error) {
+      toast.error('location not found')
+    }
+    finally{
+      setAutoFillText("Auto fill");
+    }
+    
+  }
+    
+    
+  
 
   const handleAddAddress = () => {
     let errors = false;
