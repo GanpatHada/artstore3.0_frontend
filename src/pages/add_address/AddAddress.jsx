@@ -1,24 +1,114 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./AddAddress.css";
 import { toast } from "react-toastify";
-import { getAutoLocation } from "../../utils/AddressHelper";
+import {
+  getAutoLocation,
+  initialAddressState,
+} from "../../utils/AddressHelper";
 import { addAddress } from "../../services/AddressService";
 import Loader from "../../images/loading.gif";
+import { useLocation, useParams } from "react-router-dom";
+import UserContext from "../../context/userContext";
+import { makeCapitalize } from "../../utils/GlobalUtils";
+import SpinLoader from "../../components/spin-loader/SpinLoader";
 const AddAddress = () => {
+  const { pathname } = useLocation();
+  const { addressId } = useParams();
+
+  const { state: userState, dispatch } = useContext(UserContext);
+  const { addresses } = userState.user;
+
   const [autoFillText, setAutoFillText] = useState("Auto fill");
-  const [defaultAddress, setDefaultAddress] = useState(false);
+  // const [defaultAddress, setDefaultAddress] = useState(false);  //to do
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState({
-    country: "",
-    name: "",
-    mobileNumber: "",
-    pinCode: "",
-    address1: "",
-    address2: "",
-    landmark: "",
-    city: "",
-    state: "",
-  });
+  const [address, setAddress] = useState(initialAddressState);
+
+  //internal Helper function//
+
+  const handleFieldChange = (e) => {
+    const { name, value } = e.target;
+    setAddress({ ...address, [name]: value });
+  };
+
+  const handleAutoFill = async () => {
+    setAutoFillText("Auto filling ...");
+    try {
+      const autoFilledAddress = await getAutoLocation();
+      const { city, state, country, postcode, road, county } =
+        autoFilledAddress;
+      setAddress({
+        ...address,
+        city,
+        country,
+        pinCode: postcode,
+        state,
+        address2: `${road || ""}${road ? "," : ""}${county || ""}`,
+      });
+    } catch (error) {
+      toast.error("location not found");
+    } finally {
+      setAutoFillText("Auto fill");
+    }
+  };
+
+  const handleFetchedAddress = () => {
+    const requiredAddress = addresses.find(
+      (address) => address._id === addressId
+    );
+    if (!requiredAddress) toast.error("address not found");
+    else {
+      delete requiredAddress["_id"];
+      setAddress({ ...requiredAddress });
+    }
+  };
+
+  const areFieldErrors = () => {
+    let errors = false;
+    for (let field in address) {
+      if (
+        address[field].trim().length === 0 &&
+        field !== "landmark" &&
+        field !== "address2"
+      ) {
+        errors = true;
+        toast.warning(`* fields are required`);
+        break;
+      }
+    }
+    return errors;
+  };
+
+  const handleAddAddress = async () => {
+    let errors = areFieldErrors();
+    if (errors) return 0;
+    setLoading(true);
+    try {
+      const result = await addAddress(address);
+      console.log(result.success);
+      if (result.success) {
+        dispatch({ type: "ADD_ADDRESS", payload: result.data });
+        setAddress({...initialAddressState})
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal server error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getPage = () => {
+    return pathname.includes("/my_account/address/edit/") ? "edit" : "add";
+  };
+
+  useEffect(() => {
+    toast.warning("This is demo")
+    if (pathname.includes("/my_account/address/edit/")) handleFetchedAddress();
+  }, []);
+
   const {
     country,
     name,
@@ -30,60 +120,10 @@ const AddAddress = () => {
     city,
     state,
   } = address;
-
-  const handleFieldChange = (e) => {
-    const { name, value } = e.target;
-    setAddress({ ...address, [name]: value });
-  };
-
-  const startLoading=()=>setLoading(true);
-  const stopLoading=()=>setLoading(false);
-
-  const handleAutoFill = async () => {
-    setAutoFillText('Auto filling ...')
-    try {
-      const autoFilledAddress = await getAutoLocation();
-      const { city, state, country, postcode, road, county } = autoFilledAddress;
-      setAddress({
-        ...address,
-        city,
-        country,
-        pinCode: postcode,
-        state,
-        address2: `${road || ""}${road ? "," : ""}${county || ""}`,
-      });
-    } catch (error) {
-      toast.error('location not found')
-    }
-    finally{
-      setAutoFillText("Auto fill");
-    }
-    
-  }
-    
-    
-  
-
-  const handleAddAddress = () => {
-    let errors = false;
-    for (let field in address) {
-      if (
-        address[field].trim().length === 0 &&
-        field !== "landmark" &&
-        field !== "address2"
-      ) {
-        errors = true;
-        toast.error(`* fields are required`);
-        break;
-      }
-    }
-    if (errors) return 0;
-    addAddress(address, defaultAddress,startLoading,stopLoading);
-  };
-
   return (
-    <div id="add-address-page">
+    <div id="add-address-page" className="all-centered">
       <div id="add-address-box">
+        {loading && <SpinLoader />}
         <p>
           My Account {">"} Address {">"} <span>{"Add Address"}</span>
         </p>
@@ -115,7 +155,7 @@ const AddAddress = () => {
 
           <label htmlFor="mob-number">Mobile number *</label>
           <input
-            type="number"
+            type="text"
             id="mob-number"
             value={mobileNumber}
             name="mobileNumber"
@@ -124,7 +164,7 @@ const AddAddress = () => {
 
           <label htmlFor="pin-code">Pin code *</label>
           <input
-            type="number"
+            type="text"
             id="pin-code"
             value={pinCode}
             name="pinCode"
@@ -179,7 +219,7 @@ const AddAddress = () => {
             onChange={handleFieldChange}
           />
 
-          <input
+          {/* <input
             type="checkbox"
             checked={defaultAddress}
             onChange={() => setDefaultAddress(!defaultAddress)}
@@ -187,14 +227,18 @@ const AddAddress = () => {
           <label htmlFor="d" id="default-address">
             {" "}
             Make this my default address
-          </label>
+          </label> */}
           <button
             className="primary-btn all-centered"
             id="address-button"
             onClick={handleAddAddress}
             disabled={loading}
           >
-           {loading?<img src={Loader} alt="" />:<span>Add Address</span>}
+            {loading ? (
+              <img src={Loader} alt="" />
+            ) : (
+              <span>{makeCapitalize(getPage())} Address</span>
+            )}
           </button>
         </form>
       </div>

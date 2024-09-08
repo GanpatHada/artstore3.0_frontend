@@ -1,0 +1,35 @@
+.main-address-section{
+    padding: 1rem;
+    font-size: 0.8rem;
+}
+.default-address-section{
+    border-bottom: 1px solid var(--primary-border);
+    padding: 0.5rem;
+    color: rgb(131, 131, 131);
+    font-weight: normal;
+    font-size: 0.7rem;
+}
+
+.addresses > div > .address-buttons{
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    
+    
+}
+
+.address-buttons button{
+    text-align: center;
+    background-color: transparent;
+    padding: 0rem 0.2rem;
+    color: var(--secondary-color);
+    
+    
+}
+.address-buttons button:hover{
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+.address-buttons span{
+    font-size: 0.8rem;
+}

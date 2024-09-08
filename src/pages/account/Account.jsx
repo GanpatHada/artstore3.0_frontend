@@ -11,7 +11,6 @@ const Account = () => {
     return url.toUpperCase();
 
   }
-
   return (
     <div id="account-page">
       <div>

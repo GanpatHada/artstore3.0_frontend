@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/my_account",
-        element: <Account />,
+        element: <PrivateRoute><Account /></PrivateRoute>,
         children: [
           {
             path: "/my_account/profile",
@@ -67,12 +67,12 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/my_account/address/add_address",
-        element: <AddAddress />,
+        path: "/my_account/address/add",
+        element: <PrivateRoute><AddAddress /></PrivateRoute>,
       },
       {
-        path: "/my_account/address/edit_address",
-        element: <AddAddress />,
+        path: "/my_account/address/edit/:addressId",
+        element: <PrivateRoute><AddAddress /></PrivateRoute>,
       },
     ],
   },

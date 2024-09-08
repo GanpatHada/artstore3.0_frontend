@@ -1,4 +1,14 @@
-
+export const initialAddressState={
+  country: "",
+  name: "",
+  mobileNumber: "",
+  pinCode: "",
+  address1: "",
+  address2: "",
+  landmark: "",
+  city: "",
+  state: "",
+}
 async function getCurrentPositionAsync() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(

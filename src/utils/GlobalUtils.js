@@ -4,3 +4,7 @@ export function makeCapitalize(string){
     capitalizeString=firstCapitalString.concat(string.slice(1)) 
     return capitalizeString;
 }
+
+export function getAuthToken(){
+    return localStorage.getItem("token");
+}

@@ -7,7 +7,9 @@ const userReducer=(state,action)=>{
         case 'SET_USER':
             return {...state,user:action.payload}
         case 'ADD_ADDRESS':
-            return {...state,address:action.payload}
+            return {...state,user:{...state.user,addresses:[action.payload,...state.user.addresses]}}
+        case 'DELETE_ADDRESS':
+            return {...state,user:{...state.user,addresses:state.user.addresses.filter(address=>address._id.toString()!==action.payload.toString())}}    
         case 'START_USER_LOADING':
              return {...state,userLoading:true};    
         case 'STOP_USER_LOADING':
