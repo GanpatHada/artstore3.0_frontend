@@ -5,12 +5,17 @@
     border-bottom: 1px solid var(--primary-border);
     gap: 0.5rem;
     overflow: hidden;
+    position: relative;
 }
 .cart-item:first-child{
     margin-top: 0.5rem;
 }
 .cart-item:last-child{
     border-bottom: none;
+}
+.cart-item-check-section input{
+    cursor: pointer;
+    accent-color: var(--secondary-color);
 }
 .cart-item-image-section{
     flex: 1.5;

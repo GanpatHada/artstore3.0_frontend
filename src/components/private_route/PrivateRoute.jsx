@@ -6,9 +6,25 @@ const PrivateRoute = ({ children }) => {
   const {
     state: { user, userLoading },
   } = useContext(UserContext);
+  console.log(user)
   const isAuthenticated = user;
+  let userDetailsFound = false;
+  if (user)
+    userDetailsFound = Object.keys(user).length !== 0;
   return (
-    <>{!userLoading && (isAuthenticated ? children : <Navigate to="/login" />)}</>
+    <>
+      {userLoading ? (
+        "fetching user"
+      ) : (
+        <>
+          {!isAuthenticated ? (
+            <Navigate to="/login" />
+          ) : (
+            <>{userDetailsFound ?children :<Navigate to="/"/>}</>
+          )}
+        </>
+      )}
+    </>
   );
 };
 

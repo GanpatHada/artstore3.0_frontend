@@ -10,22 +10,18 @@ const Navbar = () => {
   const {
     state: { user, userLoading },
   } = useContext(UserContext);
-
   const getUserDefaultAddress = () => {
-    if (user) {
-      if (user.addresses.length > 0) {
-        const { city } = user.addresses[0];
-        if (city.length > 7)
-          return city.slice(0, 7).concat(" ...");
-        return city;
-      }
-    }
-    return "Sign In"
-   
+    if (!user) return "Sign In";
+    if (Object.keys(user).length === 0) return "";
+    if (user.addresses.length === 0) return "Add default";
+    const { city } = user.addresses[0];
+    if (city.length > 7) return city.slice(0, 7).concat(" ...");
+    return city;
   };
 
   const getUserName = () => {
-    if (!user?.userName) return "Sign in";
+    if (!user) return "Sign In";
+    if (Object.keys(user).length === 0) return "";
     const { userName } = user;
     if (userName.length > 7) return userName.slice(0, 7).concat(" ...");
     return userName;

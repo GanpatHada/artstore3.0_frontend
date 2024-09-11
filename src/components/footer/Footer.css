@@ -1,4 +1,48 @@
-footer{
+#main-footer{
+    display: flex;
+    flex-direction: column;
     background-color: #232f3e;
     color: white;
+}
+#main-footer main{
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    padding: 2rem;
+}
+#main-footer main > div{
+    display: flex;
+    flex-direction: column;
+    min-width: min-content;
+    width: auto;
+}
+#main-footer main > div h4{
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0.3rem 0rem;
+}
+#main-footer main > div a{
+    font-size: 0.8rem;
+    margin: 0.1rem;
+    color: rgba(255, 255, 255, 0.801);
+}
+#main-footer main > div a:hover{
+    text-decoration: underline;
+}
+#main-footer button{
+    background-color: #37475a;
+    color: white;
+    font-size: 1rem;
+    padding: 1rem;
+}
+#main-footer button:hover{
+    background-color: #455870;
+}
+#main-footer footer{
+    background-color: #1d2835;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 1rem;
 }

@@ -5,6 +5,7 @@ export function makeCapitalize(string){
     return capitalizeString;
 }
 
+
 export function getAuthToken(){
     return localStorage.getItem("token");
 }

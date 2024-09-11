@@ -52,6 +52,14 @@ img{
 .image-section{
   overflow: hidden;
 }
+.secondary-text-btn{
+  color: var(--secondary-color);
+  background-color: transparent;
+  
+}
+.secondary-text-btn:hover{
+  color: var(--primary-color);
+}
 .primary-btn{
   background-color: #ffd814;
   color: black;

@@ -7,8 +7,6 @@ export function isAuthenticated(){
 
 export async function getUser() {
   try {
-    if (!getToken()) 
-        return {data:null,message:"user is not logged in",success:true};
     const response = await fetch(`${BACKEND_BASE_URL}/user/`, {
       method: "GET",
       headers: {

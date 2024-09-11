@@ -43,7 +43,8 @@ const Product = ({
     return makeStarArray(starsCount);
   }
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async(e,productId) => {
+    e.stopPropagation();
     if (!isAuthenticated()) return navigate("/login");
     if(isAvailableInCart(productId)) return navigate("/cart");
     try {
@@ -59,7 +60,8 @@ const Product = ({
       setLoading(false);
     }
   };
-  const handleAddToWishlist = async (productId) => {
+  const handleAddToWishlist = async(e,productId) => {
+    e.stopPropagation()
     if (!isAuthenticated()) return navigate("/login");
     if(isAvailableInWishlist(productId)) return navigate("/wishlist")
     try {
@@ -76,7 +78,6 @@ const Product = ({
       setLoading(false)
     }
   };
-
   const isAvailableInCart = (productId) => {
     return user?.cart.includes(productId);
   };
@@ -86,7 +87,7 @@ const Product = ({
   }
 
   return (
-    <div className="product">
+    <div className="product" onClick={()=>navigate(`/products/${_id}`)}>
       {loading && <SpinLoader />}
       <section className="product-image-section">
         <img src={imageUrl} alt="N/A" />
@@ -111,11 +112,11 @@ const Product = ({
         <section className="product-button-section">
           <button
             className="primary-btn add-to-cart"
-            onClick={() => handleAddToCart(_id)}
+            onClick={(e) => handleAddToCart(e,_id)}
           >
             {!isAvailableInCart(_id) ? "Add to cart" : "Go to cart"}
           </button>
-          <button className="add-to-wishlist" onClick={()=>handleAddToWishlist(_id)}>
+          <button className="add-to-wishlist" onClick={(e)=>handleAddToWishlist(e,_id)}>
            {!isAvailableInWishlist(_id)?"Add":"Go"} to Wishlist
             </button>
         </section>

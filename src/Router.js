@@ -13,6 +13,7 @@ import AddAddress from "./pages/add_address/AddAddress";
 import PrivateRoute from "./components/private_route/PrivateRoute";
 import Cart from "./pages/cart/Cart";
 import Wishlist from "./pages/wishlist/Wishlist";
+import ProductDetails from "./pages/product_details/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
+        path: "/products/:productId",
+        element: <ProductDetails />,
+      },
+      {
         path: "/cart",
         element: (
           <PrivateRoute>
@@ -50,7 +55,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/my_account",
-        element: <PrivateRoute><Account /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <Account />
+          </PrivateRoute>
+        ),
         children: [
           {
             path: "/my_account/profile",
@@ -68,11 +77,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/my_account/address/add",
-        element: <PrivateRoute><AddAddress /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <AddAddress />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my_account/address/edit/:addressId",
-        element: <PrivateRoute><AddAddress /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <AddAddress />
+          </PrivateRoute>
+        ),
       },
     ],
   },
