@@ -1,0 +1,27 @@
+#reviews-section h3{
+    margin: 0.5rem 0rem;
+}
+#reviews-section .profile-section{
+    display: flex;
+    height: 50px;
+    align-items:baseline;
+}
+#reviews-section .profile-section .image-section{
+    height: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: rgb(221, 221, 221);
+    color: rgb(255, 255, 255);
+    margin-right: 0.4rem;
+    overflow: hidden;
+}
+
+#reviews-section .comment-box{
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--primary-border);
+    padding-left: 0px;
+}
+#reviews-section .comment-box p{
+    margin: 0.4rem 0rem;
+    font-size: 0.9rem;
+}

@@ -1,0 +1,33 @@
+#product-details-page{
+    background-color: white; 
+    display: flex;
+    justify-content: center;
+}
+#product-details-wrapper{
+    max-width: 1500px;
+    margin: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex: 1;
+}
+#product-details-page #info-section{
+    flex: 3;
+}
+
+#product-details-page #info-section > *{
+    margin: 0.5rem 0rem;
+}
+#product-details-page #info-section h3{
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+#product-details-page #info-section h5{
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+
+

@@ -1,0 +1,27 @@
+#product-details-page #check-out-section {
+  margin: 1rem;
+  outline: 1px solid var(--primary-border);
+  border-radius: 10px;
+  padding: 0.5rem;
+  height: fit-content;
+  flex: 0.4;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+#product-details-page #check-out-section button {
+  padding: 0.5rem;
+  border-radius: 1rem;
+}
+#in-stock-text{
+    color: green;
+}
+#buy-now{
+    background-color: #ffa41c;
+}
+#product-details-page #add-to-wishlist{
+    background-color: transparent;
+    border: 1px solid gray;
+}

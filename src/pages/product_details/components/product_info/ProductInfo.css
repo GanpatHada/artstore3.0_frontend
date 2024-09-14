@@ -1,0 +1,9 @@
+#info-section-wrapper{
+    display: flex;
+    gap: 1rem;
+    grid-column: span 2;
+    border-bottom: 1px solid var(--primary-border);
+}
+#info-section-wrapper #info-section{
+    flex: 1;
+}

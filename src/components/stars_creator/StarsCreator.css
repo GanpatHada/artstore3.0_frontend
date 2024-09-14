@@ -1,0 +1,11 @@
+#stars-pic > *{
+  color: var(--primary-color);
+  height: 100%;
+  font-size: inherit;
+  
+}
+#stars-pic{
+  height: 100%;
+  font-size: inherit;
+  
+}
