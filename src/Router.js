@@ -8,17 +8,22 @@ import Home from "./pages/home/Home";
 import Account from "./pages/account/Account";
 import Profile from "./pages/account/components/profile/Profile";
 import Address from "./pages/account/components/address/Address";
-import Order from "./pages/account/components/orders/Order";
 import AddAddress from "./pages/add_address/AddAddress";
 import PrivateRoute from "./components/private_route/PrivateRoute";
 import Cart from "./pages/cart/Cart";
 import Wishlist from "./pages/wishlist/Wishlist";
 import ProductDetails from "./pages/product_details/ProductDetails";
+import Checkout from "./pages/checkout/Checkout";
+import Order from "./pages/order/Order";
 
 const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
   {
     path: "/",
@@ -91,11 +96,23 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/checkout",
+        element: (
+          <PrivateRoute>
+            <Checkout />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment-success/:razorpay_order_id/:razorpay_payment_id/:razorpay_signature",
+        element: (
+          <PrivateRoute>
+            <Order />
+          </PrivateRoute>
+        ),
+      },
     ],
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
   },
 ]);
 

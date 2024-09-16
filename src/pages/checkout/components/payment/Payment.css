@@ -1,0 +1,49 @@
+#payment-section h2{
+    margin: 1rem 0rem;
+}
+#payment-box{
+    padding: 1rem;
+    border: 1px solid var(--primary-border);
+}
+#payment-box div{
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+#payment-box div img{
+    height: 1.5rem;
+    width: fit-content;
+    margin-left: 1rem;
+}
+#make-payment-btn{
+    font-size: 0.9rem;
+    color: white;
+    padding: 0.5rem;
+    display: block;
+    border-radius: 1rem;
+    background-color: #1e7dd6;
+}
+#make-payment-btn:hover{
+    background-color: #266fb3;
+}
+#rzp-add{
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    color: gray;
+    
+}
+#rzp-add img{
+    height: 1.3rem;
+    width: fit-content;
+}
+#payment-info p strong{
+    color: var(--primary-color);
+    font-size: 1.3rem;
+}
+#payment-info i{
+    font-size: 0.8rem;
+    color: rgb(77, 77, 77);
+}

@@ -55,6 +55,16 @@ async function getCurrentPositionAsync() {
        throw error;
     }
   };
+
+  export function getAddressString(addressObj){
+    let addressString="";
+    for(let i in addressObj){
+      if(i==='_id')
+        continue;
+      addressString=addressString.concat(" , ",addressObj[i])
+    }
+    return addressString.replace(",","")
+  }
   
   export { getAutoLocation };
   

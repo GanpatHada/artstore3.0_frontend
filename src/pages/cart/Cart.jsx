@@ -5,7 +5,9 @@ import UserContext from "../../context/userContext";
 import SpinLoader from "../../components/spin-loader/SpinLoader";
 import emptyCart from "../../images/empty_cart.png";
 import NoItem from "../../components/no_item/NoItem";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
+  const navigate=useNavigate()
   const {
     state: {
       user: { cart },
@@ -67,6 +69,7 @@ const Cart = () => {
             id="proceed-to-buy-button"
             disabled={selectedCartItems.length === 0}
             className="primary-btn"
+            onClick={()=>navigate("/checkout")}
           >
             Proceed to Buy
           </button>

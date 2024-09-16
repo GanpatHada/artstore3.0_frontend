@@ -74,6 +74,9 @@ a{
   text-decoration: none;
   color: black;
 }
+.links-buttons:hover{
+  text-decoration: underline;
+}
 
 
 @media screen and (max-width:576px) {

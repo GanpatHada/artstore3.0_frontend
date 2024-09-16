@@ -1,0 +1,11 @@
+#order-success-page{
+    background-color: white;
+    padding: 1rem;
+    text-align: center;
+}
+#payment-success-box h2{
+    color: green;
+}
+#payment-success-box > span{
+    font-size: 0.9rem;
+}
