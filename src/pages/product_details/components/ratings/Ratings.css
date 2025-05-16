@@ -1,0 +1,54 @@
+#product-details-page #ratings-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem 0rem;
+  
+}
+#product-details-page #ratings-section #ratings-pic {
+  display: flex;
+  font-size: 1.5rem;
+  align-items: center;
+}
+#product-details-page #ratings-section #ratings-pic i {
+  font-style: normal;
+  font-size: 1rem;
+  color: rgb(39, 39, 39);
+  margin-left: 0.4rem;
+}
+#product-details-page #ratings-section #global-ratings {
+  font-size: 0.9rem;
+  color: rgb(102, 102, 102);
+  margin: 0.5rem 0rem;
+  margin-top: 0rem;
+}
+#product-details-page #ratings-section #ratings-graph {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 1rem 0rem;
+}
+#product-details-page #ratings-section #ratings-graph > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+#product-details-page #ratings-section #ratings-graph > div > span {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+}
+
+#product-details-page #ratings-section #ratings-graph .rate-graph-progress {
+  background-color: var(--primary-color);
+  height: 100%;
+}
+#product-details-page #ratings-section .rate-graph {
+  border: 1px solid gray;
+  height: 1.3rem;
+  flex: 5;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}

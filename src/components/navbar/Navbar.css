@@ -1,0 +1,131 @@
+nav{
+    background-color: #131921;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0.5rem;
+    
+  }
+  #logo{
+     font-size: 1.5rem;
+     display: flex;
+     justify-content: flex-start;
+     align-items: center;
+      
+  }
+  #search-box{
+   flex: 1;
+   background-color: pink;
+   height: 2.5rem;
+   border-radius: 0.4rem;
+   overflow: hidden;
+   position: relative;
+   margin: 0px 0.2rem;
+  }
+  #search-box input[type='search']{
+   position: absolute;
+   left: 0px;
+   top: 0px;
+   height: 100%;
+   width:100%;
+   border: none;
+   padding: 1rem;
+   font-size: 1rem;
+   padding-right: 3.8rem;
+  }
+  #search-box button{
+   position: absolute;
+   top: 0px;
+   right: 0px;
+   height: 2.5rem;
+   width: 2.5rem;
+   border: none;
+   font-size: 1rem;
+   background-color: orange;
+  }
+  #search-box:focus-within{
+   outline: 2px solid orange;
+  }
+  #search-box input:focus{
+   outline: none;
+  }
+  
+  .navs ul{
+   display: flex;
+   justify-content: flex-end;
+   
+   align-items: center;
+   justify-content: flex-end; 
+   
+  }
+
+  .navs li{
+   color: white;
+   text-transform: capitalize;
+   font-size: 1rem;
+   border-radius: 0.2rem;
+   
+  }
+
+  .navs a img{
+   height: 2rem;
+  }
+  
+  nav a{
+   color: white;
+   height: 2.5rem;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   justify-content: center;
+   padding: 0.4rem;
+   border-radius: 0.2rem;
+   margin: 0.1rem;
+   position: relative;
+   font-size: 0.8rem;
+  }
+  #cart-badge{
+   color: coral;
+   position: absolute;
+   top: 0.3rem;
+   left: 50%;
+   right: 50%;
+   transform: translateX(-50%);
+   font-style: normal;
+  }
+  
+  nav a:hover{
+   outline: 1px solid white;
+  }
+  #account-nav{
+   display: flex;
+   flex-direction: column;
+   font-size: 0.8rem;
+   align-items:flex-start;
+  }
+  nav a span{
+    font-size: 0.7rem;
+  }
+
+
+  
+@media only screen and (max-width: 576px) {
+   nav{
+      justify-content: space-between;
+   }
+   #search-box{
+     flex: none;
+     margin-top: 0.5rem;
+     width: 100%;
+     order: 3;
+   }
+   .navs {
+      order: 2;
+      width: fit-content;
+   }
+   #logo{
+      width: fit-content;
+   }
+ }

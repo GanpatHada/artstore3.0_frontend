@@ -1,0 +1,18 @@
+.cart-item-loader {
+  flex: 1;
+  background-color: rgb(216, 216, 216);
+  animation: skeleton-animation 1s infinite ease-in-out;
+}
+@keyframes skeleton-animation {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}

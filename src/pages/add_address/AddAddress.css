@@ -1,0 +1,83 @@
+#add-address-page{
+    background-color: white;
+    width:100%;
+}
+#add-address-box{
+    margin: auto;
+    width:100%;
+    max-width: 500px;
+    position: relative;
+    padding: 1rem;
+   
+}
+#add-address-box p{
+    font-size: 0.8rem;
+}
+#add-address-box p span{
+    color: var(--primary-color);
+}
+#add-address-box h4{
+    margin: 0.5rem 0rem;
+    font-size: 1.3rem;
+}
+#add-address-box .alert{
+    font-size: 0.7rem;
+}
+#auto-fill-location{
+    padding: 1rem;
+    background-color: rgb(218, 246, 255);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    margin: 0.4rem 0rem;
+    display: flex;
+}
+#auto-fill-location button{
+    color: var(--secondary-color);
+    padding: 0.4rem 0.8rem;
+    background-color: var(--secondary-color);
+    border-radius: 1.2rem;
+    white-space: nowrap;
+    margin-left: 1rem;
+    font-weight: bold;
+    color: white;
+    font-size: 0.8rem;
+    width: 25%;
+
+}
+#add-address-box label{
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+#add-address-box label > span{
+    color: red;
+}
+
+#add-address-box input:not(input[type='checkbox']){
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    padding: 0.3rem;
+    border: 1px solid darkgray;
+    border-radius: 0.3rem;
+    color: rgb(65, 65, 65);
+}
+#add-address-box input::placeholder{
+    color: rgb(184, 184, 184);
+}
+#address-button{
+
+    margin: 1rem 0rem;
+    padding: 0.7rem 1rem;
+    border-radius: 1.6rem;  
+    overflow: hidden; 
+    font-size: 0.8rem;
+}
+
+
+#default-address{
+    position: relative;
+    top: -3px;
+    font-weight: lighter;
+}

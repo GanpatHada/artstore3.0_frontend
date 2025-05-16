@@ -1,0 +1,12 @@
+#add-product-form {
+    display: block;
+    min-height: calc(100% - 40px);
+    max-width: 1000px;
+    width: 100vw;
+    background-color: plum;
+
+}
+#add-product-form .image-section{
+    aspect-ratio: 4/1;
+    background-color: pink;
+}

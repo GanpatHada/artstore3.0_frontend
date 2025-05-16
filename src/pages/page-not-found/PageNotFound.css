@@ -1,0 +1,56 @@
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+    font-family: Arial, sans-serif;
+  }
+  
+
+  .not-found-content {
+    text-align: center;
+    background-color: #fff;
+    padding: 30px 50px;
+    border-radius: 8px;
+    border: 1px solid var(--primary-border);
+    max-width: 500px;
+    width: calc(100vw - 20px);
+  }
+  
+  
+  .not-found-heading {
+    font-size: 80px;
+    margin-bottom: 10px;
+    color: #f44336; 
+  }
+  
+ 
+  .not-found-subheading {
+    font-size: 24px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+
+  .not-found-message {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 30px;
+  }
+  
+  
+  .not-found-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .not-found-button:hover {
+    background-color: #45a049;
+  }

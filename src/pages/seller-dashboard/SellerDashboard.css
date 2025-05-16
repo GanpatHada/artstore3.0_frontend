@@ -1,0 +1,21 @@
+#seller-dashboard{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+#seller-dashboard nav {
+  font-size: 2rem;
+
+}
+#seller-dashboard main{
+  flex: 1;
+  background-color: beige;
+}
+#seller-dashboard nav > span::after{
+    content: "Seller Account";
+    font-family: Arial;
+    font-size: 1rem;
+    position: relative;
+    left: 0.5rem;
+    color:rgb(92, 203, 255);
+}

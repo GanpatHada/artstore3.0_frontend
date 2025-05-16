@@ -1,0 +1,22 @@
+#wishlist-page{
+    background-color: white;
+    flex-direction: column;    
+}
+#wishlist-header{
+     background-color: pink;
+     height: 40px;
+}
+#wishlist-item-wrapper{
+    padding: 1rem;
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fit,260px);
+}
+
+@media screen and (max-width:576px) {
+    #wishlist-item-wrapper{ 
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: auto;
+        
+    }
+}

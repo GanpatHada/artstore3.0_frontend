@@ -1,0 +1,66 @@
+/* Container for centering content on the page */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+    font-family: Arial, sans-serif;
+  }
+  
+
+  .error-content {
+    text-align: center;
+    background-color: #fff;
+    padding: 40px 60px;
+    border-radius: 8px;
+    border: 1px solid var(--primary-border);
+    max-width: 600px;
+    width: calc(100vw - 20px);
+  }
+  
+
+  .error-heading {
+    font-size: 72px;
+    margin-bottom: 15px;
+    color: #f44336;
+  }
+  
+ 
+  .error-subheading {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+
+  .error-message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  
+  .error-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .refresh-button{
+    background-color: transparent;
+    color: rgb(58, 58, 58);
+    margin-left: 10px;
+    border: 1px solid rgb(146, 146, 146);
+  }
+  
+  .error-button:hover {
+    background-color: #45a049; 
+  }
+  .refresh-button:hover{
+    background-color: whitesmoke;
+  }

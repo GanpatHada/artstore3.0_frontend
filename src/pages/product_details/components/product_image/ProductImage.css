@@ -1,0 +1,9 @@
+#product-details-page #image-section{
+    background-color: whitesmoke;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+    padding: 1rem;
+    
+}

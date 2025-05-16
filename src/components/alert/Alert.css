@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+.Toastify__toast--error {
+  border:1px solid rgb(197, 46, 46) !important;
+  background-color: rgb(255, 239, 239)!important;
+
+}
+.Toastify__toast-theme--colored.Toastify__toast--error{
+  color: rgb(94, 0, 0)!important;
+}
+.Toastify__toast--success{
+    background-color: rgb(238, 255, 238)!important;
+    border: 1px solid green!important;
+}
+.Toastify__toast-theme--colored.Toastify__toast--success{
+  color: rgb(0, 66, 0)!important;
+}
+
+.Toastify__toast--warning{
+ 
+  border: 1px solid rgb(255, 81, 0)!important;
+  color: rgb(255, 81, 0);
+}
+.Toastify__toast-theme--colored.Toastify__toast--warning{
+color: rgb(202, 64, 0)!important;
+background: rgb(255, 236, 224)!important;
+}
+.Toastify__close-button > svg {
+  fill: inherit!important;
+}
+.Toastify__toast--warning{
+    background-color: rgb(255, 142, 49)!important;
+    
+}
+.Toastify__toast {
+  font-family: "Roboto" !important;
+}

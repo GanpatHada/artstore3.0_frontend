@@ -1,0 +1,53 @@
+#info-section-wrapper{
+    display: flex;
+    gap: 1rem;
+   
+}
+#info-section-wrapper hr{
+    background-color: rgb(223, 223, 223);
+    height: 0.05rem;
+    border: none;
+}
+#info-section-wrapper #info-section{
+    flex: 1;
+}
+#info-section-wrapper #actual-price{
+    color: rgb(146, 146, 146);
+    font-size: 0.9rem;
+}
+#info-section-wrapper #discount{
+    color: red;
+    font-size: 1.3rem;
+}
+#info-section-wrapper #info-section #category{
+    font-size: 0.8rem;
+}
+#info-section-wrapper .tag{
+    background-color: rgb(187, 0, 0);
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    width: fit-content;
+    padding: 0.4rem 0.6rem;
+}
+#info-section-wrapper #info-section >section{
+    display: flex;
+}
+#info-section-wrapper #info-section >section span:last-child{
+    margin-left: 1rem;
+}
+#artist-ratings{
+    display: flex;
+    
+}
+#artist-ratings span:last-child{
+    color: var(--secondary-color);
+    margin-left: 1rem;
+    font-size: 0.9rem;
+}
+@media screen and (max-width:576px) {
+    #info-section-wrapper{
+        flex-direction: column;
+    }
+    
+}

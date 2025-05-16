@@ -1,0 +1,32 @@
+#profile-box > p{
+    color: gray;
+    font-size: 0.9rem;
+}
+#profile-content{
+    border: 1px solid var(--primary-border);
+    margin-top: 2rem;
+}
+#profile-content > section{
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#profile-image{
+    height: 6rem;
+    width: 6rem;
+    border-radius: 3rem;
+    
+}
+#change-profile-image-btn{
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border-radius: 0.5rem;
+    width: fit-content;
+    margin-top: 1rem;
+    gap: 0.5rem;
+    font-weight: bold;
+    color: var(--secondary-color2);
+}

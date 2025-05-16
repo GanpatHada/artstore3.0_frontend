@@ -1,0 +1,21 @@
+#product-descriptions ul li::before{
+    content: "*";
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 0.15rem;
+    margin-right: 0.5rem;
+    
+    
+}
+#product-descriptions h4{
+    margin: 0.7rem 0rem;
+}
+#product-descriptions ul li{
+    display: flex;
+    align-items: center;
+    height: fit-content;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    
+}

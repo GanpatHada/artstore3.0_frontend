@@ -1,0 +1,18 @@
+#summary-box{
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    grid-row: span 2
+}
+#summary-box h2{
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0rem;
+}
+#summary-box-content{
+    flex: 1;
+    background-color: whitesmoke;
+    border: 1px solid var(--primary-border);
+    border-radius: 0.5rem;
+}

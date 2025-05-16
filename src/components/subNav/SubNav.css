@@ -1,0 +1,18 @@
+#sub-nav{
+    background-color: #232f3e;
+    display: flex;
+}
+#sub-nav li{
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    font-weight: 300;
+    font-size: 0.8rem;
+    border: 1px solid transparent;
+    margin: 0.2rem;
+    color: white;
+    
+}
+#sub-nav li:hover{
+    border: 1px solid rgba(255, 255, 255, 0.493);
+    
+}
