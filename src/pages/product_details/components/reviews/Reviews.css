@@ -1,3 +1,6 @@
+#reviews-section {
+    grid-area: reviews;
+}
 #reviews-section h3{
     margin: 0.5rem 0rem;
 }
@@ -5,6 +8,9 @@
     display: flex;
     height: 30px;
     align-items:baseline;
+}
+#reviews-section .ratings{
+    font-size: 0.9rem;
 }
 #reviews-section .profile-section .image-section{
     height: 100%;
@@ -19,15 +25,17 @@
     font-size: 0.9rem;
 }
 #reviews-section .comment-box{
-    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
     border-bottom: 1px solid var(--primary-border);
-    padding-left: 0px;
+    padding: 0.5rem 0rem;
 }
-#reviews-section .comment-box p{
-    margin: 0.4rem 0rem;
-    font-size: 0.9rem;
-}
+
 #reviews-section #review-date{
     color:gray;
+    font-size: 0.8rem;
+}
+#reviews-section #user-review{
     font-size: 0.9rem;
 }

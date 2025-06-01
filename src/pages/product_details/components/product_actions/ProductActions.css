@@ -1,33 +1,51 @@
 #check-out-section {
-  margin: 1rem;
+  grid-area: product-action;
   outline: 1px solid var(--primary-border);
   border-radius: 10px;
+  display: flex;
+  width: 240px;
+  flex-direction: column;
+  gap: 0.8rem;
+  position: relative;
+  overflow: hidden;
   padding: 1rem;
   height: fit-content;
-  flex: 0.4;
+}
+
+#check-out-section > section{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  position: relative;
-  overflow: hidden;
 }
 #check-out-section button {
-  padding: 0.5rem;
-  border-radius: 1rem;
+  padding: 0.6rem;
+  border-radius: 1.25rem;
+  font-size: 0.8rem;
 }
+#check-out-section button#add-to-wishlist{
+  background-color: transparent;
+  border: 1px solid rgb(122, 122, 122);
+  border-radius: 10px;
+  &:hover{
+    background-color: whitesmoke;
+  }
+}
+
 #artist-info{
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 0.9rem;
+  
 }
 #artist-info #artist-name{
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--secondary-color);
 }
 #in-stock-text{
     color: green;
     font-size: 0.9rem;
-    font-weight: bold;
+   
 }
 #free-delivery-text{
   font-size: 0.9rem;
@@ -40,8 +58,15 @@
 }
 #buy-now{
     background-color: #ffa41c;
+    &:hover{
+      background-color: rgb(255, 143, 39);
+    }
 }
-#product-details-page #add-to-wishlist{
-    background-color: transparent;
-    border: 1px solid gray;
+
+@media screen and (max-width:640px)
+{
+  #check-out-section {
+    width: auto;
 }
+}
+

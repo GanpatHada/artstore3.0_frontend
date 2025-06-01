@@ -1,4 +1,28 @@
-#my-orders-box p{
+#my-orders-box > p{
     font-size: 0.9rem;
     color: gray;
+}
+
+#orders-content{
+    min-height: 200px;
+    position: relative;
+    padding: 10px 0px;
+}
+.order{
+    height: 80px;
+    background-color: white;
+}
+.order header ul{
+    display: flex;
+    gap: 20px;
+    background-color: rgb(240, 240, 240);
+    padding: 10px;
+}
+.order header ul li > h2{
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+.order header ul li > p{
+    color: gray;
+    font-size: 0.8rem;
 }

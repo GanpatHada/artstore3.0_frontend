@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SpinLoader from "../../../../components/spin-loader/SpinLoader";
 import { useUser } from "../../../../hooks/useUser";
+import StarsCreator from "../../../../components/stars_creator/StarsCreator";
 const Product = ({
   productData: {
     _id,
@@ -17,7 +18,9 @@ const Product = ({
     discount,
     category,
     actualPrice,
-    tags
+    tags,
+    averageRatings,
+    reviews
   },
 }) => {
   const [waiting, setWaiting] = useState(false);
@@ -61,7 +64,7 @@ const Product = ({
 
   
   const isAvailableInCart = (productId) => {
-    return user?.cart.includes(productId);
+    return user?.cart.find((product=>product.product===productId));
   };
 
   const isAvailableInWishlist=(productId)=>{
@@ -75,10 +78,16 @@ const Product = ({
         <img src={productImages[0]} alt="N/A" />
       </section>
       <section className="product-info-section">
-        <h4>{title.length > 20 ? title.slice(0, 20).concat(" ...") : title}</h4>
+        <div>
+          <h4>{title}</h4>
         <strong className="product-category">{category}</strong>
+        </div>
+        <div className="ratings">
+          <StarsCreator starsCount={averageRatings}/>
+          <span>({reviews.length})</span>
+        </div>
        {tags.length>0&&<div className="tag">{tags[0]}</div>}
-        <h3 id="price">{price}</h3>
+        <h3 id="price">{price.toLocaleString()}</h3>
         {discount > 0 && (
           <span className="mrp">
             M.R.P : <strike>{actualPrice}</strike> ({`${discount}% off`})

@@ -1,4 +1,3 @@
-import { initDB } from "../configs/indexedDb";
 import { BACKEND_BASE_URL } from "../Constant";
 
 const getAccessToken = (user) => user.accessToken;
@@ -16,6 +15,7 @@ export async function getUser() {
       }
     );
     const result = await response.json();
+    console.log(result)
     if (!result.success) throw new Error(result.message);
     return result.data;
   } catch (error) {
@@ -27,6 +27,7 @@ export async function fetchAddToCart(user, productId) {
   try {
     let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: getAccessToken(user),
@@ -39,6 +40,44 @@ export async function fetchAddToCart(user, productId) {
     throw error;
   }
 }
+export async function fetchIncrementCartItem(user, productId) {
+  try {
+    let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}/increment`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getAccessToken(user),
+      },
+    });
+    response = await response.json();
+    console.log(response)
+    if (!response.success) throw new Error(response.message);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export async function fetchDecrementCartItem(user, productId) {
+  try {
+    let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}/decrement`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getAccessToken(user),
+      },
+    });
+    response = await response.json();
+    if (!response.success) throw new Error(response.message);
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export async function fetchAddToWishlist(user, productId) {
   try {
@@ -46,6 +85,7 @@ export async function fetchAddToWishlist(user, productId) {
       `${BACKEND_BASE_URL}/user/wishlist/${productId}`,
       {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: getAccessToken(user),
@@ -64,6 +104,7 @@ export async function fetchDeleteFromCart(user, productId) {
   try {
     let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}`, {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: getAccessToken(user),
@@ -82,6 +123,7 @@ export async function fetchDeleteFromWishlist(user, productId) {
       `${BACKEND_BASE_URL}/user/wishlist/${productId}`,
       {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: getAccessToken(user),
@@ -102,6 +144,7 @@ export async function fetchDeleteAddress(user, addressId) {
       `${BACKEND_BASE_URL}/user/address/${addressId}`,
       {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: getAccessToken(user),

@@ -6,6 +6,10 @@
   --primary-color: #c7511f;
   --secondary-color: #007185;
 }
+html {
+  scroll-behavior: smooth;
+
+}
 #root {
   height: 100%;
 }

@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../../../../hooks/useCheckout";
 import "./Payment.css";
 import { fetchCreateOrder, fetchVerifyPayment } from "../../../../services/OrderService";
+import {useUser} from '../../../../hooks/useUser'
 
 
 const Payment = () => {
   const navigate = useNavigate();
+  const {user}=useUser()
   const { amount,products,selectedAddress } = useCheckout();
+  console.log(products)
   const [loading, setLoading] = useState(false);
   const makePayment = async (amount) => {
     setLoading(true);
@@ -27,6 +30,14 @@ const Payment = () => {
     }
   };
 
+  const getDeliveryCharge=()=>{
+      const totalPrice=products.reduce((acc,cur)=>{
+        acc=acc+cur.price;
+        return acc;
+      },0)
+      return totalPrice<500?50:0
+  }
+
   const handleRazorpayScreen = async (amount, orderId) => {
     try {
       const response = await loadRazorpayScript();
@@ -39,7 +50,7 @@ const Payment = () => {
       order_id: orderId,
       amount: amount,
       handler:async function (response) {
-        console.log(await fetchVerifyPayment(response,selectedAddress,products))
+        await fetchVerifyPayment(user,response,selectedAddress,products,amount,getDeliveryCharge())
 
       },
     };

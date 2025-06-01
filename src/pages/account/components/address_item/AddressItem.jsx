@@ -28,7 +28,7 @@ const AddressItem = ({ address, index }) => {
   const handleDeleteAddress = async () => {
     setLoading(true);
     try {
-      const deletedAddress = await fetchDeleteAddress(_id);
+      const deletedAddress = await fetchDeleteAddress(user,_id);
       deleteAddress(deletedAddress);
     } catch (error) {
       toast.error(error.message || "Unable to delete address");

@@ -1,53 +1,227 @@
-#info-section-wrapper{
-    display: flex;
-    gap: 1rem;
-   
+#product-info {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr 0.5fr;
+  gap: 20px;
+  grid-template-rows: max-content auto 1fr 1fr;
+  grid-template-areas:
+    "product-image product-headline product-action"
+    "product-image product-details product-action"
+    "ratings reviews reviews"
+    "post-review reviews reviews";
 }
-#info-section-wrapper hr{
-    background-color: rgb(223, 223, 223);
-    height: 0.05rem;
-    border: none;
+
+#product-headline {
+  grid-area: product-headline;
+  border-bottom: 1px solid lightgray;
 }
-#info-section-wrapper #info-section{
-    flex: 1;
+
+#product-headline #title {
+  font-size: 1.5rem;
+  font-weight: normal;
 }
-#info-section-wrapper #actual-price{
-    color: rgb(146, 146, 146);
-    font-size: 0.9rem;
+#product-headline #artist-name {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--secondary-color);
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    color: rgb(0, 63, 105);
+  }
 }
-#info-section-wrapper #discount{
-    color: red;
-    font-size: 1.3rem;
+#product-headline #reviews {
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
-#info-section-wrapper #info-section #category{
-    font-size: 0.8rem;
+#product-headline #reviews #average-ratings {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  &:hover {
+    border: 1px solid rgb(182, 182, 182);
+  }
 }
-#info-section-wrapper .tag{
-    background-color: rgb(187, 0, 0);
-    color: white;
-    font-weight: bold;
-    font-size: 0.9rem;
-    width: fit-content;
-    padding: 0.4rem 0.6rem;
+#product-headline #reviews #reviews-count {
+  color: var(--secondary-color);
+  font-size: 0.8rem;
+  margin-left: 10px;
 }
-#info-section-wrapper #info-section >section{
-    display: flex;
+
+#ratings-popup {
+  position: absolute;
+  padding: 10px;
+  width: 340px;
+  background-color: white;
+  border: 1px solid rgb(172, 172, 172);
+  z-index: 5;
+  top: 2rem;
+  left: 0px;
+  border-radius: 10px;
+  box-shadow: 0 0 3px 2px rgba(209, 209, 209, 0.74);
 }
-#info-section-wrapper #info-section >section span:last-child{
-    margin-left: 1rem;
+#key-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-#artist-ratings{
-    display: flex;
-    
+#key-details h4 {
+  margin: 10px 0px;
 }
-#artist-ratings span:last-child{
-    color: var(--secondary-color);
-    margin-left: 1rem;
-    font-size: 0.9rem;
+#key-details p {
+  font-size: 0.9rem;
+  color: rgb(78, 78, 78);
 }
-@media screen and (max-width:576px) {
-    #info-section-wrapper{
-        flex-direction: column;
-    }
-    
+
+#key-details p strong {
+  font-weight: 500;
+  color: black;
+}
+
+#product-details {
+  width: 100%;
+  grid-area: product-details;
+  overflow: hidden;
+}
+#product-details .tag {
+  background-color: rgb(209, 0, 0);
+  width: fit-content;
+  padding: 5px 8px;
+  font-size: 0.8rem;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+}
+#product-details #discount {
+  color: rgb(228, 0, 0);
+  font-size: 1.25rem;
+}
+#product-details #price-section {
+  padding: 16px 0px;
+}
+#product-details #price-section > div {
+  display: flex;
+  align-items: first baseline;
+  gap: 10px;
+}
+#product-details #price {
+  color: black;
+  font-size: 1.6rem;
+  font-weight: normal;
+}
+#product-details #price::before {
+  content: "\20B9";
+  font-size: 0.9rem;
+  position: relative;
+  top: -0.35rem;
+}
+#product-details #discount::before {
+  content: "-";
+}
+
+#product-details #actual-price {
+  font-size: 0.8rem;
+  color: gray;
+}
+#product-details #actual-price span::before {
+  content: "\20B9";
+}
+
+#offers-section header {
+  display: flex;
+  align-items: center;
+  padding: 10px 0px;
+  gap: 5px;
+}
+
+#offers-section header span {
+  font-size: 2rem;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+}
+#offers-section h2 {
+  font-size: 18px;
+}
+
+#bank-offers {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+#bank-offers header {
+  display: flex;
+}
+
+#bank-offers-wrapper {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px;
+  gap: 10px;
+}
+
+.bank-offer {
+  width: 180px;
+  min-height: 120px;
+  box-shadow: 0 0 3px 2px rgba(202, 202, 202, 0.466);
+  flex-shrink: 0;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bank-offer p {
+  font-size: 12px;
+  color: rgb(94, 94, 94);
+}
+
+#bank-offers button {
+  position: absolute;
+  height: 80px;
+  width: 30px;
+  font-size: 20px;
+  border: 1px solid gray;
+  top: 20px;
+  background-color: white;
+  &:hover {
+    background-color: whitesmoke;
+  }
+}
+
+#slide-left-button {
+  left: 0px;
+}
+
+#slide-right-button {
+  right: 0px;
+}
+
+#bank-offers-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  #product-info {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    grid-template-rows:auto;
+    grid-template-areas:
+      "product-image"
+      "product-headline"
+      " product-details"
+      "product-action"
+      "ratings"
+      "post-review "
+      "reviews";
+  }
 }

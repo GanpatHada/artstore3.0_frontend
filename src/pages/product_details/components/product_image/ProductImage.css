@@ -1,9 +1,28 @@
 #product-details-page #image-section{
-    background-color: whitesmoke;
-    overflow: hidden;
     display: flex;
-    align-items: stretch;
-    flex: 1;
-    padding: 1rem;
-    
+    flex:0.5;
+    grid-area: product-image;
+    display: flex;
+    align-items: start;   
+}
+#product-details-page #product-image-wrapper{
+    width: 100%;
+    position: sticky;
+    top: 10px;
+}
+
+@media screen and (max-width:768px){
+#product-details-page #product-image-wrapper{
+    width: 50%;
+    margin: auto;
+   
+}
+}
+@media screen and (max-width:640px)
+{
+    #product-details-page #product-image-wrapper{
+    width: 100%;
+    margin: auto;
+   
+}
 }

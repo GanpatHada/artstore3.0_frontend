@@ -6,6 +6,7 @@ const StarsCreator = ({starsCount}) => {
   const starArray=makeStarArray(starsCount)
   return(
     <div id="stars-pic">
+      <span>{starsCount}</span>
       {starArray.map((star, index) => {
         if (star === "FULL_STAR") return <IoMdStar key={index}/>;
         if (star === "HALF_STAR") return <IoMdStarHalf key={index} />;

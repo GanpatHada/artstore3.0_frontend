@@ -1,18 +1,36 @@
 .cart-item-loader {
   flex: 1;
-  background-color: rgb(216, 216, 216);
-  animation: skeleton-animation 1s infinite ease-in-out;
+  height: 200px;
+  margin: 10px;
+  margin-inline: 0px;
+  background: linear-gradient(
+    90deg,
+    #e0e0e0 25%,
+    #f5f5f5 50%,
+    #e0e0e0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  position: relative;
+  
 }
-@keyframes skeleton-animation {
+
+.cart-item-loader::after{
+  content: "";
+  height: 100%;
+  width: 30%;
+  background-color: rgba(0, 0, 0, 0.123);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  
+}
+
+@keyframes shimmer {
   0% {
-    opacity: 0.2;
+    background-position: -200% 0;
   }
-
-  50% {
-    opacity: 0.5;
-  }
-
   100% {
-    opacity: 0.2;
+    background-position: 200% 0;
   }
 }

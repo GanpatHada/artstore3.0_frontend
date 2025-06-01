@@ -1,8 +1,8 @@
 #summary-box{
-    min-height: 500px;
     display: flex;
     flex-direction: column;
-    grid-row: span 2
+    grid-row: span 2;
+    height: fit-content;
 }
 #summary-box h2{
     font-size: 1.2rem;
@@ -11,8 +11,18 @@
     padding: 1rem 0rem;
 }
 #summary-box-content{
-    flex: 1;
-    background-color: whitesmoke;
+    background-color: white;
     border: 1px solid var(--primary-border);
     border-radius: 0.5rem;
+    padding: 10px;
+    font-size: 0.8rem;
+}
+#summary-box-content > * >span::before{
+    content: "\20B9";
+}
+
+@media screen and (max-width:768px) {
+   #summary-box{
+    order: -1;
+}
 }

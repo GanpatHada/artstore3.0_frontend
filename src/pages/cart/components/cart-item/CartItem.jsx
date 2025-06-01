@@ -3,16 +3,25 @@ import "./CartItem.css";
 import { calculatePrice } from "../../../../utils/ProductHelper";
 import { fetchProductDetails } from "../../../../services/ProductService";
 import { toast } from "react-toastify";
-import { fetchDeleteFromCart } from "../../../../services/UserService";
+import {
+  fetchDecrementCartItem,
+  fetchDeleteFromCart,
+  fetchIncrementCartItem,
+} from "../../../../services/UserService";
 import DotLoader from "../../../../components/dot-loader/DotLoader";
 import CartItemLoader from "../cart_item_loader/CartItemLoader";
 import { useUser } from "../../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import SpinLoader from "../../../../components/spin-loader/SpinLoader";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { IoMdAdd } from "react-icons/io";
+import { AiOutlineMinus } from "react-icons/ai";
 
-const CartItem = ({ productId, setSelectedCartItems, selectedCartItems }) => {
+const CartItem = ({ cartProduct, setSelectedCartItems, selectedCartItems }) => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-  const { user,removeFromCart,} = useUser();
+  const { user, removeFromCart, incrementCartItem, decrementCartItem } =
+    useUser();
   const [loading, setLoading] = useState({
     type: null,
     status: true,
@@ -32,13 +41,20 @@ const CartItem = ({ productId, setSelectedCartItems, selectedCartItems }) => {
     setLoading({ ...loading, type: "DELETE", status: false });
 
   const isItemSelected = () => {
-    return selectedCartItems.some((item) => item.productId === productId);
+    return selectedCartItems.some(
+      (item) => item.productId === cartProduct.product
+    );
   };
+
+  const startQunatityLoading = () =>
+    setLoading({ ...loading, type: "QUANTITY", status: true });
+  const stopQuantitylaoding = () =>
+    setLoading({ ...loading, type: "QUANTITY", status: false });
 
   const handleDeleteFromCart = async (productId) => {
     try {
       startDeleteLoading();
-      const deletedItem = await fetchDeleteFromCart(user,productId);
+      const deletedItem = await fetchDeleteFromCart(user, productId);
       removeFromCart(deletedItem);
       if (isItemSelected(deletedItem))
         setSelectedCartItems(
@@ -54,21 +70,60 @@ const CartItem = ({ productId, setSelectedCartItems, selectedCartItems }) => {
   const handleItemSelected = () => {
     if (isItemSelected())
       return setSelectedCartItems(
-        selectedCartItems.filter((item) => item.productId !== productId)
+        selectedCartItems.filter(
+          (item) => item.productId!== cartProduct.product
+        )
       );
-    const itemObject = {
-      productId,
-      title: product.title,
-      price: calculatePrice(product.discount, product.price),
-    };
-    setSelectedCartItems([...selectedCartItems, itemObject]);
+    const selectedProduct={
+      productId:cartProduct.product,
+      quantity:cartProduct.quantity,
+      price:product.price
+    }  
+    setSelectedCartItems([...selectedCartItems,selectedProduct]);
+  };
+
+  const updateCartItemQuantity = async (type, productId) => {
+     let newQuantity = cartProduct.quantity
+    startQunatityLoading();
+    try {
+      switch (type) {
+        case "INCREMENT": {
+          await fetchIncrementCartItem(user, productId);
+          incrementCartItem(productId);
+          newQuantity=newQuantity+1;
+          break;
+        }
+        case "DECREMENT": {
+          if (cartProduct.quantity > 1) {
+            await fetchDecrementCartItem(user, productId);
+            decrementCartItem(productId);
+            newQuantity=newQuantity-1
+          } else {
+            await handleDeleteFromCart(productId)
+          }
+          break;
+        }
+        default:
+          return 0;
+      }
+      setSelectedCartItems(prev=>prev.map(p=>{
+        if(p.productId===productId)
+          return {...p,quantity:newQuantity}
+        else
+          return {...p}
+      }))
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      stopQuantitylaoding();
+    }
   };
 
   useEffect(() => {
     const fetchCartProduct = async () => {
       try {
         startProductLoading();
-        const productDetails = await fetchProductDetails(productId);
+        const productDetails = await fetchProductDetails(cartProduct.product);
         setProduct(productDetails);
       } catch (error) {
         toast.error(
@@ -90,53 +145,90 @@ const CartItem = ({ productId, setSelectedCartItems, selectedCartItems }) => {
   else
     return (
       <div className="cart-item">
-        {product && <><section className="cart-item-check-section all-centered">
-          <input
-            type="checkbox"
-            checked={isItemSelected(productId)}
-            onChange={handleItemSelected}
-          />
-        </section>
-        <section className="cart-item-image-section">
-          <img src={product.productImages[0]} alt="N/A" />
-        </section>
-        <section className="cart-item-info-section">
-          <h3
-            className="product-title"
-            onClick={() => navigate(`/products/${productId}`)}
-          >
-            {product.title}
-          </h3>
-          <span className="product-artist">
-            <strong>Artist : </strong>
-            {product.artist.fullName}
-          </span>
-          <span className="product-mrp">
-            <strong>M.R.P. : </strong>
-            <strike>{product.price}</strike>
-          </span>
-          <span className="product-discount">
-            Flat <strong>{product.discount}%</strong> off
-          </span>
-          <section className="cart-button-section">
-            <button
-              className="delete-from-cart"
-              disabled={loading.type === "DELETE" && loading.status}
-              onClick={() => handleDeleteFromCart(product._id)}
-            >
-              {loading.type === "DELETE" && loading.status ? (
-                <span>
-                  Deleting <DotLoader />
-                </span>
-              ) : (
-                <span>Delete</span>
-              )}
-            </button>
-          </section>
-        </section>
-        <section className="cart-item-price-section">
-          <strong>{product.price.toLocaleString("en-In")}</strong>
-        </section></>}
+        {product && (
+          <>
+            <section className="cart-item-check-section all-centered">
+              <input
+                type="checkbox"
+                checked={isItemSelected(cartProduct.product)}
+                onChange={handleItemSelected}
+              />
+            </section>
+            <section className="cart-item-image-section">
+              <img src={product.productImages[0]} alt="N/A" />
+            </section>
+            <section className="cart-item-info-section">
+              <h3
+                className="product-title"
+                onClick={() => navigate(`/products/${cartProduct.product}`)}
+              >
+                {product.title}
+              </h3>
+              <span className="product-artist">
+                <strong>Artist : </strong>
+                {product.artist.fullName}
+              </span>
+              <span className="product-mrp">
+                <strong>M.R.P. : </strong>
+                <strike>{product.price}</strike>
+              </span>
+              <span className="product-discount">
+                Flat <strong>{product.discount}%</strong> off
+              </span>
+              <section className="cart-button-section">
+                <div className="quantity-selector">
+                  {loading.type === "QUANTITY" && loading.status ? (
+                    <SpinLoader />
+                  ) : (
+                    <>
+                      <button
+                        onClick={() =>
+                          updateCartItemQuantity(
+                            "DECREMENT",
+                            cartProduct.product
+                          )
+                        }
+                      >
+                        {cartProduct.quantity > 1 ? (
+                          <AiOutlineMinus />
+                        ) : (
+                          <IoTrashBinOutline />
+                        )}
+                      </button>
+                      {cartProduct.quantity}
+                      <button
+                        onClick={() =>
+                          updateCartItemQuantity(
+                            "INCREMENT",
+                            cartProduct.product
+                          )
+                        }
+                      >
+                        <IoMdAdd />
+                      </button>
+                    </>
+                  )}
+                </div>
+                <button
+                  className="delete-from-cart"
+                  disabled={loading.type === "DELETE" && loading.status}
+                  onClick={() => handleDeleteFromCart(cartProduct.product)}
+                >
+                  {loading.type === "DELETE" && loading.status ? (
+                    <span>
+                      Deleting <DotLoader />
+                    </span>
+                  ) : (
+                    <span>Delete</span>
+                  )}
+                </button>
+              </section>
+            </section>
+            <section className="cart-item-price-section">
+              <strong>{product.price.toLocaleString("en-In")}</strong>
+            </section>
+          </>
+        )}
       </div>
     );
 };

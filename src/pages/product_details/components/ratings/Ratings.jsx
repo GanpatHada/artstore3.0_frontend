@@ -1,86 +1,67 @@
-import React from "react";
+
 import "./Ratings.css";
 import StarsCreator from "../../../../components/stars_creator/StarsCreator";
-import {getRatingPercentage,getRatingsFrequency} from "../../../../utils/ProductDetailsHelper";
-const Ratings = ({reviews,averageRatings}) => {
+import {
+  getRatingPercentage,
+  getRatingsFrequency,
+} from "../../../../utils/ProductDetailsHelper";
+import { useProductDetails } from "../../../../hooks/useProductDetails";
+
+const ratingMap = [
+  { number: 5, numberName: "FIVE" },
+  { number: 4, numberName: "FOUR" },
+  { number: 3, numberName: "THREE" },
+  { number: 2, numberName: "TWO" },
+  { number: 1, numberName: "ONE" }
+]
+
+const RatingCount = ({ ratingInName, ratingInNumber }) => {
+  const {
+    productDetails: { reviews },
+  } = useProductDetails();
   const ratingsFrequency = getRatingsFrequency(reviews);
   const handleRatingPercentage = (percentType) => {
-    return getRatingPercentage(
-      percentType,
-      ratingsFrequency,
-      reviews.length
-    );
+    return getRatingPercentage(percentType, ratingsFrequency, reviews.length);
   };
+  return (
+    <>
+      <span>{ratingInNumber} star</span>
+      <div className="rate-graph">
+        <div
+          className="rate-graph-progress"
+          style={{
+            width: `${handleRatingPercentage(ratingInName)}%`,
+          }}
+        ></div>
+      </div>
+      <span>{handleRatingPercentage(ratingInName)}%</span>
+    </>
+  );
+};
+
+const Ratings = () => {
+  const {
+    productDetails: { averageRatings, reviews },
+  } = useProductDetails();
 
   return (
     <section id="ratings-section">
-      <h3>Customer Ratings on Artist</h3>
+      <h3>Ratings</h3>
       <span id="ratings-pic">
         <StarsCreator starsCount={averageRatings} />
         <i id="ratings-count">{averageRatings} out of 5</i>
       </span>
       <span id="global-ratings">{reviews.length} global ratings</span>
       <div id="ratings-graph">
-        <div>
-          <span>5 star</span>
-          <div className="rate-graph">
-            <div
-              className="rate-graph-progress"
-              style={{
-                width: `${handleRatingPercentage("FIVE")}%`,
-              }}
-            ></div>
-          </div>
-          <span>{handleRatingPercentage("FIVE")}%</span>
-        </div>
-        <div>
-          <span>4 star</span>
-          <div className="rate-graph">
-            <div
-              className="rate-graph-progress"
-              style={{
-                width: `${handleRatingPercentage("FOUR")}%`,
-              }}
-            ></div>
-          </div>
-          <span>{handleRatingPercentage("FOUR")}%</span>
-        </div>
-        <div>
-          <span>3 star</span>
-          <div className="rate-graph">
-            <div
-              className="rate-graph-progress"
-              style={{
-                width: `${handleRatingPercentage("THREE")}%`,
-              }}
-            ></div>
-          </div>
-          <span>{handleRatingPercentage("THREE")}%</span>
-        </div>
-        <div>
-          <span>2 star</span>
-          <div className="rate-graph">
-            <div
-              className="rate-graph-progress"
-              style={{
-                width: `${handleRatingPercentage("TWO")}%`,
-              }}
-            ></div>
-          </div>
-          <span>{handleRatingPercentage("TWO")}%</span>
-        </div>
-        <div>
-          <span>1 star</span>
-          <div className="rate-graph">
-            <div
-              className="rate-graph-progress"
-              style={{
-                width: `${handleRatingPercentage("ONE")}%`,
-              }}
-            ></div>
-          </div>
-          <span>{handleRatingPercentage("ONE")}%</span>
-        </div>
+        {ratingMap.map((rating, index) => {
+          return (
+            <RatingCount
+              key={index}
+              ratingInNumber={rating.number}
+              ratingInName={rating.numberName}
+            />
+          );
+        })}
       </div>
     </section>
   );

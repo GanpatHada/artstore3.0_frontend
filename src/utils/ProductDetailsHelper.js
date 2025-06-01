@@ -1,11 +1,11 @@
 export function getRatingsFrequency(reviews) {
   const ratingsFrequency = reviews.reduce(
     (acc, cur) => {
-      if (cur.userRatings === 1) return { ...acc, ONE: acc.ONE + 1 };
-      if (cur.userRatings === 2) return { ...acc, TWO: acc.TWO + 1 };
-      if (cur.userRatings === 3) return { ...acc, THREE: acc.THREE + 1 };
-      if (cur.userRatings === 4) return { ...acc, FOUR: acc.FOUR + 1 };
-      if (cur.userRatings === 5) return { ...acc, FIVE: acc.FIVE + 1 };
+      if (cur.rating === 1) return { ...acc, ONE: acc.ONE + 1 };
+      if (cur.rating === 2) return { ...acc, TWO: acc.TWO + 1 };
+      if (cur.rating === 3) return { ...acc, THREE: acc.THREE + 1 };
+      if (cur.rating === 4) return { ...acc, FOUR: acc.FOUR + 1 };
+      if (cur.rating === 5) return { ...acc, FIVE: acc.FIVE + 1 };
       return { ...acc };
     },
     { ONE: 0, TWO: 0, THREE: 0, FOUR: 0, FIVE: 0 }
@@ -15,5 +15,5 @@ export function getRatingsFrequency(reviews) {
 
 
 export function getRatingPercentage(percentCountInWords,ratingsFrequency,totalRatings){
-   return (ratingsFrequency[percentCountInWords]/totalRatings)*100
+   return Math.round((ratingsFrequency[percentCountInWords]/totalRatings)*100)
 }

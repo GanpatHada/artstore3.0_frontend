@@ -5,6 +5,8 @@ export const initialCheckoutState = {
   products:[]
 };
 
+const totalAmount=(amount)=>amount<500?amount+50:amount;
+
 export const checkoutReducer = (state, action) => {
   switch (action.type) {
     case "SET_ADDRESS":
@@ -14,7 +16,7 @@ export const checkoutReducer = (state, action) => {
     case "SET_PRODUCTS":
         return {...state,products:action.payload}    
     case "SET_AMOUNT":
-      return { ...state, amount: action.payload };
+      return { ...state, amount: totalAmount(action.payload) };
     default : return {...state}  
   }
 };

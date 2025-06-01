@@ -6,11 +6,12 @@
 #product-details-wrapper{
     max-width: 1500px;
     margin: auto;
-    padding: 1rem;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     position: relative;
     flex: 1;
+    height: 100%;
 }
 #product-details-page #info-section{
     flex: 3;

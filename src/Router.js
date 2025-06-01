@@ -18,6 +18,7 @@ import PageNotFound from "./pages/page-not-found/PageNotFound";
 import MyProfile from "./pages/account/components/my-profile/MyProfile";
 import MyOrders from "./pages/account/components/my-orders/MyOrders";
 import MyAddresses from "./pages/account/components/my-addresses/MyAddresses";
+import ProductDetailsProvider from "./context/ProductDetailsContext";
 
 const router = createBrowserRouter([
   {
@@ -28,11 +29,11 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <Signup />,
   },
-  
+
   {
     path: "/",
     element: <App />,
-    errorElement:<Error/>,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
@@ -43,12 +44,16 @@ const router = createBrowserRouter([
         element: <SellerHome />,
       },
       {
-        path:"/products",
-        element:<Products />
+        path: "/products",
+        element: <Products />,
       },
       {
         path: "/products/:productId",
-        element: <ProductDetails />,
+        element: (
+          <ProductDetailsProvider>
+            <ProductDetails />
+          </ProductDetailsProvider>
+        ),
       },
       {
         path: "/cart",
@@ -120,14 +125,12 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      
     ],
   },
   {
-    path: "*", 
+    path: "*",
     element: <PageNotFound />,
   },
-  
 ]);
 
 export default router;

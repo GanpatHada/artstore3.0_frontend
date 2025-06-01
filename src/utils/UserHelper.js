@@ -8,7 +8,8 @@ export function productInCart(productId,cart){
 }
 
 export function cartSubTotal(selectedCartItems){
+    console.log(selectedCartItems)
     return selectedCartItems.reduce((acc, cur) => {
-        return (acc += cur.price);
+        return (acc += cur.price*cur.quantity);
       }, 0);
 }

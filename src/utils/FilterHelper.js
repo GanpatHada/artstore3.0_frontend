@@ -10,6 +10,8 @@ export function filteredProducts(products,filters) {
 
   let filteredProducts = products;
 
+  console.log(products)
+
   filteredProducts = filteredProducts.filter(
     (product) =>
       calculatePrice(product.discount, product.price) >=
@@ -24,7 +26,7 @@ export function filteredProducts(products,filters) {
     );
   if (filters.ratings)
     filteredProducts = filteredProducts.filter(
-      (product) => calculateAverageRating(product.ratings) >= filters.ratings
+      (product) => product.averageRatings >= filters.ratings
     );
   if (filters.sortBy) {
     if (filters.sortBy === "MAXIMUM_DISCOUNT")
@@ -35,15 +37,13 @@ export function filteredProducts(products,filters) {
     if (filters.sortBy === "TOP_RATINGS")
       filteredProducts = [...filteredProducts].sort(
         (product1, product2) =>
-          calculateAverageRating(product2.ratings) -
-          calculateAverageRating(product1.ratings)
+         (product2.averageRatings) - (product1.averageRatings)
       );
 
     if (filters.sortBy === "PRICE_LOW_TO_HIGH")
       filteredProducts = [...filteredProducts].sort(
         (product1, product2) =>
-          calculatePrice(product1.discount, product1.price) -
-          calculatePrice(product2.discount, product2.price)
+          (product1.averageRatings) - (product2.averageRatings)
       );
 
     if (filters.sortBy === "PRICE_HIGH_TO_LOW")

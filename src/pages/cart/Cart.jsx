@@ -26,8 +26,8 @@ const CartContent = ({ selectedCartItems, setSelectedCartItems }) => {
       {cart.map((cartItem) => {
         return (
           <CartItem
-            key={cartItem}
-            productId={cartItem}
+            key={cartItem.product}
+            cartProduct={cartItem}
             setSelectedCartItems={setSelectedCartItems}
             selectedCartItems={selectedCartItems}
           />
@@ -53,11 +53,10 @@ const FreeDeliveryMessage = () => {
 
 const CheckOutBox = ({ selectedCartItems }) => {
   const navigate = useNavigate();
-  const {setAmount,setProducts}=useCheckout()
+  const {setAmount,setProducts}=useCheckout();
   const handleProceedToBuy=()=>{
      setAmount(cartSubTotal(selectedCartItems));
-     setProducts(selectedCartItems.map(item=>item.productId));
-
+     setProducts(selectedCartItems)
      navigate("/checkout")
   }
 
@@ -69,7 +68,10 @@ const CheckOutBox = ({ selectedCartItems }) => {
           <p>No items selected</p>
         ) : (
           <p>
-            Subtotal ({selectedCartItems.length} item
+            Subtotal ({selectedCartItems.reduce((acc,cur)=>{
+              acc=acc+cur.quantity
+              return acc;
+            },0)} item
             {selectedCartItems.length > 1 && "s"}) : &#8377;
             <strong>{cartSubTotal(selectedCartItems)}</strong>/-
           </p>
@@ -83,9 +85,7 @@ const CheckOutBox = ({ selectedCartItems }) => {
           Proceed to Buy
         </button>
       </section>
-      <section id="recommend-section">
-        <h3>Recommendations for all products</h3>
-      </section>
+     
     </section>
   );
 };
@@ -103,6 +103,9 @@ const Cart = () => {
         />
       </section>
       <CheckOutBox selectedCartItems={selectedCartItems} />
+       <section id="recommend-section">
+        <h3>Recommendations for all products</h3>
+      </section>
     </div>
   );
 };

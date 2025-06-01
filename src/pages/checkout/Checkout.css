@@ -31,3 +31,11 @@
 #checkout-page-wrapper >div:last-child{
     flex: 1;
 }
+
+@media screen and (max-width:768px) {
+    #checkout-page-wrapper >div{
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    gap: 1rem;
+}
+}
