@@ -6,11 +6,19 @@ import {
   setCategoryFilterAction,
   setMinimumRatingFilterAction,
   setPriceRangeFilterAction,
+  setSearchTextAction,
+  setSearchTypeAction,
   setSortByFilterAction,
 } from "../actions/filtersAction";
 
 export const useFilters = () => {
   const { state, dispatch } = useContext(FilterContext);
+
+  const setSearchType=(searchType)=>
+    setSearchTypeAction(dispatch,searchType)
+
+  const setSearchText=(searchText)=>
+    setSearchTextAction(dispatch,searchText)
 
   const setCategoryFilter = (category) =>
     setCategoryFilterAction(dispatch, category);
@@ -36,6 +44,8 @@ export const useFilters = () => {
     setCategoryFilter,
     setMinimumRatingFilter,
     setPriceRangeFilter,
-    clearFilter
+    clearFilter,
+    setSearchText,
+    setSearchType
   };
 };

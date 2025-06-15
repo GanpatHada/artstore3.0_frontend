@@ -1,0 +1,111 @@
+#profile-dialog{
+    min-height: 300px;
+    width: 90%;
+    max-width: 350px;
+    background-color: white;
+    border-radius: 0.8rem;
+    box-shadow: 0 0 8px 5px rgba(82, 82, 82, 0.486);
+    animation:  dialog-animation 0.2s ease-in forwards;
+    position: relative;
+    opacity: 0.5;
+    overflow: hidden;
+    
+}
+@keyframes dialog-animation {
+    0%{
+        opacity: 0.5;
+        top: 20px;
+    }
+    100%{
+        opacity: 1;
+        top: 0px;
+    }
+}
+#profile-dialog header{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--primary-border);
+    padding: 1rem;
+}
+#profile-dialog main{
+    padding: 1rem;
+    
+}
+#profile-dialog #image-section{
+    border-bottom: 1px solid var(--primary-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#profile-dialog #image-section #image-wrapper{
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+    background-color: gray;
+    overflow: hidden;
+   
+}
+
+#profile-dialog #full-name{
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    margin: 1rem 0rem;
+    border-radius: 0.3rem;
+    outline-offset: 2px;
+    outline: 0px solid var(--secondary-color);
+    transition: outline 0.1s ease-in-out;
+    &:focus{
+        outline:3px solid var(--secondary-color);
+    }
+    
+}
+#profile-dialog #name-error{
+    color: #d50000;
+    font-size: 0.8rem;
+    position: relative;
+    top: -1rem;
+}
+#profile-dialog  #action{
+    display: flex;
+    justify-content: space-between;
+}
+
+#profile-dialog  #action button{
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+}
+#profile-dialog  #action #cancel{
+    background-color: transparent;
+}
+
+button#change-profile-photo{
+    color: var(--secondary-color);
+    font-weight: bold;
+    background-color: transparent;
+    margin: 0.5rem 0rem;
+    &:hover{
+        filter: brightness(0.7);
+    }
+}
+
+button#remove-button{
+    color: red;
+    background-color: transparent;
+    font-weight: bold;
+    &:hover{
+        color: darkred;
+    }
+    margin-left: 0.3rem;
+}
+button#remove-button::before{
+    content: "  |  ";
+    color: initial;
+}
+
+#profile-dialog header button{
+    background-color: transparent;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}

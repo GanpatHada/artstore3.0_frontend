@@ -34,6 +34,7 @@ const Login = () => {
 
 
   const handleLogin = async (e) => {
+    const from = location.state?.from?.pathname;
     e.preventDefault();
     const{email,password}=loginDetails;
     const{emailError,passwordError}=verifyLoginFields(email,password);
@@ -45,7 +46,11 @@ const Login = () => {
       if(!result.success)
         return toast.error(result.message);
       setUserDetails({...result.data.user,...result.data.accessToken})
-      navigate(targetLocation,{replace:true});
+      if (from && from !== "/signup") {
+        navigate(from, { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     } catch (error) {
       toast.error('Unable to process your request at the moment');
     }

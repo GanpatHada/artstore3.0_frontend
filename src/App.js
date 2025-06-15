@@ -34,7 +34,6 @@ function App() {
     <div className="App">
       <FilterProvider>
         <Navbar />
-        <SubNav />
         <CheckoutProvider>
         <main id="app-content">
           <Outlet />

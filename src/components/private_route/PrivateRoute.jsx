@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import UserContext from "../../context/userContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
   const {state: { user, userLoading },} = useContext(UserContext);
+  const location = useLocation();
   const isAuthenticated = user;
   let userDetailsFound = false;
   if (user)
@@ -15,7 +16,7 @@ const PrivateRoute = ({ children }) => {
       ) : (
         <>
           {!isAuthenticated ? (
-            <Navigate to="/login" />
+            <Navigate to="/login" state={{ from: location }} />
           ) : (
             <>{userDetailsFound ?children :<Navigate to="/"/>}</>
           )}

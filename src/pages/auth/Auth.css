@@ -98,11 +98,12 @@
 }
 .auth-page input:not([type=checkbox]){
     display: block;
-    padding: 0.4em;
+    padding: 0.5em;
     margin-top: 0.4em;
     width: 100%;
     border-radius: 0.2em;
     transition: all 0.1s ease-in;
+    font-size: 0.9em;
 }
 .auth-button{
     width: 100%;

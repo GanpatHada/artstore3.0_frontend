@@ -13,3 +13,9 @@ export function cartSubTotal(selectedCartItems){
         return (acc += cur.price*cur.quantity);
       }, 0);
 }
+
+export async function objectURLToFile(objectURL, filename) {
+  const response = await fetch(objectURL);
+  const blob = await response.blob();
+  return new File([blob], filename, { type: blob.type });
+}

@@ -65,7 +65,11 @@ img {
   background-color: #ffd814;
   color: black;
 }
-.primary-btn:hover {
+.primary-btn:disabled{
+  background-color: rgb(231, 231, 231);
+  color: rgb(197, 197, 197);
+}
+.primary-btn:hover:not(:disabled) {
   background-color: #f7ca00;
 }
 .primary-btn:active {

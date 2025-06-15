@@ -1,4 +1,6 @@
+import { Form } from "react-router-dom";
 import { BACKEND_BASE_URL } from "../Constant";
+import { objectURLToFile } from "../utils/UserHelper";
 
 const getAccessToken = (user) => user.accessToken;
 
@@ -15,11 +17,44 @@ export async function getUser() {
       }
     );
     const result = await response.json();
-    console.log(result)
+    console.log(result);
     if (!result.success) throw new Error(result.message);
     return result.data;
   } catch (error) {
     throw error;
+  }
+}
+
+export async function fetchUpdateProfile({ user, fullName, profileImageUrl }) {
+  console.log(fullName,profileImageUrl)
+  try {
+    const formData = new FormData();
+    if (fullName) {
+      formData.append("fullName", fullName);
+    }
+    if (String(profileImageUrl) === "null") {
+      formData.append("profileImage", "null");
+    } else if (profileImageUrl?.startsWith?.("blob:")) {
+      const file = await objectURLToFile(profileImageUrl, "profile.png");
+      formData.append("profileImage", file);
+    }
+    const response = await fetch(
+      `${BACKEND_BASE_URL}/user`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Authorization":getAccessToken(user)
+        },
+        body:formData
+      }
+    );
+    const result = await response.json();
+    if (!result.success) 
+      throw new Error(result.message);
+    return result.data;
+  } catch (error) {
+    throw error
   }
 }
 
@@ -42,16 +77,19 @@ export async function fetchAddToCart(user, productId) {
 }
 export async function fetchIncrementCartItem(user, productId) {
   try {
-    let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}/increment`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: getAccessToken(user),
-      },
-    });
+    let response = await fetch(
+      `${BACKEND_BASE_URL}/user/cart/${productId}/increment`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getAccessToken(user),
+        },
+      }
+    );
     response = await response.json();
-    console.log(response)
+    console.log(response);
     if (!response.success) throw new Error(response.message);
     return response.data;
   } catch (error) {
@@ -59,20 +97,22 @@ export async function fetchIncrementCartItem(user, productId) {
   }
 }
 
-
 export async function fetchDecrementCartItem(user, productId) {
   try {
-    let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}/decrement`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: getAccessToken(user),
-      },
-    });
+    let response = await fetch(
+      `${BACKEND_BASE_URL}/user/cart/${productId}/decrement`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getAccessToken(user),
+        },
+      }
+    );
     response = await response.json();
     if (!response.success) throw new Error(response.message);
-    console.log(response)
+    console.log(response);
     return response.data;
   } catch (error) {
     throw error;

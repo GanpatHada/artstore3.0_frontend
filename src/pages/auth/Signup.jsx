@@ -5,6 +5,7 @@ import { Link, useNavigate} from "react-router-dom";
 import { verifySignupFields } from "../../utils/AuthHelper";
 import { toast } from "react-toastify";
 import "./Auth.css";
+import { useUser } from "../../hooks/useUser";
 const Signup = () => {
   const [signupDetails, setSignupDetails] = useState({
     fullName: "",
@@ -20,6 +21,7 @@ const Signup = () => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const {setUserDetails}=useUser()
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
@@ -60,6 +62,8 @@ const Signup = () => {
         setLoading(true);
         const result = await signup(fullName, email, phone, password);
         if (!result.success) return toast.error(result.message);
+        setUserDetails({...result.data.user,...result.data.accessToken})
+        navigate("/")
       } catch (error) {
         toast.error("Unable to process request at the moment");
       } finally {
@@ -134,7 +138,7 @@ const Signup = () => {
               type="password"
               id="signup-password"
               value={signupDetails.password}
-              placeholder="password should be atleast 6 characters"
+              placeholder="Password should be atleast 6 characters"
               name="password"
               onChange={(e) => handleFieldChange(e)}
             />

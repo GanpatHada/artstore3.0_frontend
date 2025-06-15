@@ -3,10 +3,20 @@ export const initialFilterState = {
   priceRange: [0, 10000],
   ratings: null,
   sortBy: null,
+  searchType:"ALL",
+  searchText:""
 };
 
 export const filterReducer = (state, action) => {
   switch (action.type) {
+    case "SET_SEARCH_TYPE":
+      return {
+        ...state,searchType:action.payload
+      };
+    case "SET_SEARCH_TEXT":
+      return {
+        ...state,searchText:action.payload
+      }  
     case "SET_CATEGORY_FILTER":
       return {
         ...state,

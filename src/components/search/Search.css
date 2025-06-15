@@ -1,0 +1,27 @@
+#search-box {
+  display: flex;
+  position: relative;
+  transition: 0.1s ease-out;
+  height: 2.5rem;
+  border-radius: 0.4rem;
+  min-width: 0px;
+}
+#search-box input[type="search"] {
+  border: none;
+  display: block;
+  padding: 1rem;
+  font-size: 1rem;
+  flex: 1;
+  border-top-right-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+  text-overflow: ellipsis;
+  width: 0;
+}
+#search-box input[type="search"]::placeholder {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgb(95, 95, 95);
+}
+#search-box input:focus {
+  outline: none;
+}
