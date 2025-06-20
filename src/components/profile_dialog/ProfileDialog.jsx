@@ -12,7 +12,6 @@ const ProfileDialog = ({closeProfileDialog}) => {
     user,setUserDetails
   } = useUser();
 
-  console.log(user)
   const [currentName,setCurrentName]=useState(user.fullName);
   const [currentPhoto,setCurrentPhoto]=useState(user.profileImage);
   const [loading,setLoading]=useState(false)
@@ -35,7 +34,7 @@ const profileChanged = () => {
 
 
 const handleProfileUpdate=async()=>{
-  let params={user}
+  let params={user,setUserDetails}
   if(isFullNameChanged())
     params["fullName"]=currentName;
   if(isImageChanged())

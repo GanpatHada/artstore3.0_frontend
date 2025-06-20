@@ -43,9 +43,10 @@ const Login = () => {
     try {
       setLoading(true);
       const result=await login(email,password);
+      console.log(result)
       if(!result.success)
         return toast.error(result.message);
-      setUserDetails({...result.data.user,...result.data.accessToken})
+      setUserDetails({...result.data.user,accessToken:result.data.accessToken})
       if (from && from !== "/signup") {
         navigate(from, { replace: true });
       } else {
@@ -116,9 +117,7 @@ const Login = () => {
           </button>
           <p id="signup-link">
             Do not have an account <Link to="/signup">Signup</Link> Here
-          </p>
-
-         
+          </p> 
         </form>
       </section>
     </div>

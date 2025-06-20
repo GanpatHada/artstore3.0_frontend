@@ -27,3 +27,13 @@ export function makeStarArray(ratingCount){
         }
      return starArray   
 }
+
+export const formatteDate = (date) => {
+    let formattedDate = new Date(date);
+    formattedDate = formattedDate.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+    return formattedDate;
+  };

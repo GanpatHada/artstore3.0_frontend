@@ -2,32 +2,28 @@ import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/navbar/Navbar";
-import SubNav from "./components/subNav/SubNav";
 import Footer from "./components/footer/Footer";
-import { getUser } from "./services/UserService";
 import { useUser } from "./hooks/useUser";
 import FilterProvider from "./context/FilterContext";
 import CheckoutProvider from "./context/CheckoutContext";
+import { fetchUserDetails } from "./services/UserService";
 
 function App() {
-  const {user,setUserDetails, stopUserLoading } = useUser();
-  console.log(user)
+  const { user, setUserDetails, stopUserLoading } = useUser();
 
-  const fetchUserDetails = async () => {
+  const getUserDetailsOnLoad = async () => {
     try {
-      const {user,accessToken} = await getUser();
-      setUserDetails({...user,accessToken});
-    }
-    catch (error) {
-      console.log(error)
+      const userDetails = await fetchUserDetails();
+      setUserDetails(userDetails);
+    } catch (error) {
     } finally {
       stopUserLoading();
     }
   };
 
   useEffect(() => {
-    if(!user)
-       fetchUserDetails();
+    if (!user) 
+      getUserDetailsOnLoad();
   }, []);
 
   return (
@@ -35,9 +31,9 @@ function App() {
       <FilterProvider>
         <Navbar />
         <CheckoutProvider>
-        <main id="app-content">
-          <Outlet />
-        </main>
+          <main id="app-content">
+            <Outlet />
+          </main>
         </CheckoutProvider>
         <Footer />
       </FilterProvider>

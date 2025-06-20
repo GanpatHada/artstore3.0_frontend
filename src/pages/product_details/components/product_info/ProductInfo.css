@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 0.75fr 1fr 0.5fr;
   gap: 20px;
-  grid-template-rows: max-content auto 1fr 1fr;
+  grid-template-rows: max-content auto auto 1fr;
   grid-template-areas:
     "product-image product-headline product-action"
     "product-image product-details product-action"
@@ -218,7 +218,7 @@
     grid-template-areas:
       "product-image"
       "product-headline"
-      " product-details"
+      "product-details"
       "product-action"
       "ratings"
       "post-review "

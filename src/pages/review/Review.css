@@ -1,0 +1,128 @@
+#review-page{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    
+}
+#review-page > header{
+background-color: rgb(224, 246, 255);
+}
+
+#review-page > header > div{
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    padding: 1rem;
+    align-items: center;
+    gap: 0.5rem;
+     margin: auto;
+}
+
+#review-page > header >div > span{
+    display: block;
+    height: 2rem;
+    width: 2rem;
+    background-color: black;
+    border-radius: 1rem;
+    overflow: hidden;
+   
+}
+#review-page > header button{
+    font-weight: bold;
+}
+#review-page main{
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    flex: 1;
+    padding: 1rem;
+    position: relative;
+}
+
+#review-page main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+#review-page main hr{
+    height: 1px;
+    border: none;
+    background-color: var(--primary-background);
+}
+#review-page main section{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+#review-page main section h4::after{
+    content: " *";
+    color: red;
+}
+#stars-wrapper{
+    display: flex;
+    gap: 0.5rem;
+}
+
+#stars-wrapper .star{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: 0.1s ease-out;
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    &:hover{
+        transform: scale(1.2);
+    }
+
+}
+#review-page main .product-info{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    gap: 1rem;
+}
+#review-page main .product-info #product-image{
+    height: 150px;
+    border: 1px solid var(--primary-background);
+    padding: 0.5rem;
+}
+#review-page main .product-info h4{
+    flex: 1;
+    margin: 0.5rem 0rem;
+}
+#review-page #write-review{
+    width: 100%;
+    height: 100px;
+    resize: none;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    border: 1px solid var(--primary-border);
+    border-radius: 5px;
+    &:focus{
+        outline: 2px solid var(--primary-color);
+        border: none;
+    }
+}
+#review-info{
+    color: gray;
+    font-size: 0.8rem;
+}
+button#submit-review{
+    padding: 0.6rem 1.5rem;
+    border-radius: 2rem;
+    width: fit-content;
+}
+button#clear-review{
+    padding: 0.6rem 1.5rem;
+    border-radius: 2rem;
+    width: fit-content;
+    margin-left: auto;
+    background-color: whitesmoke;
+    margin-right: 0.5rem;
+    border: 1px solid transparent;
+    &:active{
+         border: 1px solid gray;
+    }
+}

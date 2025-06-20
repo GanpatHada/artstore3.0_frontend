@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./ProductActions.css";
-import { calculatePrice } from "../../../../utils/ProductHelper";
 import SpinLoader from "../../../../components/spin-loader/SpinLoader";
 import {
   fetchAddToCart,
@@ -11,7 +10,7 @@ import { toast } from "react-toastify";
 import { useUser } from "../../../../hooks/useUser";
 import { useProductDetails } from "../../../../hooks/useProductDetails";
 const ProductActions = () => {
-  const { user, addToCart, addToWishlist } = useUser();
+  const { user, addToCart, addToWishlist,setUserDetails } = useUser();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -21,7 +20,7 @@ const ProductActions = () => {
     if (isAvailableInCart(productId)) return navigate("/cart");
     try {
       setLoading(true);
-      const result = await fetchAddToCart(user, productId);
+      const result = await fetchAddToCart(user,setUserDetails,productId);
       addToCart(result);
       toast.success("product added to cart");
     } catch (error) {
@@ -37,7 +36,7 @@ const ProductActions = () => {
     if (isAvailableInWishlist(productId)) return navigate("/wishlist");
     try {
       setLoading(true);
-      const result = await fetchAddToWishlist(user, productId);
+      const result = await fetchAddToWishlist(user,setUserDetails,productId);
       addToWishlist(result);
       toast.success("Product added to wishlist");
     } catch (error) {

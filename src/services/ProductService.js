@@ -1,4 +1,5 @@
 import { BACKEND_BASE_URL } from "../Constant";
+import { secureFetch } from "./tokenService";
 
 
 export async function fetchProducts() {
@@ -90,5 +91,53 @@ export async function fetchMinimumFiftyOffProducts(){
     return response.data
   } catch (error) {
    throw error;
+  }
+}
+
+export async function fetchAddReview(user,setUserDetails,productId,review) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/products/${productId}/reviews`,
+      {
+        method: "POST",
+        body:JSON.stringify(review)
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function fetchEditReview(user,setUserDetails,productId,reviewId,review) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/products/${productId}/reviews/${reviewId}`,
+      {
+        method: "PATCH",
+        body:JSON.stringify(review)
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function fetchDeleteReview(user,setUserDetails,productId,reviewId) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/products/${productId}/reviews/${reviewId}`,
+      {
+        method: "DELETE",
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
   }
 }

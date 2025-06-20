@@ -25,7 +25,7 @@ const Product = ({
 }) => {
   const [waiting, setWaiting] = useState(false);
   const navigate = useNavigate();
-  const{user,userLoading,addToCart,addToWishlist}=useUser()
+  const{user,userLoading,addToCart,addToWishlist,setUserDetails}=useUser()
 
   
 
@@ -35,7 +35,7 @@ const Product = ({
     if(isAvailableInCart(productId)) return navigate("/cart");
     try {
       setWaiting(true);
-      const addedCartItem = await fetchAddToCart(user,productId); 
+      const addedCartItem = await fetchAddToCart(user,setUserDetails,productId); 
       addToCart(addedCartItem);
       toast.success('Product has been added to cart')
     } catch (error) {
@@ -50,7 +50,7 @@ const Product = ({
     if(isAvailableInWishlist(productId)) return navigate("/wishlist")
     try {
       setWaiting(true);
-      const addedWishlistItem = await fetchAddToWishlist(user,productId);
+      const addedWishlistItem = await fetchAddToWishlist(user,setUserDetails,productId);
       addToWishlist(addedWishlistItem)
       toast.success('Product has been added to wishlist')
     } catch (error) {

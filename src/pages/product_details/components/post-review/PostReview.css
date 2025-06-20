@@ -16,3 +16,10 @@
     padding: 0.5rem;
     border-radius: 1rem;
 }
+
+@media screen and (max-width:768px)
+{
+ #post-review  {
+    min-width: 100%;
+}
+}

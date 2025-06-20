@@ -20,7 +20,7 @@ const AddAddress = () => {
   const { pathname } = useLocation();
   const getMode = getAddressMode(pathname);
   const { addressId } = useParams();
-  const {user,addAddress,editAddress} = useUser();
+  const {user,addAddress,editAddress,setUserDetails} = useUser();
   const {addresses, fullName, phone}=user;
   const navigate = useNavigate();
 
@@ -81,12 +81,12 @@ const AddAddress = () => {
     setLoading(true);
     try {
       if (getMode === "ADD") {
-        const address = await fetchAddAddress(user,state);
+        const address = await fetchAddAddress(user,setUserDetails,state);
         addAddress(address);
         toast.success("Address added successfully");
       }
       if (getMode === "EDIT") {
-        const address = await fetchEditAddress(user,addressId, state);
+        const address = await fetchEditAddress(user,setUserDetails,addressId, state);
         editAddress(address)
         toast.success("Address edited successfully");
       }

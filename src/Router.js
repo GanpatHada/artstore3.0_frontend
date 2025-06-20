@@ -18,43 +18,40 @@ import PageNotFound from "./pages/page-not-found/PageNotFound";
 import MyProfile from "./pages/account/components/my-profile/MyProfile";
 import MyOrders from "./pages/account/components/my-orders/MyOrders";
 import MyAddresses from "./pages/account/components/my-addresses/MyAddresses";
-import ProductDetailsProvider from "./context/ProductDetailsContext";
+import Review from "./pages/review/Review";
+import ProductDetailsLayout from "./pages/product_details/ProductDetailsLayout";
 
 const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
+  { path: "/login", element: <Login /> },
+  { path: "/signup", element: <Signup /> },
 
   {
     path: "/",
     element: <App />,
     errorElement: <Error />,
     children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/seller",
-        element: <SellerHome />,
-      },
-      {
-        path: "/products",
-        element: <Products />,
-      },
+      { path: "/", element: <Home /> },
+      { path: "/seller", element: <SellerHome /> },
+      { path: "/products", element: <Products /> },
       {
         path: "/products/:productId",
-        element: (
-          <ProductDetailsProvider>
-            <ProductDetails />
-          </ProductDetailsProvider>
-        ),
+        element: <ProductDetailsLayout />,
+        children: [
+          {
+            index: true,
+            element: <ProductDetails />,
+          },
+          {
+            path: "review",
+            element: (
+              <PrivateRoute>
+                <Review />
+              </PrivateRoute>
+            ),
+          },
+        ],
       },
+
       {
         path: "/cart",
         element: (
@@ -71,6 +68,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+
       {
         path: "/my_account",
         element: (
@@ -79,20 +77,12 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
-          {
-            path: "/my_account/profile",
-            element: <MyProfile />,
-          },
-          {
-            path: "/my_account/address",
-            element: <MyAddresses />,
-          },
-          {
-            path: "/my_account/orders",
-            element: <MyOrders />,
-          },
+          { path: "profile", element: <MyProfile /> },
+          { path: "address", element: <MyAddresses /> },
+          { path: "orders", element: <MyOrders /> },
         ],
       },
+
       {
         path: "/my_account/address/add",
         element: (
@@ -127,10 +117,8 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "*",
-    element: <PageNotFound />,
-  },
+
+  { path: "*", element: <PageNotFound /> },
 ]);
 
 export default router;

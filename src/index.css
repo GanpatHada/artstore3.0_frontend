@@ -65,6 +65,9 @@ img {
   background-color: #ffd814;
   color: black;
 }
+.primary-btn.loading{
+  background-color: #ffeb85;
+}
 .primary-btn:disabled{
   background-color: rgb(231, 231, 231);
   color: rgb(197, 197, 197);

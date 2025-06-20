@@ -10,7 +10,7 @@ import {
 import { useUser } from "../../../../hooks/useUser";
 const AddressItem = ({ address, index }) => {
   const { deleteAddress, makeAddressPrimary } = useUser();
-  const {user}=useUser();
+  const {user,setUserDetails}=useUser();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -28,7 +28,7 @@ const AddressItem = ({ address, index }) => {
   const handleDeleteAddress = async () => {
     setLoading(true);
     try {
-      const deletedAddress = await fetchDeleteAddress(user,_id);
+      const deletedAddress = await fetchDeleteAddress(user,setUserDetails,_id);
       deleteAddress(deletedAddress);
     } catch (error) {
       toast.error(error.message || "Unable to delete address");
@@ -40,7 +40,7 @@ const AddressItem = ({ address, index }) => {
   const setPrimaryAddress = async () => {
     setLoading(true);
     try {
-      const primaryAddressId = await fetchMakeAddressPrimary(user,_id);
+      const primaryAddressId = await fetchMakeAddressPrimary(user,setUserDetails,_id);
       makeAddressPrimary(primaryAddressId);
     } catch (error) {
       toast.error(error.message || "Unable to delete address");

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { fetchAddToCart, fetchDeleteFromWishlist } from "../../../../services/UserService";
 const WishlistItem = ({ productId }) => {
 
-  const{user,removeFromWishlist,addToCart}=useUser();
+  const{user,removeFromWishlist,addToCart,setUserDetails}=useUser();
   const {cart}=user;
   const navigate=useNavigate()
   const [loading,setLoading]=useState(false);
@@ -19,7 +19,7 @@ const WishlistItem = ({ productId }) => {
   const handleDeleteFromWishlist = async (productId) => {
     try {
       setLoading(true);
-      const deletedProduct = await fetchDeleteFromWishlist(user,productId);
+      const deletedProduct = await fetchDeleteFromWishlist(user,setUserDetails,productId);
       removeFromWishlist(deletedProduct);
     } catch (error) {
       toast.error(error.message || "Somethig went wrong while deleting item");
@@ -31,7 +31,7 @@ const WishlistItem = ({ productId }) => {
   const handleAddToCart = async (productId) => {
     try {
       setLoading(true);
-      const addedProduct = await fetchAddToCart(user,productId);
+      const addedProduct = await fetchAddToCart(user,setUserDetails,productId);
       addToCart(addedProduct)
     } catch (error) {
       toast.error(error.message || "something went wrong while adding to cart");

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./CartItem.css";
-import { calculatePrice } from "../../../../utils/ProductHelper";
 import { fetchProductDetails } from "../../../../services/ProductService";
 import { toast } from "react-toastify";
 import {
@@ -20,13 +19,12 @@ import { AiOutlineMinus } from "react-icons/ai";
 const CartItem = ({ cartProduct, setSelectedCartItems, selectedCartItems }) => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-  const { user, removeFromCart, incrementCartItem, decrementCartItem } =
+  const { user, setUserDetails, removeFromCart, incrementCartItem, decrementCartItem } =
     useUser();
   const [loading, setLoading] = useState({
     type: null,
     status: true,
-  });
-
+  });  
   //helpers
   const startProductLoading = () =>
     setLoading({ ...loading, type: "PRODUCT", status: true });
@@ -54,7 +52,7 @@ const CartItem = ({ cartProduct, setSelectedCartItems, selectedCartItems }) => {
   const handleDeleteFromCart = async (productId) => {
     try {
       startDeleteLoading();
-      const deletedItem = await fetchDeleteFromCart(user, productId);
+      const deletedItem = await fetchDeleteFromCart(user,setUserDetails,productId);
       removeFromCart(deletedItem);
       if (isItemSelected(deletedItem))
         setSelectedCartItems(
@@ -88,14 +86,14 @@ const CartItem = ({ cartProduct, setSelectedCartItems, selectedCartItems }) => {
     try {
       switch (type) {
         case "INCREMENT": {
-          await fetchIncrementCartItem(user, productId);
+          await fetchIncrementCartItem(user,setUserDetails, productId);
           incrementCartItem(productId);
           newQuantity=newQuantity+1;
           break;
         }
         case "DECREMENT": {
           if (cartProduct.quantity > 1) {
-            await fetchDecrementCartItem(user, productId);
+            await fetchDecrementCartItem(user,setUserDetails, productId);
             decrementCartItem(productId);
             newQuantity=newQuantity-1
           } else {

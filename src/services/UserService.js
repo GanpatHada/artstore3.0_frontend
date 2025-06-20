@@ -1,32 +1,27 @@
-import { Form } from "react-router-dom";
 import { BACKEND_BASE_URL } from "../Constant";
 import { objectURLToFile } from "../utils/UserHelper";
+import { refreshAccessToken, secureFetch } from "./tokenService";
 
 const getAccessToken = (user) => user.accessToken;
 
-export async function getUser() {
+export async function fetchUserDetails() {
   try {
-    const response = await fetch(
-      `${BACKEND_BASE_URL}/user/refreshAccessToken`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const result = await response.json();
-    console.log(result);
-    if (!result.success) throw new Error(result.message);
-    return result.data;
+    const accessToken = await refreshAccessToken(false);
+    let response = await fetch(`${BACKEND_BASE_URL}/user/`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    response = await response.json();
+    if (!response.success) throw new Error(response.message);
+    return { ...response.data, accessToken };
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchUpdateProfile({ user, fullName, profileImageUrl }) {
-  console.log(fullName,profileImageUrl)
+export async function fetchUpdateProfile({user,setUserDetails, fullName, profileImageUrl}) {
   try {
     const formData = new FormData();
     if (fullName) {
@@ -38,221 +33,181 @@ export async function fetchUpdateProfile({ user, fullName, profileImageUrl }) {
       const file = await objectURLToFile(profileImageUrl, "profile.png");
       formData.append("profileImage", file);
     }
-    const response = await fetch(
-      `${BACKEND_BASE_URL}/user`,
-      {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Authorization":getAccessToken(user)
-        },
-        body:formData
-      }
-    );
-    const result = await response.json();
-    if (!result.success) 
-      throw new Error(result.message);
-    return result.data;
-  } catch (error) {
-    throw error
-  }
-}
-
-export async function fetchAddToCart(user, productId) {
-  try {
-    let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: getAccessToken(user),
-      },
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user`, {
+      method: "PATCH",
+      body: formData,
     });
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }
 }
-export async function fetchIncrementCartItem(user, productId) {
+
+export async function fetchAddToCart(user, setUserDetails, productId) {
   try {
-    let response = await fetch(
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/cart/${productId}`,
+      {
+        method: "POST",
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function fetchIncrementCartItem(user, setUserDetails, productId) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
       `${BACKEND_BASE_URL}/user/cart/${productId}/increment`,
       {
         method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: getAccessToken(user),
-        },
       }
     );
-    response = await response.json();
-    console.log(response);
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchDecrementCartItem(user, productId) {
+export async function fetchDecrementCartItem(user, setUserDetails, productId) {
   try {
-    let response = await fetch(
+    let data = await secureFetch(
+      user,
+      setUserDetails,
       `${BACKEND_BASE_URL}/user/cart/${productId}/decrement`,
       {
         method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: getAccessToken(user),
-        },
       }
     );
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    console.log(response);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchAddToWishlist(user, productId) {
+export async function fetchDeleteFromCart(user, setUserDetails, productId) {
   try {
-    let response = await fetch(
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/cart/${productId}`,
+      {
+        method: "DELETE",
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function fetchAddToWishlist(user,setUserDetails,productId) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
       `${BACKEND_BASE_URL}/user/wishlist/${productId}`,
       {
         method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: getAccessToken(user),
-        },
       }
     );
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchDeleteFromCart(user, productId) {
+export async function fetchDeleteFromWishlist(user,setUserDetails, productId) {
   try {
-    let response = await fetch(`${BACKEND_BASE_URL}/user/cart/${productId}`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: getAccessToken(user),
-      },
-    });
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-}
-export async function fetchDeleteFromWishlist(user, productId) {
-  try {
-    let response = await fetch(
+    let data = await secureFetch(
+      user,
+      setUserDetails,
       `${BACKEND_BASE_URL}/user/wishlist/${productId}`,
       {
         method: "DELETE",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: getAccessToken(user),
-        },
       }
     );
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchDeleteAddress(user, addressId) {
+export async function fetchDeleteAddress(user,setUserDetails,addressId) {
   try {
-    let response = await fetch(
+    let data = await secureFetch(
+      user,
+      setUserDetails,
       `${BACKEND_BASE_URL}/user/address/${addressId}`,
       {
         method: "DELETE",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: getAccessToken(user),
-        },
       }
     );
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchMakeAddressPrimary(user, addressId) {
+export async function fetchMakeAddressPrimary(user,setUserDetails, addressId) {
   try {
-    let response = await fetch(
+    let data = await secureFetch(
+      user,
+      setUserDetails,
       `${BACKEND_BASE_URL}/user/address/makePrimary/${addressId}`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: getAccessToken(user),
-        },
       }
     );
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchAddAddress(user, addressObj) {
+export async function fetchAddAddress(user,setUserDetails, addressObj) {
+  console.log(addressObj);
   try {
-    let response = await fetch(`${BACKEND_BASE_URL}/user/address/`, {
+    let data = await secureFetch(
+     user,
+     setUserDetails,
+    `${BACKEND_BASE_URL}/user/address/`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: getAccessToken(user),
-      },
+      "Content-Type": "application/json",
+    },
       body: JSON.stringify(addressObj),
     });
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    console.log(data)
+    return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchEditAddress(user, addressId, addressObj) {
+export async function fetchEditAddress(user,setUserDetails, addressId, addressObj) {
   try {
-    let response = await fetch(
+    let data = await secureFetch(
+      user,
+      setUserDetails,
       `${BACKEND_BASE_URL}/user/address/${addressId}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: getAccessToken(user),
         },
         body: JSON.stringify(addressObj),
       }
     );
-    response = await response.json();
-    if (!response.success) throw new Error(response.message);
-    return response.data;
+    return data;
   } catch (error) {
     throw error;
   }

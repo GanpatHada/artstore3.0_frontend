@@ -19,3 +19,7 @@ export async function objectURLToFile(objectURL, filename) {
   const blob = await response.blob();
   return new File([blob], filename, { type: blob.type });
 }
+
+export function getAccessToken(user){
+  return user.accessToken;
+}
