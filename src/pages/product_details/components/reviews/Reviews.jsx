@@ -17,6 +17,8 @@ const Review = ({ review, productId }) => {
   const { deleteReview } = useProductDetails();
   const navigate = useNavigate();
 
+  console.log(review)
+
   const handleDeleteReview = async (reviewId) => {
     try {
       setDeleting(true);
@@ -39,18 +41,18 @@ const Review = ({ review, productId }) => {
       <section className="profile-section">
         <div>
           <section className="image-section all-centered">
-            {review.user.profileImage ? (
-              <img src={review.user.profileImage} />
+            {review.user?.profileImage ? (
+              <img src={review.user?.profileImage} />
             ) : (
               <i className="fa-solid fa-user"></i>
             )}
           </section>
           <span id="user-name">
-            {review.user.fullName}
-            {isThisMyReview(review.user._id) && <strong>(You)</strong>}
+            {review.user?.fullName || 'unknown'}
+            {isThisMyReview(review.user?._id) && <strong>(You)</strong>}
           </span>
         </div>
-        {isThisMyReview(review.user._id) && (
+        {isThisMyReview(review.user?._id) && (
           <div>
             <button onClick={() => navigate(`/products/${productId}/review`,{state:{reviewId:review._id}})}>
               <FiEdit />

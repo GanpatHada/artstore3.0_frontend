@@ -1,64 +1,65 @@
-import React, {useState } from "react";
-import { Link, useLocation, useNavigate,} from "react-router-dom";
-import {login } from "../../services/AuthService";
-import {verifyLoginFields } from "../../utils/AuthHelper";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { fetchUserLogin } from "../../services/AuthService";
+import { verifyLoginFields } from "../../utils/AuthHelper";
 import { toast } from "react-toastify";
 import AuthHeader from "./AuthHeader";
 import "./Auth.css";
-import {useUser} from '../../hooks/useUser'
+import { useUser } from "../../hooks/useUser";
 
 const Login = () => {
-  const{setUserDetails}=useUser();
+  const { setUserDetails} = useUser();
   const navigate = useNavigate();
   const location = useLocation();
-  const targetLocation=location.state?.to || -1;
-  console.log(targetLocation)
-  const initialLoginState={
-    email: "",
+
+  const defaultEmail = location.state?.email || "";
+  const redirectTo = location.state?.from?.pathname || "/";
+
+  const [loginDetails, setLoginDetails] = useState({
+    email: defaultEmail,
     password: "",
     emailError: null,
     passwordError: null,
-  }
-  const [loginDetails, setLoginDetails] = useState(initialLoginState);
+  });
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  
-
-  const handleFieldChange = (e) => {
-    const { name, value } = e.target;
-    setLoginDetails({ ...loginDetails, [name]: value, [name + "Error"]: null });
+  const handleFieldChange = ({ target: { name, value } }) => {
+    setLoginDetails((prev) => ({
+      ...prev,
+      [name]: value,
+      [`${name}Error`]: null,
+    }));
   };
 
-  const toggleShowPassword = () => setShowPassword(!showPassword);
-
+  const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
   const handleLogin = async (e) => {
-    const from = location.state?.from?.pathname;
     e.preventDefault();
-    const{email,password}=loginDetails;
-    const{emailError,passwordError}=verifyLoginFields(email,password);
-    if(emailError || passwordError)
-      return setLoginDetails({...loginDetails,emailError,passwordError})
+    const { email, password } = loginDetails;
+    const { emailError, passwordError } = verifyLoginFields(email, password);
+
+    if (emailError || passwordError) {
+      return setLoginDetails((prev) => ({
+        ...prev,
+        emailError,
+        passwordError,
+      }));
+    }
+
     try {
       setLoading(true);
-      const result=await login(email,password);
-      console.log(result)
-      if(!result.success)
-        return toast.error(result.message);
-      setUserDetails({...result.data.user,accessToken:result.data.accessToken})
-      if (from && from !== "/signup") {
-        navigate(from, { replace: true });
-      } else {
-        navigate("/", { replace: true });
-      }
+      const { user, accessToken } = await fetchUserLogin(email, password);
+      setUserDetails({ ...user, accessToken });
+      navigate(redirectTo, { replace: true });
     } catch (error) {
-      toast.error('Unable to process your request at the moment');
-    }
-    finally{
+      toast.error(error?.message || "Unable to process your request.");
+    } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="auth-page">
       <AuthHeader />
@@ -66,37 +67,41 @@ const Login = () => {
         <form onSubmit={handleLogin}>
           <h1>Sign In</h1>
           <div>
-            <label htmlFor="email">Enter Email</label>
+            <label htmlFor="email">Enter Email or phone</label>
             <input
-              className={
-                loginDetails.emailError ? "error-input" : "default-input"
-              }
+              className={loginDetails.emailError ? "error-input" : "default-input"}
               type="text"
               id="email"
               name="email"
               value={loginDetails.email}
-              onChange={(e) => handleFieldChange(e)}
+              autoComplete="username"
+              onChange={handleFieldChange}
+              required
             />
             {loginDetails.emailError && (
               <i className="field-info">{loginDetails.emailError}</i>
             )}
           </div>
+
+          
           <div>
             <label htmlFor="password">Enter Password</label>
             <input
-              className={
-                loginDetails.passwordError ? "error-input" : "default-input"
-              }
+              className={loginDetails.passwordError ? "error-input" : "default-input"}
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               value={loginDetails.password}
-              onChange={(e) => handleFieldChange(e)}
+              autoComplete="current-password"
+              onChange={handleFieldChange}
+              required
             />
             {loginDetails.passwordError && (
               <i className="field-info">{loginDetails.passwordError}</i>
             )}
           </div>
+
+          
           <div>
             <input
               type="checkbox"
@@ -107,17 +112,20 @@ const Login = () => {
             &nbsp;
             <label htmlFor="show-password">Show Password</label>
           </div>
+
+          
           <button
             type="submit"
             className="auth-button primary-btn all-centered"
-            style={{backgroundColor:loading &&'#e1e1e1'}}
             disabled={loading}
+            style={{ backgroundColor: loading ? "#e1e1e1" : undefined }}
           >
-            {loading ? "Login ...":'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
+
           <p id="signup-link">
-            Do not have an account <Link to="/signup">Signup</Link> Here
-          </p> 
+            Don't have an account? <Link to="/signup">Signup</Link> here
+          </p>
         </form>
       </section>
     </div>

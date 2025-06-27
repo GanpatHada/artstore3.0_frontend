@@ -2,9 +2,10 @@ import { BACKEND_BASE_URL } from "../Constant";
 import { secureFetch } from "./tokenService";
 
 
-export async function fetchProducts() {
-  const url = `${BACKEND_BASE_URL}/products`;
-
+export async function fetchProducts(productIds) {
+  let url=`${BACKEND_BASE_URL}/products?ids=${productIds}`;
+  if(!productIds)
+     url = `${BACKEND_BASE_URL}/products/`;
   try {
     let response = await fetch(url, {
       method: "GET",

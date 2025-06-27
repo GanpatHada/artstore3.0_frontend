@@ -20,7 +20,6 @@ const Product = ({
     actualPrice,
     tags,
     averageRatings,
-    reviews
   },
 }) => {
   const [waiting, setWaiting] = useState(false);
@@ -84,7 +83,6 @@ const Product = ({
         </div>
         <div className="ratings">
           <StarsCreator starsCount={averageRatings}/>
-          <span>({reviews.length})</span>
         </div>
        {tags.length>0&&<div className="tag">{tags[0]}</div>}
         <h3 id="price">{price.toLocaleString()}</h3>

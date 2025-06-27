@@ -10,7 +10,7 @@ import { fetchUserDetails } from "./services/UserService";
 
 function App() {
   const { user, setUserDetails, stopUserLoading } = useUser();
-
+  console.log(user);
   const getUserDetailsOnLoad = async () => {
     try {
       const userDetails = await fetchUserDetails();

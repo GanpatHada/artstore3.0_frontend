@@ -9,8 +9,10 @@
   display: flex;
   background-color: var(--primary-background);
   flex: 1;
+  position: relative;
  
 }
+
 #app-content > *{
   
   background-color: transparent;

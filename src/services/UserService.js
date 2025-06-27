@@ -2,7 +2,6 @@ import { BACKEND_BASE_URL } from "../Constant";
 import { objectURLToFile } from "../utils/UserHelper";
 import { refreshAccessToken, secureFetch } from "./tokenService";
 
-const getAccessToken = (user) => user.accessToken;
 
 export async function fetchUserDetails() {
   try {
@@ -205,6 +204,27 @@ export async function fetchEditAddress(user,setUserDetails, addressId, addressOb
           "Content-Type": "application/json",
         },
         body: JSON.stringify(addressObj),
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export async function fetchUserLogout(user,setUserDetails) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/logout`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials:"include"
       }
     );
     return data;

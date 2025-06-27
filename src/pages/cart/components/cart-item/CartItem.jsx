@@ -1,234 +1,165 @@
-import React, { useEffect, useState } from "react";
 import "./CartItem.css";
-import { fetchProductDetails } from "../../../../services/ProductService";
 import { toast } from "react-toastify";
-import {
-  fetchDecrementCartItem,
-  fetchDeleteFromCart,
-  fetchIncrementCartItem,
-} from "../../../../services/UserService";
-import DotLoader from "../../../../components/dot-loader/DotLoader";
-import CartItemLoader from "../cart_item_loader/CartItemLoader";
+import {fetchDecrementCartItem,fetchDeleteFromCart,fetchIncrementCartItem,} from "../../../../services/UserService";
 import { useUser } from "../../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
-import SpinLoader from "../../../../components/spin-loader/SpinLoader";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import { AiOutlineMinus } from "react-icons/ai";
+import { makeCapitalize } from "../../../../utils/GlobalUtils";
+import { useCart } from "../../../../hooks/useCart";
+import { useState } from "react";
 
-const CartItem = ({ cartProduct, setSelectedCartItems, selectedCartItems }) => {
-  const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const { user, setUserDetails, removeFromCart, incrementCartItem, decrementCartItem } =
-    useUser();
-  const [loading, setLoading] = useState({
-    type: null,
-    status: true,
-  });  
-  //helpers
-  const startProductLoading = () =>
-    setLoading({ ...loading, type: "PRODUCT", status: true });
-
-  const stopProductLoading = () =>
-    setLoading({ ...loading, type: "PRODUCT", status: false });
-
-  const startDeleteLoading = () =>
-    setLoading({ ...loading, type: "DELETE", status: true });
-
-  const stopDeleteLoading = () =>
-    setLoading({ ...loading, type: "DELETE", status: false });
-
-  const isItemSelected = () => {
-    return selectedCartItems.some(
-      (item) => item.productId === cartProduct.product
+const QunatitySelector = ({ productId,handleDeleteFromCart}) => {
+  const { incrementCartItem, decrementCartItem, user, setUserDetails } = useUser();
+  const [qunatityUpdating,setQunatityUpdating]=useState(false)
+  const getProductQuantity = (productId) => {
+    return (
+      user.cart.find((product) => product.product === productId).quantity
     );
   };
-
-  const startQunatityLoading = () =>
-    setLoading({ ...loading, type: "QUANTITY", status: true });
-  const stopQuantitylaoding = () =>
-    setLoading({ ...loading, type: "QUANTITY", status: false });
-
-  const handleDeleteFromCart = async (productId) => {
-    try {
-      startDeleteLoading();
-      const deletedItem = await fetchDeleteFromCart(user,setUserDetails,productId);
-      removeFromCart(deletedItem);
-      if (isItemSelected(deletedItem))
-        setSelectedCartItems(
-          selectedCartItems.filter((item) => item.productId !== deletedItem)
-        );
-    } catch (error) {
-      toast.error(error.message || "something went wrong while deleting");
-    } finally {
-      stopDeleteLoading();
-    }
-  };
-
-  const handleItemSelected = () => {
-    if (isItemSelected())
-      return setSelectedCartItems(
-        selectedCartItems.filter(
-          (item) => item.productId!== cartProduct.product
-        )
-      );
-    const selectedProduct={
-      productId:cartProduct.product,
-      quantity:cartProduct.quantity,
-      price:product.price
-    }  
-    setSelectedCartItems([...selectedCartItems,selectedProduct]);
-  };
-
   const updateCartItemQuantity = async (type, productId) => {
-     let newQuantity = cartProduct.quantity
-    startQunatityLoading();
     try {
+      setQunatityUpdating(true)
       switch (type) {
         case "INCREMENT": {
-          await fetchIncrementCartItem(user,setUserDetails, productId);
+          await fetchIncrementCartItem(user, setUserDetails, productId);
           incrementCartItem(productId);
-          newQuantity=newQuantity+1;
           break;
         }
         case "DECREMENT": {
-          if (cartProduct.quantity > 1) {
-            await fetchDecrementCartItem(user,setUserDetails, productId);
+          if (getProductQuantity(productId) > 1) {
+            await fetchDecrementCartItem(user, setUserDetails, productId);
             decrementCartItem(productId);
-            newQuantity=newQuantity-1
           } else {
-            await handleDeleteFromCart(productId)
+            await handleDeleteFromCart(productId);
           }
           break;
         }
         default:
           return 0;
       }
-      setSelectedCartItems(prev=>prev.map(p=>{
-        if(p.productId===productId)
-          return {...p,quantity:newQuantity}
-        else
-          return {...p}
-      }))
     } catch (error) {
       toast.error(error.message || "Something went wrong");
     } finally {
-      stopQuantitylaoding();
+      setQunatityUpdating(false);
+    }
+  };
+  return (
+    <div className="quantity-selector" style={{opacity:qunatityUpdating?'20%':'100%'}}>
+      <button onClick={() => updateCartItemQuantity("DECREMENT", productId)}>
+        {getProductQuantity(productId) > 1 ? (
+          <AiOutlineMinus />
+        ) : (
+          <IoTrashBinOutline />
+        )}
+      </button>
+      {getProductQuantity(productId)}
+      <button onClick={() => updateCartItemQuantity("INCREMENT", productId)}>
+        <IoMdAdd />
+      </button>
+    </div>
+  );
+};
+
+const ItemSelector = ({ productId,inStock }) => {
+  const { selectedProductIds, toggleSelect } = useCart();
+  return (
+    <input
+      className="product-selector"
+      type="checkbox"
+      checked={selectedProductIds.includes(productId)}
+      onChange={() => toggleSelect(productId)}
+      disabled={!inStock}
+    />
+  );
+};
+
+const CartItemPrice = ({tags, discount, price, actualPrice}) => {
+  return (
+    <section className="cart-item-price-section">
+      <p className="tags">{makeCapitalize(tags[0])}</p>
+      <div>
+        {discount > 0 && <span className="discount">-{discount}%</span>}
+        <strong>{price.toLocaleString("en-In")}</strong>
+      </div>
+      {discount > 0 && (
+        <p className="mrp">
+          <strike>M.R.P. {actualPrice}</strike>
+        </p>
+      )}
+    </section>
+  );
+};
+
+const CartItem = ({ cartItem,setCartItems }) => {
+  const navigate = useNavigate();
+  const { user, setUserDetails, removeFromCart } = useUser();
+  const [deleting,setDeleting]=useState(false)
+
+  const stockInfo = (stock) => {
+    if (stock === 0) return { color: "#cc0c39", text: "Out of stock" };
+    if (stock < 10)
+      return { color: "#cc0c39", text: `Only ${stock} left in stock` };
+    return { color: "green", text: `In stock (${stock})` };
+  };
+
+  const handleDeleteFromCart = async (productId) => {
+    try {
+      setDeleting(true)
+      const deletedItem = await fetchDeleteFromCart(user,setUserDetails,productId);
+      setCartItems(prev => prev.filter(item => item._id !== deletedItem));
+      removeFromCart(deletedItem);
+    } catch (error) {
+      toast.error(error.message || "something went wrong while deleting");
+    } finally {
+      setDeleting(false)
     }
   };
 
-  useEffect(() => {
-    const fetchCartProduct = async () => {
-      try {
-        startProductLoading();
-        const productDetails = await fetchProductDetails(cartProduct.product);
-        setProduct(productDetails);
-      } catch (error) {
-        toast.error(
-          error.message || "Something went wrong while fetching cart products"
-        );
-      } finally {
-        stopProductLoading();
-      }
-    };
-    fetchCartProduct();
-  }, []);
+  return (
+    <div className={`cart-item ${deleting&&'loading'}`}>
+      <ItemSelector productId={cartItem._id} inStock={cartItem.stock>0} />
+      <section className="cart-item-image-section">
+        <img src={cartItem.productImages[0]} alt="N/A" />
+      </section>
+      <section className="cart-item-info-section">
+        <p
+          className="product-title"
+          onClick={() => navigate(`/products/${cartItem._id}`)}
+        >
+          {cartItem.title}
+        </p>
+        <p
+          style={{ color: stockInfo(cartItem.stock).color }}
+          className="stock-info"
+        >
+          {stockInfo(cartItem.stock).text}
+        </p>
+        <p><strong>{makeCapitalize(cartItem.category)}</strong></p>
+        <p>{makeCapitalize(cartItem.medium)} | {makeCapitalize(cartItem.surface)}</p>
+        <section className="cart-button-section">
+          <QunatitySelector productId={cartItem._id} handleDeleteFromCart={handleDeleteFromCart} />
 
-  if (loading.type === "PRODUCT" && loading.status)
-    return (
-      <div className="cart-item">
-        <CartItemLoader />
-      </div>
-    );
-  else
-    return (
-      <div className="cart-item">
-        {product && (
-          <>
-            <section className="cart-item-check-section all-centered">
-              <input
-                type="checkbox"
-                checked={isItemSelected(cartProduct.product)}
-                onChange={handleItemSelected}
-              />
-            </section>
-            <section className="cart-item-image-section">
-              <img src={product.productImages[0]} alt="N/A" />
-            </section>
-            <section className="cart-item-info-section">
-              <h3
-                className="product-title"
-                onClick={() => navigate(`/products/${cartProduct.product}`)}
-              >
-                {product.title}
-              </h3>
-              <span className="product-artist">
-                <strong>Artist : </strong>
-                {product.artist.fullName}
-              </span>
-              <span className="product-mrp">
-                <strong>M.R.P. : </strong>
-                <strike>{product.price}</strike>
-              </span>
-              <span className="product-discount">
-                Flat <strong>{product.discount}%</strong> off
-              </span>
-              <section className="cart-button-section">
-                <div className="quantity-selector">
-                  {loading.type === "QUANTITY" && loading.status ? (
-                    <SpinLoader />
-                  ) : (
-                    <>
-                      <button
-                        onClick={() =>
-                          updateCartItemQuantity(
-                            "DECREMENT",
-                            cartProduct.product
-                          )
-                        }
-                      >
-                        {cartProduct.quantity > 1 ? (
-                          <AiOutlineMinus />
-                        ) : (
-                          <IoTrashBinOutline />
-                        )}
-                      </button>
-                      {cartProduct.quantity}
-                      <button
-                        onClick={() =>
-                          updateCartItemQuantity(
-                            "INCREMENT",
-                            cartProduct.product
-                          )
-                        }
-                      >
-                        <IoMdAdd />
-                      </button>
-                    </>
-                  )}
-                </div>
-                <button
-                  className="delete-from-cart"
-                  disabled={loading.type === "DELETE" && loading.status}
-                  onClick={() => handleDeleteFromCart(cartProduct.product)}
-                >
-                  {loading.type === "DELETE" && loading.status ? (
-                    <span>
-                      Deleting <DotLoader />
-                    </span>
-                  ) : (
-                    <span>Delete</span>
-                  )}
-                </button>
-              </section>
-            </section>
-            <section className="cart-item-price-section">
-              <strong>{product.price.toLocaleString("en-In")}</strong>
-            </section>
-          </>
-        )}
-      </div>
-    );
+          <button className="secondary-text-btn" 
+          onClick={() => handleDeleteFromCart(cartItem._id)}> Remove
+          </button>
+          <span>|</span>
+
+          <button className="secondary-text-btn">Move to wishlist</button>
+          <span>|</span>
+
+          <button className="secondary-text-btn">Share</button>
+        </section>
+      </section>
+      <CartItemPrice
+        tags={cartItem.tags}
+        discount={cartItem.discount}
+        price={cartItem.price}
+        actualPrice={cartItem.actualPrice}
+      />
+    </div>
+  );
 };
 
 export default CartItem;

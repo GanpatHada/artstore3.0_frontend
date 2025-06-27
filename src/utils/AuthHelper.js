@@ -2,10 +2,11 @@ import { isMobilePhone } from "validator";
 import isEmail from "validator/lib/isEmail";
 
 
-export function verifyLoginFields(email, password) {
+export function verifyLoginFields(emailOrPhone, password) {
   const error = { emailError: null, passwordError: null };
-  if (!isEmail(email)) error.emailError = "Email is not valid";
-  if (email.trim().length === 0) error.emailError = "Email is required";
+  if (!isEmail(emailOrPhone) && !isMobilePhone(emailOrPhone, 'en-IN'))
+    error.emailError = "Either email or phone is invalid";
+  if (emailOrPhone.trim().length === 0) error.emailError = "Email is required";
   if (password.trim().length === 0)
     error.passwordError = "Password is required";
 
@@ -22,7 +23,7 @@ export function verifySignupFields(fullName, email, phone, password, confirmPass
   };
   if (!isEmail(email)) 
     error.emailError = "Email is not valid";
-  if(!isMobilePhone(phone))
+  if(!isMobilePhone(phone, 'en-IN'))
     error.phoneError='Invalid phone number'
   if (password.trim().length < 6)
     error.passwordError = "Password should have minimum six characters";

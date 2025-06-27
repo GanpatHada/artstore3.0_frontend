@@ -4,7 +4,10 @@ import ProfileIcon from "../../images/profileIcon.svg";
 import AddressIcon from "../../images/addressIcon.svg";
 import OrderIcon from "../../images/boxIcon.svg";
 import { BiLogOutCircle } from "react-icons/bi";
+import { fetchUserLogout } from "../../services/UserService";
+import { useUser } from "../../hooks/useUser";
 const Account = () => {
+  const {user,setUserDetails}=useUser();
   const location = useLocation();
   const getUrl = () => {
     let url = location.pathname;
@@ -13,6 +16,13 @@ const Account = () => {
     url = url.replace("/", "");
     return url.toUpperCase();
   };
+
+
+  const handleLogout=async()=>{
+    const data=await fetchUserLogout(user,setUserDetails);
+    setUserDetails(data);
+  }
+
   return (
     <div id="account-page">
       <div>
@@ -23,7 +33,7 @@ const Account = () => {
               My Account {">"} <span>{getUrl()}</span>
             </p>
           </div>
-          <button id="signout-button"><span><BiLogOutCircle /></span>Signout</button>
+          <button onClick={handleLogout} id="signout-button"><span><BiLogOutCircle /></span>Signout</button>
         </header>
         <div id="account-navs">
           <NavLink

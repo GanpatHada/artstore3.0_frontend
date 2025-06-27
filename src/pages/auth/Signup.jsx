@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AuthHeader from "./AuthHeader";
-import { signup } from "../../services/AuthService";
-import { Link, useNavigate} from "react-router-dom";
+import { fetchUserRegistration} from "../../services/AuthService";
+import { Link, useNavigate } from "react-router-dom";
 import { verifySignupFields } from "../../utils/AuthHelper";
 import { toast } from "react-toastify";
 import "./Auth.css";
-import { useUser } from "../../hooks/useUser";
 const Signup = () => {
   const [signupDetails, setSignupDetails] = useState({
     fullName: "",
@@ -21,7 +20,6 @@ const Signup = () => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const {setUserDetails}=useUser()
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
@@ -32,45 +30,43 @@ const Signup = () => {
     });
   };
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    const { fullName, email, phone, password, confirmPassword } = signupDetails;
-    const {
+const handleSignup = async (e) => {
+  e.preventDefault();
+
+  const { fullName, email, phone, password, confirmPassword } = signupDetails;
+
+  const {
+    emailError,
+    phoneError,
+    passwordError,
+    fullNameError,
+    confirmPasswordError,
+  } = verifySignupFields(fullName, email, phone, password, confirmPassword);
+
+  const hasErrors = emailError || phoneError || passwordError || fullNameError || confirmPasswordError;
+
+  if (hasErrors) {
+    setSignupDetails((prev) => ({
+      ...prev,
       emailError,
       phoneError,
       passwordError,
       fullNameError,
       confirmPasswordError,
-    } = verifySignupFields(fullName, email, phone, password, confirmPassword);
-    if (
-      emailError ||
-      passwordError ||
-      fullNameError ||
-      confirmPasswordError ||
-      phoneError
-    )
-      setSignupDetails({
-        ...signupDetails,
-        emailError,
-        passwordError,
-        fullNameError,
-        confirmPasswordError,
-        phoneError,
-      });
-    else {
-      try {
-        setLoading(true);
-        const result = await signup(fullName, email, phone, password);
-        if (!result.success) return toast.error(result.message);
-        setUserDetails({...result.data.user,...result.data.accessToken})
-        navigate("/")
-      } catch (error) {
-        toast.error("Unable to process request at the moment");
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+    }));
+    return;
+  }
+  try {
+    setLoading(true);
+    const data = await fetchUserRegistration(fullName, email, phone, password);
+    navigate("/login",{state:{email:data}});
+  } catch (error) {
+    toast.error(error|| "Unable to process your request at the moment.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="auth-page">
@@ -132,15 +128,14 @@ const Signup = () => {
           <div>
             <label htmlFor="signup-password">Enter Password</label>
             <input
-              className={
-                signupDetails.passwordError ? "error-input" : "default-input"
-              }
+              className={signupDetails.passwordError ? "error-input" : "default-input"}
               type="password"
               id="signup-password"
               value={signupDetails.password}
               placeholder="Password should be atleast 6 characters"
               name="password"
               onChange={(e) => handleFieldChange(e)}
+              autoComplete="new-password"
             />
             {signupDetails.passwordError && (
               <i className="field-info">{signupDetails.passwordError}</i>
@@ -149,11 +144,7 @@ const Signup = () => {
           <div>
             <label htmlFor="signup-confirm-password">Confirm Password</label>
             <input
-              className={
-                signupDetails.confirmPasswordError
-                  ? "error-input"
-                  : "default-input"
-              }
+              className={signupDetails.confirmPasswordError? "error-input": "default-input"}
               type="password"
               id="signup-confirm-password"
               value={signupDetails.confirmPassword}
@@ -165,17 +156,16 @@ const Signup = () => {
             )}
           </div>
           <div>
-          <button
-            className="primary-btn auth-button"
-            style={{ backgroundColor: loading && "#e1e1e1" }}
-            type="submit"
-          >
-            {`${
-              loading
-                ? "Creating..."
-                : `Create Account`
-            }`}
-          </button>
+            <button
+              className="primary-btn auth-button"
+              style={{ backgroundColor: loading && "#e1e1e1" }}
+              type="submit"
+            >
+              {`${loading
+                  ? "Creating..."
+                  : `Create Account`
+                }`}
+            </button>
           </div>
           <p id="login-link">
             Already have an account <Link to={`/login`}>Login</Link>

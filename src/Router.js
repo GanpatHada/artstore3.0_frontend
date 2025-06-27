@@ -20,11 +20,26 @@ import MyOrders from "./pages/account/components/my-orders/MyOrders";
 import MyAddresses from "./pages/account/components/my-addresses/MyAddresses";
 import Review from "./pages/review/Review";
 import ProductDetailsLayout from "./pages/product_details/ProductDetailsLayout";
+import PublicRoute from "./components/public-route/PublicRoute";
+import { CartProvider } from "./context/CartContext";
 
 const router = createBrowserRouter([
-  { path: "/login", element: <Login /> },
-  { path: "/signup", element: <Signup /> },
-
+  {
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <PublicRoute>
+        <Signup />{" "}
+      </PublicRoute>
+    ),
+  },
   {
     path: "/",
     element: <App />,
@@ -56,7 +71,9 @@ const router = createBrowserRouter([
         path: "/cart",
         element: (
           <PrivateRoute>
+            <CartProvider>
             <Cart />
+            </CartProvider>
           </PrivateRoute>
         ),
       },

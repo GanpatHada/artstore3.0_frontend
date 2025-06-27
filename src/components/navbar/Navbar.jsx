@@ -99,7 +99,8 @@ const Wishlist = () => {
 
 const Navbar = () => {
   return (
-    <nav>
+    <div id="nav-wrapper">
+      <nav>
       <ul>
         <li><Logo /></li>
         <li><DefaultAddress /></li>
@@ -111,6 +112,7 @@ const Navbar = () => {
         <li><SubNav/></li>
       </ul>
     </nav>
+    </div>
   );
 };
 

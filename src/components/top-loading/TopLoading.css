@@ -1,0 +1,26 @@
+.grad-line {
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #ff4e6c,
+    #ffe657,
+    #ff627c,
+    #ffe657,
+    #ff4e6c
+  );
+  background-size: 200% 100%;
+  animation: moveGradient 0.5s linear infinite;
+  background-repeat: repeat;
+}
+.top-loading-container{
+    background-color: white;
+}
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: -100% 0%;
+  }
+}
