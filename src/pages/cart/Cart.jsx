@@ -7,6 +7,9 @@ import { useUser } from "../../hooks/useUser";
 import { useCheckout } from "../../hooks/useCheckout";
 import { fetchProducts } from "../../services/ProductService";
 import { useCart } from "../../hooks/useCart";
+import { toast } from "react-toastify";
+import CartItemLoader from "./components/cart_item_loader/CartItemLoader";
+import { cartSubTotal } from "../../utils/UserHelper";
 
 const CartHeader = () => {
   return (
@@ -17,12 +20,25 @@ const CartHeader = () => {
   );
 };
 
-const CartContent = ({ cartItems,setCartItems }) => {
-  if (cartItems.length === 0) return <NoItem type="cart" />;
+const CartContent = () => {
+  const { user: { cart } } = useUser();
+  const { cartItems, cartItemsLoading } = useCart();
+
+
+  const cartItemsFiltered = useMemo(() => {
+    const ids = cart.map((c) => c.product);
+    return cartItems.filter((p) => ids.includes(p._id));
+  }, [cart, cartItems]);
+
+  if (cart.length === 0) return <NoItem type="cart" />;
+
+  if (cartItemsLoading) return <CartItemLoader count={cart.length}/>;
+
+  if (cartItemsFiltered.length === 0) return <NoItem type="cart" />;
   return (
     <main id="cart-items-wrapper">
-      {cartItems.map((cartItem) => {
-        return <CartItem key={cartItem._id} cartItem={cartItem} setCartItems={setCartItems} />;
+      {cartItemsFiltered.map((cartItem) => {
+        return <CartItem key={cartItem._id} cartItem={cartItem} />;
       })}
     </main>
   );
@@ -42,43 +58,64 @@ const FreeDeliveryMessage = () => {
   );
 };
 
-const CheckOutBox = ({ cartSubTotal }) => {
-  const { selectedProductIds } = useCart();
+const Recommendations = () => {
+  return (
+    <section id="recommend-section">
+      <h3>Recommendations for all products</h3>
+    </section>
+  );
+};
+
+const CheckOutBox = () => {
+  const { selectedProductIds, cartItems } = useCart();
   const navigate = useNavigate();
-  const {user:{cart}}=useUser();
+  const { user: { cart } } = useUser();
+  const {setProducts,setAmount} = useCheckout();
+  
+  const productsToCheckOut=cart.filter(item=>selectedProductIds.includes(item.product)).map(item=>{
+    {
+      const product=cartItems.find(p=>p._id===item.product);
+      if(product){
+        return{
+          productId:product._id,
+          title:product.title,
+          productImage:product.productImages[0],
+          price:product.price,
+          quantity:item.quantity
+        }
+      }
+    }
+  })
 
-  const calculateTotalItems=cart.filter(cartItem=>selectedProductIds.includes(cartItem.product))
-  .reduce((acc,cur)=>{
-     acc=acc+cur.quantity;
-     return acc;
-  },0)
+  const {cartSubTotal,totalItems}=productsToCheckOut.reduce((total,item)=>{
+    total.cartSubTotal+=item.price*item.quantity;
+    total.totalItems+=item.quantity;
+    return total;
+  },{cartSubTotal:0,totalItems:0})
 
-
-  const { setAmount, setProducts } = useCheckout();
-  // const handleProceedToBuy = () => {
-  //   setAmount(cartSubTotal(selectedCartItems));
-  //   setProducts(selectedCartItems);
-  //   navigate("/checkout");
-  // };
+  const handleProceedToBuy = () => {
+    setProducts(productsToCheckOut);
+    setAmount(cartSubTotal)
+    navigate("/checkout");
+  };
 
   return (
     <section id="checkout-section">
       <section id="checkout-wrapper">
         {cartSubTotal >= 500 && <FreeDeliveryMessage />}
-        {selectedProductIds.length === 0 ?
-        <p>
-          No items selected
-        </p>:
-        <p>
-          Subtotal ({calculateTotalItems} items): &#8377;
-          <strong>{cartSubTotal}</strong>
-        </p>
-        }
+        {selectedProductIds.length === 0 ? (
+          <p>No items selected</p>
+        ) : (
+          <p>
+            Subtotal ({totalItems} items): &#8377;
+            <strong>{cartSubTotal}</strong>
+          </p>
+        )}
         <button
           id="proceed-to-buy-button"
           disabled={selectedProductIds.length === 0}
           className="primary-btn"
-        // onClick={handleProceedToBuy}
+          onClick={handleProceedToBuy}
         >
           Proceed to Buy
         </button>
@@ -89,42 +126,35 @@ const CheckOutBox = ({ cartSubTotal }) => {
 
 const Cart = () => {
   const { user: { cart } } = useUser();
-  const [cartItems, setCartItems] = useState([]);
   const productIds = cart.map((cartItem) => cartItem.product).join(",");
-  const {selectedProductIds,setSelectedAll } = useCart()
+  const {setSelectedAll, setCartItems, startLoading, stopLoading,cartItems,selectedProductIds} = useCart();
 
   useEffect(() => {
     const getCartItems = async () => {
-      const data = await fetchProducts(productIds);
-      setCartItems(data);
-      setSelectedAll(data.filter(product=>product.stock!==0));
+      try {
+        startLoading()
+        const data = await fetchProducts(productIds);
+        setCartItems(data);
+        setSelectedAll(data.filter((product) => product.stock !== 0));
+      } catch (error) {
+        toast.error(error.message || "unable to load cart products");
+      } finally {
+        stopLoading();
+      }
     };
-    if(cart.length>0)
-      getCartItems();
+    if (cart.length > 0) getCartItems();
     // eslint-disable-next-line
   }, []);
 
-  const cartSubTotal = useMemo(() => {
-    return cart.reduce((total, item) => {
-      if (selectedProductIds.includes(item.product)) {
-        const product = cartItems.find(p => p._id === item.product);
-        if (product) {
-          return total + product.price * item.quantity;
-        }
-      }
-      return total;
-    }, 0);
-  }, [cart, selectedProductIds, cartItems]);
+
   return (
     <div id="cart-page">
       <section id="cart-section">
         <CartHeader />
-        <CartContent cartItems={cartItems} setCartItems={setCartItems} />
+        <CartContent />
       </section>
-      <CheckOutBox cartSubTotal={cartSubTotal} />
-      <section id="recommend-section">
-        <h3>Recommendations for all products</h3>
-      </section>
+      <CheckOutBox />
+      <Recommendations />
     </div>
   );
 };

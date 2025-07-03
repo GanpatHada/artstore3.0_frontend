@@ -1,13 +1,19 @@
 export function loadRazorpayScript() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    if (
+      document.querySelector(
+        'script[src="https://checkout.razorpay.com/v1/checkout.js"]'
+      )
+    ) {
+      return resolve(true);
+    }
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
-
     script.onload = () => {
       resolve(true);
     };
     script.onerror = () => {
-      resolve(false);
+      reject(new Error("Failed to load Razorpay SDK"));
     };
     document.body.appendChild(script);
   });
@@ -25,7 +31,7 @@ export const razorpayOptions = {
     contact: "9876543210",
   },
   theme: {
-    color: "#3897ce",
+    color: "#c7511f",
   },
   config: {
     service_worker: {
@@ -33,3 +39,24 @@ export const razorpayOptions = {
     },
   },
 };
+
+export const getVerifyPaymentParams = (
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature,
+  productsList,
+  address,
+  totalAmount,
+  deliveryCharge
+) => ({
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature,
+  address,
+  totalAmount,
+  deliveryCharge,
+  products: productsList.map(({ productId, quantity }) => ({
+    productId,
+    quantity,
+  })),
+});

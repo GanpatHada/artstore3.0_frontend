@@ -1,4 +1,4 @@
-import React from "react";
+import { IoBagCheckOutline } from "react-icons/io5";
 import "./Checkout.css";
 import SelectAddress from "./components/select_address/SelectAddress";
 import Payment from "./components/payment/Payment";
@@ -8,6 +8,7 @@ const Checkout = () => {
     <div id="checkout-page">
       <header>
         <h1>Checkout</h1>
+        <span className="all-centered"><IoBagCheckOutline /></span>
       </header>
       <div id="checkout-page-wrapper">
         <div>

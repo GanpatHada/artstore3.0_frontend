@@ -1,57 +1,83 @@
 import rzpIcon from "../../../../images/Razorpay_logo.svg";
 import loader from "../../../../images/spinner.svg";
 import { toast } from "react-toastify";
-import { loadRazorpayScript, razorpayOptions } from "../../../../utils/PaymentHelper";
+import {
+  getVerifyPaymentParams,
+  loadRazorpayScript,
+  razorpayOptions,
+} from "../../../../utils/PaymentHelper";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../../../../hooks/useCheckout";
 import "./Payment.css";
-import { fetchCreateOrder, fetchVerifyPayment } from "../../../../services/OrderService";
-import {useUser} from '../../../../hooks/useUser'
-
+import {
+  fetchCreateOrder,
+  fetchVerifyPayment,
+} from "../../../../services/OrderService";
+import { useUser } from "../../../../hooks/useUser";
 
 const Payment = () => {
   const navigate = useNavigate();
-  const {user}=useUser()
-  const { amount,products,selectedAddress } = useCheckout();
-  console.log(products)
+  const { user,setUserDetails} = useUser();
+  const { amount, products, address } = useCheckout();
+  const deliveryCharge = amount < 500 ? 50 : 0;
+  const totalAmount = amount + deliveryCharge;
   const [loading, setLoading] = useState(false);
-  const makePayment = async (amount) => {
-    setLoading(true);
+
+
+  const createOrder = async (totalAmount) => {
     try {
-      const order = await fetchCreateOrder(amount);
-      console.log(order)
-      await handleRazorpayScreen(order.amount, order.id);
+      setLoading(true);
+      const createdOrder = await fetchCreateOrder(totalAmount);
+      return createdOrder;
     } catch (error) {
-      console.log(error)
-      toast.error(error.message || "unable to transect at the moment");
+      toast.error(error.message || "Something went wrong during order creation");
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  const getDeliveryCharge=()=>{
-      const totalPrice=products.reduce((acc,cur)=>{
-        acc=acc+cur.price;
-        return acc;
-      },0)
-      return totalPrice<500?50:0
+  const makePayment = async (totalAmount) => {
+    const order = await createOrder(totalAmount);
+    if (!order) return;
+    await handleRazorpayScreen(order.amount, order.id);
+  };
+
+  const initRazorpay = async () => {
+    try {
+      await loadRazorpayScript();
+    } catch (error) {
+      toast.error(error.message || "unable to load razorpay screeen");
+    }
   }
 
-  const handleRazorpayScreen = async (amount, orderId) => {
-    try {
-      const response = await loadRazorpayScript();
-      if (!response) return toast.error("not able to load script");
-    } catch (error) {
-      throw error;
-    }
-    const options = {
-      ...razorpayOptions,
-      order_id: orderId,
-      amount: amount,
-      handler:async function (response) {
-        await fetchVerifyPayment(user,response,selectedAddress,products,amount,getDeliveryCharge())
+  const handleRazorpayScreen = async (amount, order_id) => {
+    await initRazorpay();
 
+    const options = {
+      ...razorpayOptions, order_id, amount,
+      handler: async function (response) {
+        const verifyPaymentParams = getVerifyPaymentParams(
+          response.razorpay_order_id,
+          response.razorpay_payment_id,
+          response.razorpay_signature,
+          products,
+          address,
+          amount,
+          deliveryCharge
+        )
+        console.log(verifyPaymentParams)
+        try {
+          setLoading(true);
+          const orderDetails = await fetchVerifyPayment(user,setUserDetails,verifyPaymentParams);  
+          console.log(orderDetails)
+        } catch (error) {
+          toast.error(error.message || 'Something went wrong while finishing order')
+        }
+        finally{
+          setLoading(false)
+        }
       },
     };
     const rzp = new window.Razorpay(options);
@@ -61,33 +87,34 @@ const Payment = () => {
     if (!amount) return navigate("/cart");
   });
 
-  if(selectedAddress)
+  if (address)
     return (
-    <section id="payment-section">
-      <h2>Make Payment</h2>
-      <div id="payment-box">
-        <span id="payment-info">
-          <p>
-            Total amount to be paid : &#8377;{" "}
-            <strong>{amount?.toLocaleString("en-In")}</strong>
-          </p>
-          <i>(incl. all taxes)</i>
-        </span>
-        <div>
-          {!loading && <button id="make-payment-btn" disabled={loading} onClick={() => makePayment(amount)}>
-            Confirm payment of &#8377;{amount?.toLocaleString("en-In")}
-          </button>}
-          {loading && <img src={loader} alt="..." />}
+      <section id="payment-section">
+        <h2>Make Payment</h2>
+        <div id="payment-box">
+          <section id="payment-info">
+            <p>Total amount to be paid : &#8377;{" "}<strong>{totalAmount?.toLocaleString("en-In")}</strong></p>
+            <i>(incl. all taxes)</i>
+          </section>
+          <section id="payment-action">
+            {!loading && (
+              <button
+                id="make-payment-btn"
+                disabled={loading}
+                onClick={() => makePayment(totalAmount)}
+              >
+                Confirm payment of &#8377;{totalAmount?.toLocaleString("en-In")}
+              </button>
+            )}
+            {loading && <img src={loader} alt="..." />}
+          </section>
+          <section id="rzp-add">
+            <span>Powered by</span><img src={rzpIcon} alt="" />{" "}
+          </section>
         </div>
-        <span id="rzp-add">
-          Powered by
-          <img src={rzpIcon} alt="" />{" "}
-        </span>
-      </div>
-    </section>
-  );
-  else
-   return <></>
+      </section>
+    );
+  else return <></>;
 };
 
 export default Payment;

@@ -1,13 +1,28 @@
-import { useContext } from "react"
-import { CheckoutContext } from "../context/CheckoutContext"
-import { removeAddressAction, setAddressAction, setAmountAction, setProductsAction } from "../actions/checkoutAction";
+import { useContext } from "react";
+import { CheckoutContext } from "../context/CheckoutContext";
+import {
+  setAddressAction,
+  setProductsAction,
+  resetCheckoutAction,
+  setAmountAction,
+} from "../actions/checkoutAction";
 
-export const useCheckout=()=>{
-    const{state,dispatch}=useContext(CheckoutContext);
-    const {amount,selectedAddress,products}=state;
-    const setAddress=(addressId)=>setAddressAction(dispatch,addressId);
-    const setAmount=(amount)=>setAmountAction(dispatch,amount);
-    const removeAddress=()=>removeAddressAction(dispatch);
-    const setProducts=(products)=>setProductsAction(dispatch,products)
-    return {amount,selectedAddress,setAddress,setAmount,removeAddress,setProducts,products}
-}
+export const useCheckout = () => {
+  const { state, dispatch } = useContext(CheckoutContext);
+  const { address, products,amount} = state;
+
+  const setAddress = (address) => setAddressAction(dispatch, address);
+  const setProducts = (products) => setProductsAction(dispatch, products);
+  const setAmount = (amount) => setAmountAction(dispatch, amount);
+  const resetCheckout = () => resetCheckoutAction(dispatch);
+
+  return {
+    address,
+    products,
+    amount,
+    setAddress,
+    setProducts,
+    setAmount,
+    resetCheckout,
+  };
+};

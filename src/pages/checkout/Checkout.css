@@ -1,12 +1,33 @@
 #checkout-page{
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
-#checkout-page header{
-   text-align: center;
+#checkout-page > header{
+   align-items: center;
    padding: 1rem 0rem;
-   border-bottom: 1px solid var(--primary-border);
-   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-   
+   background-color: black;
+   color: white;  
+   display: flex;
+   justify-content: center;
+   gap: 0.5rem;
+   position: relative;
+}
+#checkout-page > header::after{
+    content: "Artstore";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    
+    
+}
+#checkout-page > header span{
+    font-size: 1.6rem;
+    color: var(--primary-color);
 }
 #checkout-page header h1{
     font-weight: 400;
@@ -15,7 +36,7 @@
 #checkout-page-wrapper{
     max-width: 1200px;
     margin: auto;
-    height: 100%;
+    flex: 1;
     
 }
 #checkout-page-wrapper >div{

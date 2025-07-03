@@ -92,13 +92,13 @@ const CartItemPrice = ({tags, discount, price, actualPrice}) => {
   );
 };
 
-const CartItem = ({ cartItem,setCartItems }) => {
+const CartItem = ({ cartItem}) => {
   const navigate = useNavigate();
   const { user, setUserDetails, removeFromCart } = useUser();
-  const [deleting,setDeleting]=useState(false)
+  const [deleting,setDeleting]=useState(false);
 
   const stockInfo = (stock) => {
-    if (stock === 0) return { color: "#cc0c39", text: "Out of stock" };
+    if (stock === 0) return { color: "#cc0c39", text: "Currently out of stock" };
     if (stock < 10)
       return { color: "#cc0c39", text: `Only ${stock} left in stock` };
     return { color: "green", text: `In stock (${stock})` };
@@ -108,8 +108,8 @@ const CartItem = ({ cartItem,setCartItems }) => {
     try {
       setDeleting(true)
       const deletedItem = await fetchDeleteFromCart(user,setUserDetails,productId);
-      setCartItems(prev => prev.filter(item => item._id !== deletedItem));
       removeFromCart(deletedItem);
+
     } catch (error) {
       toast.error(error.message || "something went wrong while deleting");
     } finally {
@@ -131,7 +131,7 @@ const CartItem = ({ cartItem,setCartItems }) => {
           {cartItem.title}
         </p>
         <p
-          style={{ color: stockInfo(cartItem.stock).color }}
+          style={{ color: stockInfo(cartItem.stock).color,fontWeight:'bold' }}
           className="stock-info"
         >
           {stockInfo(cartItem.stock).text}
@@ -140,7 +140,6 @@ const CartItem = ({ cartItem,setCartItems }) => {
         <p>{makeCapitalize(cartItem.medium)} | {makeCapitalize(cartItem.surface)}</p>
         <section className="cart-button-section">
           <QunatitySelector productId={cartItem._id} handleDeleteFromCart={handleDeleteFromCart} />
-
           <button className="secondary-text-btn" 
           onClick={() => handleDeleteFromCart(cartItem._id)}> Remove
           </button>

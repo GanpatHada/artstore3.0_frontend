@@ -10,7 +10,7 @@ import {
 import { useUser } from "../../../../hooks/useUser";
 const AddressItem = ({ address, index }) => {
   const { deleteAddress, makeAddressPrimary } = useUser();
-  const {user,setUserDetails}=useUser();
+  const { user, setUserDetails } = useUser();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -28,7 +28,11 @@ const AddressItem = ({ address, index }) => {
   const handleDeleteAddress = async () => {
     setLoading(true);
     try {
-      const deletedAddress = await fetchDeleteAddress(user,setUserDetails,_id);
+      const deletedAddress = await fetchDeleteAddress(
+        user,
+        setUserDetails,
+        _id
+      );
       deleteAddress(deletedAddress);
     } catch (error) {
       toast.error(error.message || "Unable to delete address");
@@ -40,7 +44,11 @@ const AddressItem = ({ address, index }) => {
   const setPrimaryAddress = async () => {
     setLoading(true);
     try {
-      const primaryAddressId = await fetchMakeAddressPrimary(user,setUserDetails,_id);
+      const primaryAddressId = await fetchMakeAddressPrimary(
+        user,
+        setUserDetails,
+        _id
+      );
       makeAddressPrimary(primaryAddressId);
     } catch (error) {
       toast.error(error.message || "Unable to delete address");
@@ -50,28 +58,30 @@ const AddressItem = ({ address, index }) => {
   };
 
   return (
-    <div>
+    <div className="address-box">
       {loading && <SpinLoader />}
-      {index === 0 && (
-        <section className="default-address-section">Default</section>
-      )}
-      <section className="main-address-section">
-        <strong>{receiverName}</strong>
-        <p>{`${landmark} , ${address1} , ${address2}`}</p>
-        <p>{`${city} , ${state} , ${country} , ${pinCode}`}</p>
-        <span>
-          <strong>Phone number : </strong>
-          {mobileNumber}
-        </span>
-      </section>
-      <section className="address-buttons">
-        <button onClick={() => navigate(`/my_account/address/edit/${_id}`)}>
-          Edit
-        </button>
-        <span>|</span>
-        <button onClick={handleDeleteAddress}> Remove</button>
-        <span>|</span>
-        {index !== 0 && <button onClick={setPrimaryAddress}>Set as default</button>}
+      <section className="address-info">
+        {index === 0 && <header>Default</header>}
+        <section>
+          <strong>{receiverName}</strong>
+          <p>{`${landmark} , ${address1} , ${address2}`}</p>
+          <p>{`${city} , ${state} , ${country} , ${pinCode}`}</p>
+          <span>
+            <strong>Phone number : </strong>
+            {mobileNumber}
+          </span>
+        </section>
+        <section className="address-buttons">
+          <button onClick={() => navigate(`/my_account/address/edit/${_id}`)}>
+            Edit
+          </button>
+          <span>|</span>
+          <button onClick={handleDeleteAddress}> Remove</button>
+          <span>|</span>
+          {index !== 0 && (
+            <button onClick={setPrimaryAddress}>Set as default</button>
+          )}
+        </section>
       </section>
     </div>
   );

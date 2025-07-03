@@ -5,18 +5,18 @@
 }
 #select-address-box {
   outline: 1px solid var(--primary-border);
-  padding: 1rem 0rem;
   border-radius: 0.5rem;
   position: relative;
-  overflow: hidden;
-  padding-bottom: 4rem;
-  
+  display: flex;
+  flex-direction: column;
 }
-#select-address-box h4 {
+#select-address-box header{
+  display: flex;
+  align-items: center;
+  padding: 1rem;
   border-bottom: 1px solid var(--primary-border);
-  padding-bottom: 1rem;
-  padding-left: 1rem;
 }
+
 #select-address-box .address {
   padding: 0.5rem;
   border-radius: 0.5rem;
@@ -54,7 +54,7 @@
   font-size: 0.8rem;
   display: flex;
   align-items: center;
-  margin-left: 1rem;
+  margin: 1rem;
   color: var(--secondary-color);
   font-weight: 510;
   background-color: transparent;
@@ -62,13 +62,11 @@
 #select-address-box #add-address-btn span{
   color: rgb(59, 59, 59);
   margin-right: 0.2rem;
+  display: flex;
+  align-items: center;
 }
 #select-address-box footer{
   background-color: whitesmoke;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  width: 100%;
 }
 #select-address-box footer #use-this-address{
   padding: 0.5rem 1rem;

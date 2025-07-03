@@ -5,13 +5,12 @@
 #payment-box{
     padding: 1rem;
     border: 1px solid var(--primary-border);
-}
-#payment-box div{
     display: flex;
-    align-items: center;
-    margin-top: 1rem;
+    flex-direction: column;
+    gap: 1rem;
 }
-#payment-box div img{
+
+#payment-box section img{
     height: 1.5rem;
     width: fit-content;
     margin-left: 1rem;

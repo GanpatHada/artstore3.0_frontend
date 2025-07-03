@@ -73,6 +73,14 @@ img {
   background-color: #ffd814;
   color: black;
 }
+.secondary-btn{
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+  &:hover{
+    background-color: whitesmoke;
+  }
+}
 .primary-btn.loading{
   background-color: #ffeb85;
 }

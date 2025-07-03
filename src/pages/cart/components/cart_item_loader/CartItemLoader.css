@@ -1,8 +1,13 @@
-.cart-item-loader {
+.cart-item-loader-wrapper{
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+}
+.cart-item-loader {
   height: 200px;
-  margin: 10px;
-  margin-inline: 0px;
+  
   background: linear-gradient(
     90deg,
     #e0e0e0 25%,
@@ -19,7 +24,7 @@
   content: "";
   height: 100%;
   width: 30%;
-  background-color: rgba(0, 0, 0, 0.123);
+  background-color: rgba(165, 165, 165, 0.123);
   position: absolute;
   top: 0px;
   left: 0px;

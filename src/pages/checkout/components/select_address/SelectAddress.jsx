@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import "./SelectAddress.css";
-import UserContext from "../../../../context/userContext";
 import { getAddressString } from "../../../../utils/AddressHelper";
 import { FaPlus } from "react-icons/fa";
 import { useUser } from "../../../../hooks/useUser";
@@ -50,10 +49,8 @@ const Addresses = ({ choosenAddress, setChoosenAddress }) => {
 };
 
 const SelectAddress = () => {
-  const {
-    user: { addresses },
-  } = useUser();
-  const { setAddress, selectedAddress, removeAddress } = useCheckout();
+  const {user: { addresses }} = useUser();
+  const { setAddress,address} = useCheckout();
   const navigate = useNavigate();
   const [choosenAddress, setChoosenAddress] = useState(null);
   const handleAddAddress = (e) => {
@@ -63,8 +60,9 @@ const SelectAddress = () => {
 
   const getSelectedAddressDetails = () => {
     const addressDetails = addresses.find(
-      (address) => address._id.toString() === selectedAddress.toString()
+      (ad) => ad._id.toString() === address.toString()
     );
+    console.log(addressDetails)
     return getAddressString(addressDetails);
   };
 
@@ -76,8 +74,11 @@ const SelectAddress = () => {
     <section id="select-address-section">
       <h2>Select Delivery Address</h2>
       <div id="select-address-box">
-        <h4>{selectedAddress ? "Deliver to this address" : "Your Addresses"}</h4>
-        {selectedAddress ?  <p className="selected-address-text">{getSelectedAddressDetails()}</p>
+        <header>
+          <h4>{address ? "Deliver to this address" : "Your Addresses"}</h4>
+        </header>
+        <main>
+          {address ?  <p className="selected-address-text">{getSelectedAddressDetails()}</p>
          : 
           <>
             {addresses.length > 0 && (
@@ -91,12 +92,13 @@ const SelectAddress = () => {
             </button>
           </>
         }
+        </main>
         <footer>
-          {selectedAddress ? (
+          {address ? (
             <button
               id="use-this-address"
               className="primary-btn"
-              onClick={removeAddress}
+              onClick={()=>setAddress(null)}
             >
               Change
             </button>

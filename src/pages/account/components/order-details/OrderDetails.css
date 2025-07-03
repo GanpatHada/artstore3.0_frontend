@@ -1,0 +1,47 @@
+#order-details{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#order-details header h1{
+    font-weight: normal;
+    font-size: 1.75rem;
+}
+#order-details header div{
+    display: flex;
+    gap: 2rem;
+    font-size: 0.9rem;
+}
+#order-details > main{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#order-info{
+    border: 1px solid var(--primary-border);
+    display: flex;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+#order-info > div{
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+#order-info > div h5{
+    font-size: 0.9rem;
+}
+#order-info > div p{
+    font-size: 0.85rem;
+}
+#order-info > div:last-child p{
+    display: flex;
+    gap: 3rem;
+    justify-content: space-between;
+}
+#order-info > div:last-child p span::before{
+    content: "\20B9";
+}

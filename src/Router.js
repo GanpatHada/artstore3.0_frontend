@@ -12,7 +12,6 @@ import Cart from "./pages/cart/Cart";
 import Wishlist from "./pages/wishlist/Wishlist";
 import ProductDetails from "./pages/product_details/ProductDetails";
 import Checkout from "./pages/checkout/Checkout";
-import Order from "./pages/order/Order";
 import SellerHome from "./pages/seller_home/SellerHome";
 import PageNotFound from "./pages/page-not-found/PageNotFound";
 import MyProfile from "./pages/account/components/my-profile/MyProfile";
@@ -22,6 +21,7 @@ import Review from "./pages/review/Review";
 import ProductDetailsLayout from "./pages/product_details/ProductDetailsLayout";
 import PublicRoute from "./components/public-route/PublicRoute";
 import { CartProvider } from "./context/CartContext";
+import PaymentSuccess from "./pages/payment-success/PaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +41,13 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/checkout", element: (
+      <PrivateRoute>
+        <Checkout />
+      </PrivateRoute>
+    ),
+  },
+  {
     path: "/",
     element: <App />,
     errorElement: <Error />,
@@ -49,8 +56,7 @@ const router = createBrowserRouter([
       { path: "/seller", element: <SellerHome /> },
       { path: "/products", element: <Products /> },
       {
-        path: "/products/:productId",
-        element: <ProductDetailsLayout />,
+        path: "/products/:productId", element: <ProductDetailsLayout />,
         children: [
           {
             index: true,
@@ -72,7 +78,7 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <CartProvider>
-            <Cart />
+              <Cart />
             </CartProvider>
           </PrivateRoute>
         ),
@@ -117,24 +123,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/checkout",
+        path: "/payment-success",
         element: (
           <PrivateRoute>
-            <Checkout />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/payment-success/:razorpay_order_id/:razorpay_payment_id/:razorpay_signature",
-        element: (
-          <PrivateRoute>
-            <Order />
+            <PaymentSuccess/>
           </PrivateRoute>
         ),
       },
     ],
   },
-
   { path: "*", element: <PageNotFound /> },
 ]);
 

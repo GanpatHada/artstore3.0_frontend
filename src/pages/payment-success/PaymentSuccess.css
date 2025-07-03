@@ -1,0 +1,25 @@
+#payment-success-page{
+    flex: 1;
+    background-color: white;
+    padding: 1.5rem;
+}
+
+#payment-success-wrapper{
+    box-shadow: 0 0 0px 3px rgba(0, 128, 0, 0.212);
+    border-radius: 5px;
+    padding: 15px;
+} 
+#payment-success-wrapper h3{
+    display: flex;
+    align-items: center;
+    color: rgb(0, 155, 0);
+    gap: 0.35rem;
+}
+#payment-success-wrapper p{
+    position: relative;
+    left: 2rem;
+    font-size: 0.9rem;
+}
+#payment-success-wrapper h3 span{
+    font-size: 1.75rem;
+}

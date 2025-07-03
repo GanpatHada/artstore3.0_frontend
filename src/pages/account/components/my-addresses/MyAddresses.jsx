@@ -7,14 +7,12 @@ import { useUser } from "../../../../hooks/useUser";
 
 const AddAddressButton = () => {
   return (
-    <div >
-      <Link className="all-centered" to="/my_account/address/add">
-        <span>
+      <Link className="all-centered" id="add-address" to="/my_account/address/add">
+        <span className="all-centered">
           <FaPlus />
         </span>
         <p>Add Address</p>
       </Link>
-    </div>
   );
 };
 
