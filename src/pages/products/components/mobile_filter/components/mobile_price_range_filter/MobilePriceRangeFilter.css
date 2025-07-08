@@ -1,0 +1,15 @@
+#mobile-price-range-filter main{
+   background-color: whitesmoke;
+   border-radius: 0.5rem;
+   display: flex;
+   flex-direction: column;
+}
+#mobile-price-range-filter h5{
+   padding: 1rem;
+   font-size: 1rem;
+}
+#mobile-price-range-filter #price-selector{
+   padding-inline: 2rem;
+   padding-bottom: 1rem;
+}
+

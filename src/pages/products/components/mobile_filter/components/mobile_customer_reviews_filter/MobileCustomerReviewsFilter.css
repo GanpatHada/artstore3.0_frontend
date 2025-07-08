@@ -1,0 +1,25 @@
+
+#mobile-customer-reviews-filter main{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#mobile-customer-reviews-filter main .option{
+    display: flex;
+    font-size: 1rem;
+    align-items: center;
+    border: 1px solid var(--primary-border);
+    padding: 0.5rem 0.75rem;
+    width: fit-content;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+#mobile-customer-reviews-filter main .option.selected{
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    background-color: rgb(240, 251, 255);
+}
+#mobile-customer-reviews-filter main .option span{
+    font-size: 0.8rem;
+}

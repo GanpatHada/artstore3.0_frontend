@@ -22,6 +22,7 @@ import ProductDetailsLayout from "./pages/product_details/ProductDetailsLayout";
 import PublicRoute from "./components/public-route/PublicRoute";
 import { CartProvider } from "./context/CartContext";
 import PaymentSuccess from "./pages/payment-success/PaymentSuccess";
+import OrderDetails from "./pages/account/components/order-details/OrderDetails";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,8 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/checkout", element: (
+    path: "/checkout",
+    element: (
       <PrivateRoute>
         <Checkout />
       </PrivateRoute>
@@ -54,9 +56,18 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/seller", element: <SellerHome /> },
+      {
+        path: "/payment-success",
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+        ),
+      },
       { path: "/products", element: <Products /> },
       {
-        path: "/products/:productId", element: <ProductDetailsLayout />,
+        path: "/products/:productId",
+        element: <ProductDetailsLayout />,
         children: [
           {
             index: true,
@@ -105,6 +116,14 @@ const router = createBrowserRouter([
           { path: "orders", element: <MyOrders /> },
         ],
       },
+      {
+        path: "/my_account/orders/order_details",
+        element: (
+          <PrivateRoute>
+            <OrderDetails />
+          </PrivateRoute>
+        ),
+      },
 
       {
         path: "/my_account/address/add",
@@ -122,16 +141,9 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "/payment-success",
-        element: (
-          <PrivateRoute>
-            <PaymentSuccess/>
-          </PrivateRoute>
-        ),
-      },
     ],
   },
+
   { path: "*", element: <PageNotFound /> },
 ]);
 

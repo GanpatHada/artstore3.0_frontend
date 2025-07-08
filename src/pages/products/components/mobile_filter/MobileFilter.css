@@ -1,0 +1,117 @@
+#mobile-filter-layover {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.281);
+  z-index: 10;
+  overflow: hidden;
+}
+
+#mobile-filter {
+  height: 80%;
+  background-color: lightgray;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: slide-up 0.35s ease-out 0s 1 forwards;
+  transform: translateY(-80%);
+}
+
+#filter-heading {
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  border-right: 1px solid var(--primary-border);
+  flex: 0.25;
+}
+#filter-heading button {
+  background-color: transparent;
+  display: flex;
+  justify-content: start;
+  padding: 1rem;
+  color: rgb(51, 51, 51);
+  position: relative;
+  border-bottom: 1px solid var(--primary-border);
+}
+#filter-heading button.selected {
+  background-color: white;
+  font-weight: bold;
+  color: var(--secondary-color);
+  position: relative;
+}
+#filter-heading button.selected::after{
+  content: "";
+  height: 100%;
+  width: 5px;
+  background-color: var(--secondary-color);
+  position: absolute;
+  inset: 0;
+}
+
+#mobile-filter > * {
+  display: flex;
+  background-color: white;
+}
+#mobile-filter > header {
+  padding: 0.75rem;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgray;
+}
+#mobile-filter > header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+#mobile-filter > header h2 span{  
+  display: flex;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: rgb(179, 0, 0);
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.75rem;
+  color: white;
+  font-size: 0.9rem;
+}
+#mobile-filter > header > button {
+  font-size: 1.5rem;
+  background-color: transparent;
+}
+#mobile-filter > footer {
+  padding: 0.75rem;
+  justify-content: space-between;
+  border-top: 1px solid lightgray;
+  align-items: center;
+}
+#mobile-filter > footer > button {
+  padding: 0.5rem;
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 1px solid var(--primary-border);
+  border-radius: 0.5rem;
+}
+#mobile-filter main {
+  flex: 1;
+}
+
+#filter-content {
+  padding: 1rem;
+  flex: 1;
+}
+#filter-content > section{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(80%);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}

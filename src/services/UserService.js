@@ -233,6 +233,25 @@ export async function fetchUserLogout(user,setUserDetails) {
   }
 }
 
+export async function fetchUserOrders(user,setUserDetails){
+  try {
+    let data=await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/orders`,
+      {
+        method:"GET",
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }
+    )
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export function fetchAddProductToViewedItems(product) {
   const STORAGE_KEY = "viewedProducts";
   const MAX_ITEMS = 4;

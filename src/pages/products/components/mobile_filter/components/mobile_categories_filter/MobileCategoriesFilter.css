@@ -1,0 +1,21 @@
+#mobile-categories-filter main{
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+#mobile-categories-filter .category{
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--primary-border);
+    border-radius: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+#mobile-categories-filter .category.selected{
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    background-color: rgb(240, 251, 255);
+}

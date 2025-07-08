@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Categories",
+    "options": ["MADHUBANI", "MINIATURE", "PHAD", "WARLI"]
+  },
+  {
+    "name": "Customer Reviews",
+    "options": [5, 4, 3, 2, 1]
+  },
+  {
+    "name": "Price Range",
+    "options": null
+  },
+  {
+    "name": "Sort By",
+    "options": [
+      "PRICE_LOW_TO_HIGH",
+      "PRICE_HIGH_TO_LOW",
+      "TOP_RATINGS",
+      "MAXIMUM_DISCOUNT"
+    ]
+  }
+]

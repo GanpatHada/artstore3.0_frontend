@@ -1,3 +1,36 @@
+export const isPriceRangeFilterApplied = (priceRange) => {
+  return priceRange[0] !== 0 || priceRange[1] !== 10000;
+};
+
+
+export const isCategoryFilterApplied=(categories)=>{
+  return categories.length!==0
+}
+
+export const isRatingFilterApplied=(ratings)=>{
+  return ratings!==null;
+}
+
+export const isSortByFilterApplied=(sortBy)=>{
+  return sortBy!==null;
+}
+
+export const getAppliedFilters = ({ priceRange, categories, ratings, sortBy }) => {
+  const applied = {
+    priceRange: isPriceRangeFilterApplied(priceRange),
+    categories: isCategoryFilterApplied(categories),
+    ratings: isRatingFilterApplied(ratings),
+    sortBy: isSortByFilterApplied(sortBy),
+  };
+
+  const appliedFilters = Object.keys(applied).filter(key => applied[key]);
+
+  return {
+    count: appliedFilters.length,
+    filters: appliedFilters,
+  };
+};
+
 const getMaximumRange = (range) => {
   if (range === 10000) return Infinity;
   return range;

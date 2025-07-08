@@ -39,7 +39,7 @@ const Account = () => {
           <NavLink
             to={"/my_account/profile"}
             className={({ isActive }) => {
-              return isActive ? "nav-active-box" : "nav-default-box";
+              return isActive ? "nav-active-box" : "nav-default-box" ;
             }}
           >
             

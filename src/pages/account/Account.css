@@ -22,9 +22,7 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
-#account-navs img {
-  height: 4rem;
-}
+
 #signout-button {
   height: fit-content;
   padding: 0.3rem 0.5rem;
@@ -41,6 +39,37 @@
   }
 }
 
+#account-navs > a{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border: 2px solid transparent;
+  gap: 1rem;
+  background-color: rgba(245, 245, 245, 0.5);
+  border: 1px solid var(--primary-border);
+  border-radius: 0.5rem;
+  &:hover{
+    background-color: whitesmoke;
+  }
+}
+#account-navs > a.nav-active-box{
+  border: 1px solid var(--primary-color);
+}
+#account-navs > a div{
+  flex: 1;
+
+}
+#account-navs > a div:first-child{
+  overflow: hidden;
+  min-width: 20px;
+  flex: 0.25;
+}
+
+#account-navs > a div p{
+  font-size: 0.9rem;
+}
+
 .breadcrumbs {
   font-size: 0.8rem;
 }
@@ -51,56 +80,9 @@
   color: var(--primary-color);
 }
 
-#account-page a {
-  border-radius: 0.5rem;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  flex: 1;
-  display: flex;
-  gap: 0.5rem;
-}
-#account-page a > div{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
 
-
-#account-page a > div > div:last-child {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#account-page a.active {
-  border: 2px solid var(--primary-color);
-}
-#account-page a:hover {
-  background-color: whitesmoke;
-}
-#account-page .nav-active-box {
-  outline: 2px solid var(--primary-color);
-}
-#account-page .nav-default-box {
-  outline: 1px solid var(--primary-border);
-}
-#account-page a p {
-  color: #565959;
-  font-size: 0.8rem;
-  margin-top: 0.3rem;
-}
 
 @media only screen and (max-width: 576px) {
 
-  #account-page a img {
-    height:2.5rem;
-  }
-  #account-page a p{
-    margin-top: 0.2rem;
-  }
-  
-  #account-navs{
-    flex-direction: column;
-  }
   
 }

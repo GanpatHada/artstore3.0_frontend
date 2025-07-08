@@ -1,0 +1,22 @@
+#mobile-sort-by-filter main{
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+#mobile-sort-by-filter main .sort-by-option{
+    border: 1px solid var(--primary-border);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    background-color: transparent;
+}
+
+#mobile-sort-by-filter main .sort-by-option.selected{
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    background-color: rgb(240, 251, 255);
+}

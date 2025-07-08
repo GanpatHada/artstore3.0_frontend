@@ -1,13 +1,16 @@
 #payment-success-page{
     flex: 1;
     background-color: white;
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 #payment-success-wrapper{
-    box-shadow: 0 0 0px 3px rgba(0, 128, 0, 0.212);
-    border-radius: 5px;
+    border-bottom: 1px solid green;
     padding: 15px;
+    background-color: #dcffdc;
+   
 } 
 #payment-success-wrapper h3{
     display: flex;
