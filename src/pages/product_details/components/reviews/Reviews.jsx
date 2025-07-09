@@ -4,7 +4,7 @@ import { useProductDetails } from "../../../../hooks/useProductDetails";
 import { useUser } from "../../../../hooks/useUser";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
-import { formatteDate } from "../../../../utils/ProductHelper";
+import { arrangeReviews, formatteDate } from "../../../../utils/ProductHelper";
 import { fetchDeleteReview } from "../../../../services/ProductService";
 import { toast } from "react-toastify";
 import { useState } from "react";
@@ -16,8 +16,6 @@ const Review = ({ review, productId }) => {
   const { user, setUserDetails } = useUser();
   const { deleteReview } = useProductDetails();
   const navigate = useNavigate();
-
-  console.log(review)
 
   const handleDeleteReview = async (reviewId) => {
     try {
@@ -75,13 +73,12 @@ const Review = ({ review, productId }) => {
 };
 
 const Reviews = () => {
-  const {
-    productDetails: { reviews, _id },
-  } = useProductDetails();
+  const {productDetails: { reviews, _id }} = useProductDetails();
+  const {user}=useUser()
   return (
     <section id="reviews-section">
       <h3>Top Reviews</h3>
-      {reviews.map((review) => {
+      {arrangeReviews(reviews,user?._id).map((review) => {
         return <Review key={review._id} review={review} productId={_id} />;
       })}
     </section>

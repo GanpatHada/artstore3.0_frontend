@@ -95,38 +95,39 @@ export async function fetchMinimumFiftyOffProducts(){
   }
 }
 
-export async function fetchAddReview(user,setUserDetails,productId,review) {
-  try {
-    let data = await secureFetch(
-      user,
-      setUserDetails,
-      `${BACKEND_BASE_URL}/products/${productId}/reviews`,
-      {
-        method: "POST",
-        body:JSON.stringify(review)
-      }
-    );
-    return data;
-  } catch (error) {
-    throw error;
-  }
+export async function fetchAddReview(user, setUserDetails, productId, review) {
+  const data = await secureFetch(
+    user,
+    setUserDetails,
+    `${BACKEND_BASE_URL}/products/${productId}/reviews`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(review),
+    }
+  );
+  return data;
 }
-export async function fetchEditReview(user,setUserDetails,productId,reviewId,review) {
-  try {
-    let data = await secureFetch(
-      user,
-      setUserDetails,
-      `${BACKEND_BASE_URL}/products/${productId}/reviews/${reviewId}`,
-      {
-        method: "PATCH",
-        body:JSON.stringify(review)
-      }
-    );
-    return data;
-  } catch (error) {
-    throw error;
-  }
+
+export async function fetchEditReview(user, setUserDetails, productId, reviewId, review) {
+  const data = await secureFetch(
+    user,
+    setUserDetails,
+    `${BACKEND_BASE_URL}/products/${productId}/reviews/${reviewId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(review),
+    }
+  );
+  return data;
 }
+
+
 export async function fetchDeleteReview(user,setUserDetails,productId,reviewId) {
   try {
     let data = await secureFetch(

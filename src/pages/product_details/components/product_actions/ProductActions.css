@@ -42,10 +42,9 @@
   font-size: 0.9rem;
   color: var(--secondary-color);
 }
-#in-stock-text{
-    color: green;
-    font-size: 0.9rem;
-   
+#stock-text{
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 #free-delivery-text{
   font-size: 0.9rem;

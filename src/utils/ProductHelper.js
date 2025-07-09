@@ -1,18 +1,3 @@
-export function calculateOffPrice(discountInPercent, actualPrice) {
-  return Math.floor((actualPrice / 100) * discountInPercent);
-}
-
-export function calculatePrice(discountInPercent, actualPrice) {
-  return actualPrice - calculateOffPrice(discountInPercent, actualPrice);
-}
-
-export function calculateAverageRating(ratings) {
-  const sumOfRatings = ratings.reduce((acc, cur) => {
-    return (acc = acc + cur.rating);
-  }, 0);
-  return sumOfRatings / ratings.length;
-}
-
 export function makeStarArray(ratingCount){
     const starArray=[];
     for(let i=0;i<5;i++)
@@ -29,11 +14,29 @@ export function makeStarArray(ratingCount){
 }
 
 export const formatteDate = (date) => {
-    let formattedDate = new Date(date);
-    formattedDate = formattedDate.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
-    return formattedDate;
-  };
+  const formattedDate = new Date(date);
+
+  const datePart = formattedDate.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
+  const timePart = formattedDate.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return `${datePart}, ${timePart}`;
+};
+
+
+export const arrangeReviews = (reviews, userId) => {
+  const userReview = reviews.find((review) => review.user?._id === userId);
+  const otherReviews = reviews
+    .filter((review) => review.user?._id !== userId)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  return userReview ? [userReview, ...otherReviews] : otherReviews;
+};

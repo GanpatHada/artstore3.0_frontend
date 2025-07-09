@@ -1,49 +1,39 @@
-
 import "./Ratings.css";
 import StarsCreator from "../../../../components/stars_creator/StarsCreator";
 import {
-  getRatingPercentage,
-  getRatingsFrequency,
+  ratingCount,
 } from "../../../../utils/ProductDetailsHelper";
 import { useProductDetails } from "../../../../hooks/useProductDetails";
 
-const ratingMap = [
-  { number: 5, numberName: "FIVE" },
-  { number: 4, numberName: "FOUR" },
-  { number: 3, numberName: "THREE" },
-  { number: 2, numberName: "TWO" },
-  { number: 1, numberName: "ONE" }
-]
 
-const RatingCount = ({ ratingInName, ratingInNumber }) => {
-  const {
-    productDetails: { reviews },
-  } = useProductDetails();
-  const ratingsFrequency = getRatingsFrequency(reviews);
-  const handleRatingPercentage = (percentType) => {
-    return getRatingPercentage(percentType, ratingsFrequency, reviews.length);
-  };
+const RatingCount = ({ rating, count, total }) => {
+  const percentage = total === 0 ? 0 : ((count / total) * 100).toFixed(0); 
+
   return (
     <>
-      <span>{ratingInNumber} star</span>
+      <span>{rating} star</span>
       <div className="rate-graph">
         <div
           className="rate-graph-progress"
           style={{
-            width: `${handleRatingPercentage(ratingInName)}%`,
+            width: `${percentage}%`,
           }}
         ></div>
       </div>
-      <span>{handleRatingPercentage(ratingInName)}%</span>
+      <span>{percentage}%</span>
     </>
   );
 };
+
 
 const Ratings = () => {
   const {
     productDetails: { averageRatings, reviews },
   } = useProductDetails();
 
+  const ratingMap = ratingCount(reviews); 
+
+  console.log(ratingMap)
   return (
     <section id="ratings-section">
       <h3>Ratings</h3>
@@ -53,18 +43,15 @@ const Ratings = () => {
       </span>
       <span id="global-ratings">{reviews.length} global ratings</span>
       <div id="ratings-graph">
-        {ratingMap.map((rating, index) => {
-          return (
-            <RatingCount
-              key={index}
-              ratingInNumber={rating.number}
-              ratingInName={rating.numberName}
-            />
-          );
-        })}
+        {Object.keys(ratingMap)
+          .sort((a, b) => b - a)
+          .map((rating) => (
+            <RatingCount key={rating} rating={+rating} count={ratingMap[rating]} total={reviews.length} />
+          ))}
       </div>
     </section>
   );
 };
 
 export default Ratings;
+

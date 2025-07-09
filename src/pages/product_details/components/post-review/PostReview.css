@@ -17,6 +17,11 @@
     border-radius: 1rem;
 }
 
+#post-review button:disabled{
+    background-color: rgb(212, 212, 212);
+    color: gray;
+}
+
 @media screen and (max-width:768px)
 {
  #post-review  {

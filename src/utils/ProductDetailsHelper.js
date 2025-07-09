@@ -1,19 +1,20 @@
-export function getRatingsFrequency(reviews) {
-  const ratingsFrequency = reviews.reduce(
-    (acc, cur) => {
-      if (cur.rating === 1) return { ...acc, ONE: acc.ONE + 1 };
-      if (cur.rating === 2) return { ...acc, TWO: acc.TWO + 1 };
-      if (cur.rating === 3) return { ...acc, THREE: acc.THREE + 1 };
-      if (cur.rating === 4) return { ...acc, FOUR: acc.FOUR + 1 };
-      if (cur.rating === 5) return { ...acc, FIVE: acc.FIVE + 1 };
-      return { ...acc };
-    },
-    { ONE: 0, TWO: 0, THREE: 0, FOUR: 0, FIVE: 0 }
-  );
-  return ratingsFrequency;
+export const ratingCount =(reviews)=> {
+  const ratingCount=reviews.reduce((acc, curr) => {
+  const rating = curr.rating;
+  acc[rating] = (acc[rating] || 0) + 1;
+  return acc;
+}, {});
+
+for (let i = 1; i <= 5; i++) {
+  if (!ratingCount[i]) ratingCount[i] = 0;
+}
+
+return ratingCount
 }
 
 
-export function getRatingPercentage(percentCountInWords,ratingsFrequency,totalRatings){
-   return Math.round((ratingsFrequency[percentCountInWords]/totalRatings)*100)
-}
+export const calculateAverageRating = (reviews) => {
+  if (!reviews || reviews.length === 0) return 0;
+  const total = reviews.reduce((acc, review) => acc + review.rating, 0);
+  return parseFloat((total / reviews.length).toFixed(1));
+};
