@@ -1,10 +1,14 @@
-#profile-box > p{
-    color: gray;
-    font-size: 0.9rem;
+#profile-box{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 #profile-content{
-    border: 1px solid var(--primary-border);
-    margin-top: 2rem;
+    border: 2px dashed var(--primary-border);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #profile-content > section{
     padding: 1rem;

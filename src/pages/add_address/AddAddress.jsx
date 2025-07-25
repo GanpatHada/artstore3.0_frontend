@@ -1,12 +1,11 @@
-import React, { useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import "./AddAddress.css";
 import { toast } from "react-toastify";
 import {
-  getAddressMode,
   getAutoLocation,
   getRequiredAddress,
 } from "../../utils/AddressHelper";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { makeCapitalize } from "../../utils/GlobalUtils";
 import SpinLoader from "../../components/spin-loader/SpinLoader";
 import { useUser } from "../../hooks/useUser";
@@ -14,18 +13,16 @@ import {
   addressReducer,
   initialAddressState,
 } from "../../reducers/AddressReducer";
-import { fetchAddAddress, fetchEditAddress } from "../../services/UserService";
+import { fetchAddAddress, fetchEditAddress,} from "../../services/UserService";
 
 const AddAddress = () => {
-  const { pathname } = useLocation();
-  const getMode = getAddressMode(pathname);
-  const { addressId } = useParams();
+  const {action,addressId } = useParams();
   const {user,addAddress,editAddress,setUserDetails} = useUser();
   const {addresses, fullName, phone}=user;
   const navigate = useNavigate();
 
   const getInitialAddressState = () => {
-    if (getMode === "EDIT") return getRequiredAddress(addresses, addressId);
+    if (action === "edit") return getRequiredAddress(addresses, addressId);
     return initialAddressState;
   };
 
@@ -75,17 +72,17 @@ const AddAddress = () => {
     return empty;
   };
 
-  const handleAddOrEditAddress = async () => {
+  const handleAddOreditAddress = async () => {
     if (fieldsEmpty())
       return toast.warning(`* Fields are required`);
     setLoading(true);
     try {
-      if (getMode === "ADD") {
+      if (action === "add") {
         const address = await fetchAddAddress(user,setUserDetails,state);
         addAddress(address);
         toast.success("Address added successfully");
       }
-      if (getMode === "EDIT") {
+      if (action === "edit") {
         const address = await fetchEditAddress(user,setUserDetails,addressId, state);
         editAddress(address)
         toast.success("Address edited successfully");
@@ -102,9 +99,9 @@ const AddAddress = () => {
       <div id="add-address-box">
         {loading && <SpinLoader />}
         <p>
-          My Account {">"} Address {">"} <span>{makeCapitalize(getMode)}</span>
+          My Account {">"} Address {">"} <span>{makeCapitalize(action)}</span>
         </p>
-        <h4>{makeCapitalize(getMode)} Address</h4>
+        <h4>{makeCapitalize(action)} Address</h4>
         <p className="alert">feild with asterisk * are required</p>
         <div id="auto-fill-location">
           <strong>
@@ -220,10 +217,10 @@ const AddAddress = () => {
           <button
             className="primary-btn all-centered"
             id="address-button"
-            onClick={handleAddOrEditAddress}
+            onClick={handleAddOreditAddress}
             disabled={loading}
           >
-           {loading ?getMode==='ADD'?'Adding ...':'Updating ...':<span>{makeCapitalize(getMode)} Address</span>}
+           {loading ?action==='ADD'?'Adding ...':'Updating ...':<span>{makeCapitalize(action)} Address</span>}
           </button>
         </form>
       </div>

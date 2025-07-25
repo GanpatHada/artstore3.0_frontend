@@ -12,11 +12,11 @@ const OrderItem = ({orderItem}) => {
         />
       </section>
       <section className="info-section">
-        <Link to={()=>navigate(`/products/${product}`)}>{name}</Link>
+        <Link to={`/products/${product}`}>{name}</Link>
       </section>
       <section className="action-section">
         <button className="secondary-btn">Write Review</button>
-        <Link to={()=>navigate(`/products/${product}`)}><button className="secondary-btn">View your product</button></Link>
+        <Link to={`/products/${product}`}><button className="secondary-btn">View your product</button></Link>
       </section>
     </div>
   );

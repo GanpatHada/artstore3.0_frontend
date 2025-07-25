@@ -1,108 +1,159 @@
-import React, {useState } from "react";
+import {useState } from "react";
 import "./Product.css";
 import {
   fetchAddToCart,
   fetchAddToWishlist,
 } from "../../../../services/UserService";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import SpinLoader from "../../../../components/spin-loader/SpinLoader";
 import { useUser } from "../../../../hooks/useUser";
 import StarsCreator from "../../../../components/stars_creator/StarsCreator";
-const Product = ({
-  productData: {
-    _id,
-    productImages,
-    title,
-    price,
-    discount,
-    category,
-    actualPrice,
-    tags,
-    averageRatings,
-  },
-}) => {
-  const [waiting, setWaiting] = useState(false);
+import { makeCapitalize } from "../../../../utils/GlobalUtils";
+
+const ProductImage = ({ productData }) => {
+  const productImage = productData?.productImages[0];
+  return (
+    <section
+      style={{ backgroundImage: `url(${productImage})`}}
+      className="product-image-section"
+    ></section>
+  );
+};
+
+
+const ProductInfo = ({ productData }) => {
+  return (
+    <section className="product-info-section">
+      <div>
+        <strong className="product-category">{productData?.category}</strong>
+        <h4>{productData?.title}</h4>
+      </div>
+      <div className="ratings">
+        <StarsCreator starsCount={productData?.averageRatings} />
+      </div>
+      {productData?.tags.length > 0 && (
+        <div className="tag">{makeCapitalize(productData?.tags[0])}</div>
+      )}
+      <h3 id="price">{productData?.price.toLocaleString()}</h3>
+      {productData?.discount > 0 && (
+        <span className="mrp">
+          M.R.P : <strike>{productData?.actualPrice}</strike> (
+          {`${productData?.discount}% off`})
+        </span>
+      )}
+    </section>
+  );
+};
+
+const AddtoCartButton = ({ processing, setProcessing, productData }) => {
+  const { _id: productId } = productData;
+  const location = useLocation();
   const navigate = useNavigate();
-  const{user,userLoading,addToCart,addToWishlist,setUserDetails}=useUser()
+  const { user, userLoading, addToCart, setUserDetails } = useUser();
+  const isInCart = user?.cart.find(
+    (cartItem) => cartItem.product === productId
+  );
 
-  
+  const handleAddToCart = async (e) => {
+    e.stopPropagation()
+    if (!user) return navigate("/login", { state: { from: location } });
+    if (isInCart) return navigate("/cart");
+    try {
+      setProcessing(true);
+      const addedCartItem = await fetchAddToCart(
+        user,
+        setUserDetails,
+        productId
+      );
+      addToCart(addedCartItem);
+      toast.success("Product has been added to cart");
+    } catch (error) {
+      toast.error(error.message || "something went wrong while adding to cart");
+    } finally {
+      setProcessing(false);
+    }
+  };
 
-  const handleAddToCart = async(e,productId) => {
+  const isAvailableInCart = () =>
+    user?.cart.find((cartItem) => cartItem.product === productId);
+  return (
+    <button
+      className="primary-btn add-to-cart"
+      data-loading={processing}
+      disabled={userLoading}
+      onClick={handleAddToCart}
+    >
+      {!isAvailableInCart() ? "Add to cart" : "Go to cart"}
+    </button>
+  );
+};
+
+const AddtoWishlistButton = ({ setProcessing, productData }) => {
+  const { user, addToWishlist, setUserDetails } = useUser();
+  const navigate = useNavigate();
+  const handleAddToWishlist = async (e, productId) => {
     e.stopPropagation();
     if (!user) return navigate("/login");
-    if(isAvailableInCart(productId)) return navigate("/cart");
+    if (isAvailableInWishlist(productId)) return navigate("/wishlist");
     try {
-      setWaiting(true);
-      const addedCartItem = await fetchAddToCart(user,setUserDetails,productId); 
-      addToCart(addedCartItem);
-      toast.success('Product has been added to cart')
+      setProcessing(true);
+      const addedWishlistItem = await fetchAddToWishlist(
+        user,
+        setUserDetails,
+        productId
+      );
+      addToWishlist(addedWishlistItem);
+      toast.success("Product has been added to wishlist");
     } catch (error) {
-      toast.error(error.message ||"something went wrong while adding to cart");
+      toast.error(
+        error.message || "something went wrong while adding to wishlist"
+      );
     } finally {
-      setWaiting(false);
-    }
-  };
-  const handleAddToWishlist = async(e,productId) => {
-    e.stopPropagation()
-    if (!user) return navigate("/login");
-    if(isAvailableInWishlist(productId)) return navigate("/wishlist")
-    try {
-      setWaiting(true);
-      const addedWishlistItem = await fetchAddToWishlist(user,setUserDetails,productId);
-      addToWishlist(addedWishlistItem)
-      toast.success('Product has been added to wishlist')
-    } catch (error) {
-      toast.error(error.message || "something went wrong while adding to wishlist");
-    }
-    finally{
-      setWaiting(false)
+      setProcessing(false);
     }
   };
 
-
-  
-  const isAvailableInCart = (productId) => {
-    return user?.cart.find((product=>product.product===productId));
-  };
-
-  const isAvailableInWishlist=(productId)=>{
+  const isAvailableInWishlist = (productId) => {
     return user?.wishlist.includes(productId);
-  }
-
+  };
+  const { _id } = productData;
   return (
-    <div className="product" onClick={()=>navigate(`/products/${_id}`)}>
-      {waiting && <SpinLoader />}
-      <section className="product-image-section">
-        <img src={productImages[0]} alt="N/A" />
-      </section>
-      <section className="product-info-section">
-        <div>
-          <h4>{title}</h4>
-        <strong className="product-category">{category}</strong>
-        </div>
-        <div className="ratings">
-          <StarsCreator starsCount={averageRatings}/>
-        </div>
-       {tags.length>0&&<div className="tag">{tags[0]}</div>}
-        <h3 id="price">{price.toLocaleString()}</h3>
-        {discount > 0 && (
-          <span className="mrp">
-            M.R.P : <strike>{actualPrice}</strike> ({`${discount}% off`})
-          </span>
-        )}
-        {user && !userLoading && <section className="product-button-section">
-          <button
-            className="primary-btn add-to-cart"
-            onClick={(e) => handleAddToCart(e,_id)}
-          >
-            {!isAvailableInCart(_id) ? "Add to cart" : "Go to cart"}
-          </button>
-          <button className="add-to-wishlist" onClick={(e)=>handleAddToWishlist(e,_id)}>
-           {!isAvailableInWishlist(_id)?"Add":"Go"} to Wishlist
-            </button>
-        </section>}
-      </section>
+    <button
+      className="secondary-btn"
+      data-loading={false}
+      disabled={true}
+      onClick={(e) => handleAddToWishlist(e, _id)}
+    >
+      {!isAvailableInWishlist(_id) ? "Add" : "Go"} to Wishlist
+    </button>
+  );
+};
+
+const ProductAction = ({ productData, setProcessing, processing }) => {
+  return (
+    <section className="product-button-section">
+      <AddtoCartButton
+        setProcessing={setProcessing}
+        processing={processing}
+        productData={productData}
+      />
+      <AddtoWishlistButton
+        processing={processing}
+        setProcessing={setProcessing}
+        productData={productData}
+      />
+    </section>
+  );
+};
+
+const Product = ({ productData, view }) => {
+  const [processing, setProcessing] = useState(false);
+  const navigate=useNavigate()
+  return (
+    <div className={`product ${view.toLowerCase()}`} onClick={()=>navigate(`${productData?._id}`)}>
+      <ProductImage productData={productData} />
+      <ProductInfo processing={processing} setProcessing={setProcessing} productData={productData} />
+      <ProductAction processing={processing} setProcessing={setProcessing} productData={productData} />
     </div>
   );
 };

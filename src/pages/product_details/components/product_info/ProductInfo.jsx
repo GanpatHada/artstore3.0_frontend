@@ -87,9 +87,26 @@ const BankOffers = () => {
 };
 
 const RatingsPopup = () => {
-  return <div id="ratings-popup">
-    <Ratings/>
-  </div>;
+  const handleScrollToReviews = (e) => {
+    e.preventDefault();
+    const el = document.getElementById("reviews-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  return (
+    <div id="ratings-popup">
+      <Ratings />
+      <a
+        href="#reviews-section"
+        className="secondary-text-btn"
+        onClick={handleScrollToReviews}
+      >
+        See customer reviews {">"}
+      </a>
+    </div>
+  );
 };
 
 const ProductHeadline = () => {

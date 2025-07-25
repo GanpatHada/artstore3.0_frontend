@@ -1,42 +1,59 @@
 import React, { useEffect, useState } from "react";
 import "./Categories.css";
-import { fetchLimitedTimeDealProducts, fetchMinimumFiftyOffProducts, fetchUnderOneThousandProducts } from "../../../../services/ProductService";
+import {
+  fetchLimitedTimeDealProducts,
+  fetchMinimumFiftyOffProducts,
+  fetchUnderOneThousandProducts,
+} from "../../../../services/ProductService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { makeCapitalize } from "../../../../utils/GlobalUtils";
 
-
-
-const LoadingSkelton=()=>{
-  return <section className="loading-skeleton">
-        <div className="skeleton"></div>
-        <div className="skeleton"></div>
-        <div className="skeleton"></div>
-        <div className="skeleton"></div>
-  </section>
-}
-
-const PickupWhereYouLeftOff = ({handleProductClick}) => {
-  const [products, setProducts] = useState([]);
-  useEffect(()=>{
-    let viewedProducts=JSON.parse(localStorage.getItem("viewedProducts")) || [];
-    setProducts(viewedProducts);
-  },[])
+const LoadingSkelton = () => {
   return (
-    <div>
-      <h4>Pickup where you left off</h4>
-      <section>
-      {products.map((product) => (
-          <div key={product.productId} onClick={()=>handleProductClick(product._id)}>
-            <img src={product.productImage} alt="" />
-          </div>
-      ))}
-      </section>
-     
+    <section className="loading-skeleton">
+      <div className="skeleton"></div>
+      <div className="skeleton"></div>
+      <div className="skeleton"></div>
+      <div className="skeleton"></div>
+    </section>
+  );
+};
+
+const PickupWhereYouLeftOff = ({ handleProductClick }) => {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    let viewedProducts =
+      JSON.parse(localStorage.getItem("viewedProducts")) || [];
+    setProducts(viewedProducts);
+  }, []);
+  return (
+    <div className="category-wrapper">
+      <header>
+        <h4>Pickup where you left off</h4>
+      </header>
+      <main>
+        <section>
+          {products.map((product) => (
+            <div>
+              <section
+                key={product.productId}
+                onClick={() => handleProductClick(product._id)}
+              >
+                <img src={product.productImage} alt="" />
+              </section>
+              <section>
+                <p>this is info</p>
+              </section>
+            </div>
+          ))}
+        </section>
+      </main>
     </div>
   );
 };
-const ProductsUnder1k = ({handleProductClick}) => {
-  const [loading, setLoading] = useState(false);
+const ProductsUnder1k = ({ handleProductClick }) => {
+  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const getProductsUnderOneThousand = async () => {
     try {
@@ -54,19 +71,36 @@ const ProductsUnder1k = ({handleProductClick}) => {
     getProductsUnderOneThousand();
   }, []);
   return (
-    <div>
-      <h4>Products under 1,000 Rs.</h4>
-      {loading?<LoadingSkelton/>:<section>
-        {products.map((product) => (
-          <div key={product._id} onClick={()=>handleProductClick(product._id)}>
-            <img src={product.productImages[0]} alt="" />
-          </div>
-        ))}
-      </section>}
+    <div className="category-wrapper">
+      <header>
+        <h4>Products under 1,000 Rs.</h4>
+      </header>
+      <main>
+        {loading ? (
+          <LoadingSkelton />
+        ) : (
+          <section>
+            {products.map((product) => (
+              <div>
+                <section
+                  key={product._id}
+                  onClick={() => handleProductClick(product._id)}
+                >
+                  <img src={product.productImage} alt="" />
+                </section>
+                <section>
+                  <span><strong>&#8377;{product?.price}</strong></span>&nbsp;
+                  <strike>&#8377;{product?.actualPrice}</strike>
+                </section>
+              </div>
+            ))}
+          </section>
+        )}
+      </main>
     </div>
   );
 };
-const DealOfTheDay = ({handleProductClick}) => {
+const DealOfTheDay = ({ handleProductClick }) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
 
@@ -86,19 +120,35 @@ const DealOfTheDay = ({handleProductClick}) => {
     productsOnLimitedTimeDeal();
   }, []);
   return (
-    <div>
-      <h4>Deal of the day</h4>
-      {loading?<LoadingSkelton/>:<section>
-        {products.map((product) => (
-          <div key={product._id} onClick={()=>handleProductClick(product._id)}>
-            <img src={product.productImages[0]} alt="" />
-          </div>
-        ))}
-      </section>}
+    <div className="category-wrapper">
+      <header>
+        <h4>Deal of the day</h4>
+      </header>
+      <main>
+        {loading ? (
+          <LoadingSkelton />
+        ) : (
+          <section>
+            {products.map((product) => (
+              <div>
+                <section
+                key={product._id}
+                onClick={() => handleProductClick(product._id)}
+              >
+                <img src={product.productImage} alt="" />
+              </section>
+              <section>
+                <span className="tag">{makeCapitalize(product?.tag)}</span>
+              </section>
+              </div>
+            ))}
+          </section>
+        )}
+      </main>
     </div>
   );
 };
-const UpToFiftyOff = ({handleProductClick}) => {
+const UpToFiftyOff = ({ handleProductClick }) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
 
@@ -118,24 +168,40 @@ const UpToFiftyOff = ({handleProductClick}) => {
     getMinimumFiftyOffProducts();
   }, []);
   return (
-    <div>
-      <h4>Up to 50% off</h4>
-      {loading?<LoadingSkelton/>:<section>
-        {products.map((product) => (
-          <div key={product._id} onClick={()=>handleProductClick(product._id)}>
-            <img src={product.productImages[0]} alt="" />
-          </div>
-        ))}
-      </section>}
+    <div className="category-wrapper">
+      <header>
+        <h4>More than 50% off</h4>
+      </header>
+      <main>
+        {loading ? (
+          <LoadingSkelton />
+        ) : (
+          <section>
+            {products.map((product) => (
+             <div>
+               <section
+                className="category-preview"
+                key={product._id}
+                onClick={() => handleProductClick(product._id)}
+              >
+                <img src={product.productImage} alt="" />
+              </section>
+              <section>
+                <span><strong>&#8377;{product?.price}</strong></span>&nbsp;
+                <span className="high-discount">{product?.discount}% off</span>
+              </section>
+             </div>
+            ))}
+          </section>
+        )}
+      </main>
     </div>
   );
 };
 
 const Categories = () => {
-  const navigate=useNavigate();
-
-  const handleProductClick=(productId)=>navigate(`/products/${productId}`)
-  
+  const navigate = useNavigate();
+  const handleProductClick = (productId) => navigate(`/products/${productId}`);
 
   return (
     <section id="categories">

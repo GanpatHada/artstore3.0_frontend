@@ -35,8 +35,12 @@ const MyAddressesList = () => {
 const MyAddresses = () => {
   return (
     <div>
-      <h2>Your Addresses</h2>
-      <MyAddressesList />
+      <header>
+        <h3>Your Addresses</h3>
+      </header>
+      <main>
+        <MyAddressesList />
+      </main>
     </div>
   );
 };

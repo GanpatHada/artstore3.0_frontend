@@ -6,88 +6,83 @@ import OrderIcon from "../../images/boxIcon.svg";
 import { BiLogOutCircle } from "react-icons/bi";
 import { fetchUserLogout } from "../../services/UserService";
 import { useUser } from "../../hooks/useUser";
-const Account = () => {
-  const {user,setUserDetails}=useUser();
-  const location = useLocation();
-  const getUrl = () => {
-    let url = location.pathname;
-    console.log(url);
-    url = url.replaceAll("/my_account", "");
-    url = url.replace("/", "");
-    return url.toUpperCase();
-  };
+import { makeCapitalize } from "../../utils/GlobalUtils";
 
+const accountNavs = [
+  {
+    heading: "Profile",
+    description: "View or edit your profile",
+    image: ProfileIcon,
+    path: "/my_account/profile",
+  },
+  {
+    heading: "Your Addresses",
+    description: "View or edit your profile",
+    image: AddressIcon,
+    path: "/my_account/address",
+  },
+  {
+    heading: "Your Orders",
+    description: "View or edit your profile",
+    image: OrderIcon,
+    path: "/my_account/orders",
+  },
+];
 
-  const handleLogout=async()=>{
-    const data=await fetchUserLogout(user,setUserDetails);
+const SignoutButton = () => {
+  const { user, setUserDetails } = useUser();
+  const handleLogout = async () => {
+    const data = await fetchUserLogout(user, setUserDetails);
     setUserDetails(data);
-  }
+  };
+  return (
+    <button onClick={handleLogout} id="signout-button">
+      <span>
+        <BiLogOutCircle />
+      </span>
+      Signout
+    </button>
+  )
+}
+
+const AccountNav = ({ nav: { path, heading, description, image } }) => {
+  const getNavClass = ({ isActive }) =>
+    isActive ? "nav-active-box" : "nav-default-box";
 
   return (
-    <div id="account-page">
-      <div>
+    <NavLink
+      to={path}
+      className={(navData) => `${getNavClass(navData)} account-nav`}
+    >
+      <img className="image" src={image} alt={heading.charAt(0)} />
+      <h4 className="heading">{heading}</h4>
+      <p className="description">{description}</p>
+    </NavLink>
+  );
+};
+
+const Account = () => {
+  const location=useLocation();
+  let url=location.pathname.split("/");
+  url=url[url.length-1]
+  return (
+    <div id="account-page-wrapper">
+      <div id="account-page">
         <header>
           <div>
-            <h1>My Account</h1>
-            <p className="breadcrumbs">
-              My Account {">"} <span>{getUrl()}</span>
-            </p>
+            <h2>My Account</h2>
+            <p>Your Account {">"} <span>{makeCapitalize(url)}</span></p>
           </div>
-          <button onClick={handleLogout} id="signout-button"><span><BiLogOutCircle /></span>Signout</button>
+          <SignoutButton />
         </header>
-        <div id="account-navs">
-          <NavLink
-            to={"/my_account/profile"}
-            className={({ isActive }) => {
-              return isActive ? "nav-active-box" : "nav-default-box" ;
-            }}
-          >
-            
-              <div>
-                <img src={ProfileIcon} alt="" />
-              </div>
-              <div>
-                <h4>Profile</h4>
-                <p>view or edit your profile</p>
-              </div>
-            
-          </NavLink>
-          <NavLink
-            to={"/my_account/address"}
-            className={({ isActive }) => {
-              return isActive ? "nav-active-box" : "nav-default-box";
-            }}
-          >
-            
-              <div>
-                <img src={AddressIcon} alt="" />
-              </div>
-              <div>
-                <h4>Address</h4>
-                <p>edit,add or change your default address</p>
-              </div>
-            
-          </NavLink>
-          <NavLink
-            to={"/my_account/orders"}
-            className={({ isActive }) => {
-              return isActive ? "nav-active-box" : "nav-default-box";
-            }}
-          >
-            
-              <div>
-                <img src={OrderIcon} alt="" />
-              </div>
-              <div>
-                <h4>My orders</h4>
-                <p>track your order details from here</p>
-              </div>
-            
-          </NavLink>
-        </div>
-      </div>
-      <div>
-        <Outlet />
+        <nav id="account-navs">
+          {accountNavs.map((nav, index) => {
+            return <AccountNav key={index} nav={nav} />;
+          })}
+        </nav>
+        <main>
+          <Outlet />
+        </main>
       </div>
     </div>
   );

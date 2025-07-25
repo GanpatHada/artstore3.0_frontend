@@ -1,27 +1,28 @@
-nav {
+#app-navbar {
   background-color: #131921;
   display: flex;
 }
 
-nav > ul {
+#app-navbar > ul {
   flex: 1;
   display: grid;
   grid-template-columns: auto auto 1fr auto auto auto auto;
   grid-auto-rows: auto;
 }
 
-nav > ul li:not(nav > ul li:last-child) {
+#app-navbar > ul > li:not(:last-child) {
   margin: 0.5rem;
 }
 
-nav > ul li:last-child {
+#app-navbar > ul li:last-child {
   grid-row: 2;
   grid-column: 1/8;
 }
 #logo {
   color: white;
+  width: 7rem;
 }
-nav a {
+#app-navbar a {
   display: flex;
   height: 2.5rem;
   align-items: center;
@@ -31,23 +32,23 @@ nav a {
     outline: 1px solid rgba(245, 245, 245, 0.8);
   }
 }
-nav a#cart img {
+#app-navbar a#cart img {
   width: 2.5rem;
 }
 
-nav a span {
+#app-navbar a span {
   font-size: 1.25rem;
   color: whitesmoke;
   display: flex;
   align-items: center;
 }
-nav a div h5 {
+#app-navbar a div h5 {
   color: rgb(221, 221, 221);
   font-weight: normal;
   font-size: 0.7rem;
   white-space: nowrap;
 }
-nav a div p {
+#app-navbar a div p {
   font-size: 0.8rem;
   white-space: nowrap;
   color: white;
@@ -65,37 +66,40 @@ nav a div p {
 
 
 @media only screen and (max-width: 1024px) {
- nav ul li:nth-child(5) {
+  #app-navbar > ul > li:not(:last-child) {
+  margin: 0.5rem 0.25rem;
+}
+ #app-navbar ul li:nth-child(5) {
     display: none;
   }
 
-  nav ul li:nth-child(7) {
+  #app-navbar ul li:nth-child(7) {
     display: none;
   }
-  nav a div h5{
+  #app-navbar a div h5{
     white-space: wrap;
   }
 }
-@media only screen and (max-width: 576px) {
-  nav ul {
+@media screen and (max-width: 767px)  {
+  #app-navbar ul {
     grid-template-columns: 1fr auto auto;
     grid-auto-rows: auto;
   }
-  nav ul li:nth-child(4) {
+  #app-navbar ul li:nth-child(4) {
     grid-column: 2;
     grid-row: 1;
   }
 
-  nav ul li:nth-child(2) {
+  #app-navbar ul li:nth-child(2) {
     grid-column: 1/3;
     grid-row: 4;
   }
-  nav ul li:nth-child(3) {
+  #app-navbar ul li:nth-child(3) {
     grid-column: 1/4;
     grid-row: 2;
   }
 
-  nav ul li:last-child {
+  #app-navbar ul li:last-child {
     grid-row: 3;
   }
   

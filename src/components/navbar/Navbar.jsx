@@ -6,11 +6,12 @@ import { useUser } from "../../hooks/useUser";
 import { SlLocationPin } from "react-icons/sl";
 import Search from "../search/Search";
 import SubNav from "../subNav/SubNav";
+import ArtstoreImage from '../../images/Artstore.svg'
 
 const Logo = () => {
   return (
     <section >
-      <Link id="logo" to="/">Artstore</Link>
+      <Link id="logo" to="/"><img src={ArtstoreImage} alt="Artstore" /></Link>
     </section>
   );
 };
@@ -100,7 +101,7 @@ const Wishlist = () => {
 const Navbar = () => {
   return (
     <div id="nav-wrapper">
-      <nav>
+      <nav id="app-navbar">
       <ul>
         <li><Logo /></li>
         <li><DefaultAddress /></li>

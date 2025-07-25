@@ -1,12 +1,10 @@
 import { useContext } from "react";
 import { ProductDetailsContext } from "../context/ProductDetailsContext";
 import {
-  addReviewAction,
   deleteReviewAction,
   setProductDetailsAction,
   startProductDetailsLoadingAction,
   stopProductDetailsLoadingAction,
-  updateReviewAction,
 } from "../actions/productDetailsAction";
 
 export const useProductDetails = () => {
@@ -24,12 +22,6 @@ export const useProductDetails = () => {
   const stopProductDetailsLoading = () =>
     stopProductDetailsLoadingAction(dispatch);
 
-  const addReview = (review) =>
-    addReviewAction(dispatch, review);
-
-  const updateReview = (review) =>
-    updateReviewAction(dispatch, review);
-
   const deleteReview = (reviewId) =>
     deleteReviewAction(dispatch, reviewId);
 
@@ -39,8 +31,7 @@ export const useProductDetails = () => {
     stopProductDetailsLoading,
     productDetails,
     loading,
-    addReview,
-    updateReview,
-    deleteReview,
+    deleteReview
+    
   };
 };

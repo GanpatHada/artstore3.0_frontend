@@ -40,6 +40,10 @@ button {
 
 button:disabled {
   cursor: not-allowed;
+  background-color: whitesmoke;
+  border: none;
+  color: rgb(161, 161, 161);
+  border:1px solid transparent;
 }
 
 li {
@@ -60,6 +64,7 @@ img {
   background-color: transparent;
 }
 .secondary-text-btn:hover {
+  color: rgb(0, 36, 66);
   text-decoration: underline;
 }
 .primary-text-btn {
@@ -69,31 +74,48 @@ img {
 .primary-text-btn:hover {
   text-decoration: underline;
 }
+
+
+/* --- Primary Button --- */
 .primary-btn {
   background-color: #ffd814;
   color: black;
+  border: 1px solid #ffd814;
 }
-.secondary-btn{
+
+.primary-btn[data-loading="true"]{
+  background-color: #fff7ac;
+  color: #4b4b4b;
+  cursor: not-allowed;
+  border: 1px solid rgb(255, 208, 0);
+}
+
+.primary-btn:hover:not([data-loading="true"]):not(:disabled) {
+  background-color: #ffd000;
+}
+
+.primary-btn:active:not(:disabled) {
+ background-color:#dab200 ;
+}
+
+/* --- Secondary Button --- */
+.secondary-btn {
   background-color: transparent;
-  border: 1px solid black;
-  color: black;
-  &:hover{
-    background-color: whitesmoke;
-  }
+  border: 1px solid #313131;
+  color: #313131;
 }
-.primary-btn.loading{
-  background-color: #ffeb85;
+
+.secondary-btn:active:not(:disabled){
+  background-color: rgb(238, 247, 255);
+  border: 1px solid rgb(38, 175, 255);
+  cursor: not-allowed;
 }
-.primary-btn:disabled{
-  background-color: rgb(231, 231, 231);
-  color: rgb(197, 197, 197);
+
+.secondary-btn:hover:not([data-loading="true"]):not(:disabled) {
+   background-color: rgb(238, 247, 255);
 }
-.primary-btn:hover:not(:disabled) {
-  background-color: #f7ca00;
-}
-.primary-btn:active {
-  outline: 1px solid #008296;
-}
+
+
 a {
   text-decoration: none;
   color: black;
@@ -111,8 +133,3 @@ a {
 
 
 
-@media screen and (max-width: 576px) {
-  :root {
-    font-size: 14px;
-  }
-}

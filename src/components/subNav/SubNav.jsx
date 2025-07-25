@@ -16,8 +16,17 @@ const SubNav = () => {
     });
     setCategoryFilter(categoryName);
   };
+
+  const handleAllClick=()=>{
+    if (location.pathname !== "/products") navigate("/products");
+     PaintingCategories.forEach((painting) => {
+        removeCategoryFilter(painting.name)
+    });
+  }
+
   return (
     <section id="sub-nav">
+      <li onClick={handleAllClick}>All</li>
       {PaintingCategories.map((painting) => {
         return (
           <li

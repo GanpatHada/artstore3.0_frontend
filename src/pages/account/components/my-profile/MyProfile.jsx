@@ -15,9 +15,10 @@ const MyProfile = () => {
   return (
     <div id='profile-box'>
       {openProfileDialog && <ProfileDialog closeProfileDialog={closeProfileDialog}/>}
-      <h2>Your Profile</h2>
-      <p>Your profile preferences help us personalise recommendations for you.</p>
-      <div id="profile-content">
+      <header>
+        <h3>Your Profile</h3>
+      </header>
+      <main id="profile-content">
         <section className="image-section">
           <div id="profile-image">
               <img src={profileImage ?? userImage} alt="" />
@@ -25,7 +26,7 @@ const MyProfile = () => {
           <button onClick={()=>setOpenProfileDialog(true)} className='all-centered' id='change-profile-image-btn'>{fullName.toUpperCase()} <span><MdModeEdit /></span>
           </button>
         </section>
-      </div>
+      </main>
     </div>
   )
 }

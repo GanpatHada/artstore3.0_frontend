@@ -52,7 +52,7 @@ const Review = ({ review, productId }) => {
         </div>
         {isThisMyReview(review.user?._id) && (
           <div>
-            <button onClick={() => navigate(`/products/${productId}/review`,{state:{reviewId:review._id}})}>
+            <button onClick={() => navigate(`/products/${productId}/review/${review._id}`)}>
               <FiEdit />
             </button>
             <button onClick={() => handleDeleteReview(review._id)}>

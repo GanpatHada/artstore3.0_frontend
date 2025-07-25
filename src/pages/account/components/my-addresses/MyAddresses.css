@@ -8,12 +8,20 @@
 }
 a#add-address{
     border: 2px dashed var(--primary-border);
-    border-style:dashed;
     display: flex;
     flex-direction: column;
-    min-height: 100px;
+    min-height: 200px;
+    gap: 0.5rem;
 }
 a#add-address span{
     font-size: 2rem;
-    color: gray;
+    height: 60px;
+    width: 60px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+
+}
+a#add-address p{
+  font-size: 0.8rem;
+  color: rgb(63, 63, 63);
 }

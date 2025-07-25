@@ -24,9 +24,12 @@ export async function fetchProducts(productIds) {
 
 
 
-export async function fetchProductDetails(productId){
+export async function fetchProductDetails(productId,requiredFields){
+  let url=`${BACKEND_BASE_URL}/products/${productId}`
+  if(requiredFields)
+    url=url.concat(`?fields=${requiredFields.join(",")}`)
   try {
-    let response=await fetch(`${BACKEND_BASE_URL}/products/${productId}`,{
+    let response=await fetch(url,{
       method:"GET",
       headers: {
         "Content-Type": "application/json",
@@ -93,6 +96,21 @@ export async function fetchMinimumFiftyOffProducts(){
   } catch (error) {
    throw error;
   }
+}
+
+export async function fetchgetReview(user,setUserDetails,productId){
+  const data=await secureFetch(
+    user,
+    setUserDetails,
+    `${BACKEND_BASE_URL}/products/${productId}/reviews`,
+     {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return data
 }
 
 export async function fetchAddReview(user, setUserDetails, productId, review) {
