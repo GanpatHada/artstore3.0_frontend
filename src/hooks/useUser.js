@@ -4,8 +4,10 @@ import {
   addAddressAction,
   addToCartAction,
   addToWishlistAction,
+  addWishlistAction,
   decrementCartItemAction,
   deleteAddressAction,
+  deleteWishlistAction,
   editAddressAction,
   incrementCartItemAction,
   makeAddressPrimaryAction,
@@ -28,8 +30,14 @@ export const useUser = () => {
   const incrementCartItem=(cartItem)=>incrementCartItemAction(dispatch,cartItem)
   const decrementCartItem=(cartItem)=>decrementCartItemAction(dispatch,cartItem)
   const removeFromCart = (cartItem) => removeFromCartAction(dispatch, cartItem);
-  const addToWishlist = (wishlistItem) =>
-    addToWishlistAction(dispatch, wishlistItem);
+  const addWishlist = (wishlist) =>
+    addWishlistAction(dispatch, wishlist);
+
+
+  const deleteWishlist = (wishlist) =>
+    deleteWishlistAction(dispatch, wishlist);
+  const addToWishlist = (wishlistData) =>
+    addToWishlistAction(dispatch, wishlistData);
 
   const removeFromWishlist=(wishlistItem)=>removeFromWishlistAction(dispatch,wishlistItem)
 
@@ -53,7 +61,9 @@ export const useUser = () => {
     deleteAddress,
     makeAddressPrimary,
     addAddress,
-    editAddress
+    editAddress,
+    addWishlist,
+    deleteWishlist
     
   };
 };

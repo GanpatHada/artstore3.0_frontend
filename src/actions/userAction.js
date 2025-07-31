@@ -5,7 +5,13 @@ export const addToCartAction=(dispatch,cartItem)=>dispatch({type:'ADD_TO_CART',p
 export const incrementCartItemAction=(dispatch,cartItem)=>dispatch({type:'INCREMENT_TO_CART_ITEM',payload:cartItem})
 export const decrementCartItemAction=(dispatch,cartItem)=>dispatch({type:'DECREMENT_TO_CART_ITEM',payload:cartItem})
 export const removeFromCartAction=(dispatch,cartItem)=>dispatch({type:"REMOVE_FROM_CART",payload:cartItem})
-export const addToWishlistAction=(dispatch,wishlistItem)=>dispatch({type:'ADD_TO_WISHLIST',payload:wishlistItem})
+
+
+export const addWishlistAction=(dispatch,wishlist)=>dispatch({type:'ADD_WISHLIST',payload:wishlist})
+export const deleteWishlistAction=(dispatch,wishlist)=>dispatch({type:'DELETE_WISHLIST',payload:wishlist})
+export const addToWishlistAction=(dispatch,wishlistData)=>dispatch({type:'ADD_TO_WISHLIST',payload:wishlistData})
+
+
 export const removeFromWishlistAction=(dispatch,wishlistItem)=>dispatch({type:"REMOVE_FROM_WISHLIST",payload:wishlistItem})
 export const addAddressAction=(dispatch,addressData)=>dispatch({type:'ADD_ADDRESS',payload:addressData})
 export const deleteAddressAction=(dispatch,addressId)=>dispatch({type:'DELETE_ADDRESS',payload:addressId})

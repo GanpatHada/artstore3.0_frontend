@@ -9,7 +9,7 @@ const PostReview = () => {
   const { productId } = useParams();
   const { productDetails} = useProductDetails();
   const isAlreadyReviewed = productDetails.reviews.find(
-    (review) => review.user._id === user?._id
+    (review) => review.user?._id === user?._id
   );
 
   return (

@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./OrderItems.css";
-const OrderItem = ({orderItem}) => {
-  const {image,name,product}=orderItem; 
-  const navigate=useNavigate();
+const OrderItem = ({ orderItem }) => {
+  const { image, name, product, myReview } = orderItem;
   return (
     <div className="order-item">
       <section className="image-section">
@@ -15,7 +14,16 @@ const OrderItem = ({orderItem}) => {
         <Link to={`/products/${product}`}>{name}</Link>
       </section>
       <section className="action-section">
-        <button className="secondary-btn">Write Review</button>
+        <Link
+          to={
+            myReview
+              ? `/products/${product}/review/${myReview._id}`
+              : `/products/${product}/review`
+          }
+        >
+          <button className="secondary-btn">{myReview ? 'Edit' : 'Add'} Review</button>
+        </Link>
+
         <Link to={`/products/${product}`}><button className="secondary-btn">View your product</button></Link>
       </section>
     </div>
@@ -47,7 +55,7 @@ const OrderItemHeader = ({ order }) => {
         <li>
           <p>ORDER # {orderId}</p>
           <p>
-            <Link to={'order_details'} state={{order}} className="secondary-text-btn">View order details</Link>
+            <Link to={'order_details'} state={{ order }} className="secondary-text-btn">View order details</Link>
           </p>
         </li>
       </ul>
@@ -55,12 +63,12 @@ const OrderItemHeader = ({ order }) => {
   );
 };
 
-const OrderItems = ({order,header=true}) => {
-  const{orderedItems}=order;  
+const OrderItems = ({ order, header = true }) => {
+  const { orderedItems } = order;
   return (
     <div className="order-items">
       {header && <OrderItemHeader order={order} />}
-      {orderedItems.map(orderItem=>{
+      {orderedItems.map(orderItem => {
         return <OrderItem key={orderItem.product} orderItem={orderItem} />
       })
 

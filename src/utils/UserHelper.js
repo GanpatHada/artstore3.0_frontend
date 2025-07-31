@@ -4,7 +4,7 @@ export function productInWishlist(productId,wishlist){
 
 
 export function productInCart(productId,cart){
-    return cart.includes(productId)
+    return cart.find(cartItem=>cartItem.product===productId)
 }
 
 export function cartSubTotal(selectedCartItems){

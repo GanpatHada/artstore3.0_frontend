@@ -91,13 +91,23 @@ const userReducer = (state, action) => {
           cart: updatedCart,
         },
       };
-    }
+    };
+
+    case "ADD_WISHLIST":
+      return {...state,user: {...state.user,wishlists:[...state.user.wishlists,action.payload]}};
+
+    case "DELETE_WISHLIST":
+      return {...state,user: {...state.user,wishlists:state.user.wishlists.filter(wishlist=>wishlist._id!==action.payload)}};
+
     case "ADD_TO_WISHLIST":
-      return {
-        ...state,
+      return {...state,
         user: {
           ...state.user,
-          wishlist: [...state.user.wishlist, action.payload],
+          wishlists: state.user.wishlists.map((wishlist)=>{
+            if(wishlist._id===action.payload.wishlistId)
+              return {...wishlist,items:[...wishlist.items,action.payload.item]}
+            return wishlist
+          }),
         },
       };
     case "REMOVE_FROM_CART":

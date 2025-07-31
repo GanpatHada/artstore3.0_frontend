@@ -2,9 +2,8 @@ import {useState } from "react";
 import "./Product.css";
 import {
   fetchAddToCart,
-  fetchAddToWishlist,
 } from "../../../../services/UserService";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useUser } from "../../../../hooks/useUser";
 import StarsCreator from "../../../../components/stars_creator/StarsCreator";
@@ -88,58 +87,12 @@ const AddtoCartButton = ({ processing, setProcessing, productData }) => {
   );
 };
 
-const AddtoWishlistButton = ({ setProcessing, productData }) => {
-  const { user, addToWishlist, setUserDetails } = useUser();
-  const navigate = useNavigate();
-  const handleAddToWishlist = async (e, productId) => {
-    e.stopPropagation();
-    if (!user) return navigate("/login");
-    if (isAvailableInWishlist(productId)) return navigate("/wishlist");
-    try {
-      setProcessing(true);
-      const addedWishlistItem = await fetchAddToWishlist(
-        user,
-        setUserDetails,
-        productId
-      );
-      addToWishlist(addedWishlistItem);
-      toast.success("Product has been added to wishlist");
-    } catch (error) {
-      toast.error(
-        error.message || "something went wrong while adding to wishlist"
-      );
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  const isAvailableInWishlist = (productId) => {
-    return user?.wishlist.includes(productId);
-  };
-  const { _id } = productData;
-  return (
-    <button
-      className="secondary-btn"
-      data-loading={false}
-      disabled={true}
-      onClick={(e) => handleAddToWishlist(e, _id)}
-    >
-      {!isAvailableInWishlist(_id) ? "Add" : "Go"} to Wishlist
-    </button>
-  );
-};
-
 const ProductAction = ({ productData, setProcessing, processing }) => {
   return (
     <section className="product-button-section">
       <AddtoCartButton
         setProcessing={setProcessing}
         processing={processing}
-        productData={productData}
-      />
-      <AddtoWishlistButton
-        processing={processing}
-        setProcessing={setProcessing}
         productData={productData}
       />
     </section>

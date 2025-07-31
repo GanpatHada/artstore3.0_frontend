@@ -26,3 +26,13 @@
 #payment-success-wrapper h3 span{
     font-size: 1.75rem;
 }
+.order-details-info{
+    padding: 1rem;
+}
+
+.order-details-info a{
+    color: var(--secondary-color );
+    &:hover{
+        text-decoration: underline;
+    }
+}

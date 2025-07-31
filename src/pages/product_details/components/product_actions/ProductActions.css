@@ -7,7 +7,6 @@
   flex-direction: column;
   gap: 0.8rem;
   position: relative;
-  overflow: hidden;
   padding: 1rem;
   height: fit-content;
 }
@@ -17,30 +16,112 @@
   flex-direction: column;
   gap: 0.5rem;
 }
-#check-out-section button {
+
+#wishlist-section{
+  position: relative;
+  display: flex;
+  width: 100%;
+  
+}
+
+#check-out-section > section > button {
   padding: 0.6rem;
   border-radius: 1.25rem;
   font-size: 0.8rem;
 }
-#check-out-section button#add-to-wishlist{
-  background-color: transparent;
-  border: 1px solid rgb(122, 122, 122);
-  border-radius: 10px;
+#check-out-section #add-to-wishlist{
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0px;
+  width: 100%;
+  align-items: stretch;
+  overflow: hidden;
+  &:hover{
+    background-color: transparent;
+  }
+}
+button#add-to-wishlist > span{
+  &:hover{
+    background-color: rgba(236, 236, 236, 0.5);
+  }
+}
+
+button#add-to-wishlist .button-text{
+  padding: 0.5rem 1rem;
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  border-right: 1px solid gray;
+}
+button#add-to-wishlist .button-icon{
+  padding: 0rem 0.5rem ;
+  display: flex;
+  justify-content: flex-start;
+}
+
+#my-wishlists{
+  position: absolute;
+  border: 1px solid var(--primary-border);
+  background-color: white;
+  border-radius: 6px;
+  padding: 0px;
+  overflow: hidden;
+  top: 36px;
+  width: 100%;
+}
+#my-wishlists > .wishlist{
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
   &:hover{
     background-color: whitesmoke;
   }
 }
-
-#artist-info{
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  
+#my-wishlists > .wishlist h5{
+  font-size: 0.8rem;
+  font-weight: 500;
 }
-#artist-info #artist-name{
-  font-size: 0.9rem;
-  color: var(--secondary-color);
+#my-wishlists > .wishlist span{
+  font-size: 0.7rem;
+  color: rgb(71, 71, 71);
+}
+#my-wishlists > .wishlist:first-child{
+  background-color: #ddf5ff;
+  position: relative;
+}
+#my-wishlists > .wishlist:first-child::before{
+  content: "";
+  width: 4px;
+  height: 100%;
+  background-color: rgb(0, 143, 168);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#my-wishlists button{
+  border-top: 1px solid var(--primary-border);
+  padding: 0.8rem 0rem;
+  width: 100%;
+  background-color: transparent;
+}
+
+#delivery-info{
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+#delivery-info p span{
+  font-size: 0.8rem;
+  color: rgb(26, 26, 26);
+}
+#delivery-info p{
+  font-size: 0.8rem;
+  color: rgb(77, 77, 77);
 }
 #stock-text{
   font-size: 0.8rem;
