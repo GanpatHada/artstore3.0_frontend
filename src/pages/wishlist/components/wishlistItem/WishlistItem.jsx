@@ -1,55 +1,120 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./WishlistItem.css";
-import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../../hooks/useUser";
 import { fetchProductDetails } from "../../../../services/ProductService";
 import { toast } from "react-toastify";
 import {
   fetchAddToCart,
   fetchDeleteFromWishlist,
+  fetchMoveToWishlist,
 } from "../../../../services/UserService";
 import StarsCreator from "../../../../components/stars_creator/StarsCreator";
 import WishlistItemLoader from "../wishlist-item-loader/WishlistItemLoader";
+import { IoIosArrowDown } from "react-icons/io";
+import { useClickOutside } from "../../../../hooks/useClickOutside";
+import SpinLoader from "../../../../components/spin-loader/SpinLoader";
+import { useNavigate } from "react-router-dom";
 
-const AvailableWishlists = () => {
-  const {
-    user: { wishlists },
-  } = useUser();
- return(
-  <div id="available-wishlists">
-  {wishlists.map((wishlist) => {
-    return <div key={wishlist._id}>{wishlist.listName}</div>;
-  })}
-</div>
- );
-};
-
-const WishlistItem = ({ item }) => {
-  const { user, removeFromWishlist, addToCart, setUserDetails } = useUser();
-  const { cart } = user;
-  const navigate = useNavigate();
+const AvailableWishlists = ({ activeListId, closeMenu, product }) => {
   const [loading, setLoading] = useState(false);
-  const [product, setProduct] = useState(null);
+  const menuRef = useRef(null);
+  const { user, setUserDetails, moveToWishlist } = useUser();
+  const { wishlists } = user;
+  
 
-  const handleDeleteFromWishlist = async (productId) => {
+
+  useClickOutside(menuRef, closeMenu);
+
+  const handleMoveToWislist = async (e, targetWishlistId) => {
+    e.stopPropagation();
+    if (loading) return;
+
     try {
       setLoading(true);
+
+      const data = await fetchMoveToWishlist(
+        user,
+        setUserDetails,
+        activeListId,
+        product,
+        targetWishlistId
+      );
+
+      const payload = {
+        productId: data.productId,
+        sourceWishlistId: data.fromWishlistId,
+        targetWishlistId: data.toWishlistId,
+      };
+
+      moveToWishlist(payload);
+    } catch (error) {
+      console.error("Move to wishlist failed:", error);
+    } finally {
+      setLoading(false);
+      closeMenu();
+    }
+  };
+
+  const otherWishlists = wishlists.filter(
+    (wishlist) => wishlist._id !== activeListId
+  );
+
+  return (
+    <div id="available-wishlists" ref={menuRef} className="p-2 w-64 bg-white shadow rounded">
+      {loading && <SpinLoader />}
+      {!loading && otherWishlists.length === 0 && (
+        <p className="text-sm text-gray-500">No other wishlists available.</p>
+      )}
+      {!loading &&
+        otherWishlists.map((wishlist) => (
+          <div
+            key={wishlist._id}
+            className="wishlist cursor-pointer px-2 py-1 hover:bg-gray-100 rounded"
+            onClick={(e) => handleMoveToWislist(e, wishlist._id)}
+          >
+            {wishlist.listName}
+          </div>
+        ))}
+    </div>
+  );
+};
+
+
+const WishlistItem = ({ item, activeListId }) => {
+  const { user,deleteFromWishlist,addToCart, setUserDetails } = useUser();
+  const [loading, setLoading] = useState(false);
+  const [product, setProduct] = useState(null);
+  const [openAvailableWishlists, setOpenAvailableWishlists] = useState(false);
+  const [deleting,setDeleting]=useState(false);
+  const [addingToCart,setAddingToCart]=useState(false);
+  const navigate=useNavigate()
+
+
+  const handleToggleAvailableWishlists = (e) => {
+    e.stopPropagation();
+    setOpenAvailableWishlists(!openAvailableWishlists);
+  };
+
+  const handleDeleteFromWishlist = async (wishlistId,productId) => {
+    try {
+      setDeleting(true)
       const deletedProduct = await fetchDeleteFromWishlist(
         user,
         setUserDetails,
+        wishlistId,
         productId
       );
-      removeFromWishlist(deletedProduct);
+      deleteFromWishlist(deletedProduct)
     } catch (error) {
       toast.error(error.message || "Somethig went wrong while deleting item");
     } finally {
-      setLoading(false);
+      setDeleting(false)
     }
   };
 
   const handleAddToCart = async (productId) => {
     try {
-      setLoading(true);
+      setAddingToCart(true)
       const addedProduct = await fetchAddToCart(
         user,
         setUserDetails,
@@ -59,7 +124,7 @@ const WishlistItem = ({ item }) => {
     } catch (error) {
       toast.error(error.message || "something went wrong while adding to cart");
     } finally {
-      setLoading(false);
+      setAddingToCart(false);
     }
   };
 
@@ -103,14 +168,30 @@ const WishlistItem = ({ item }) => {
       </section>
 
       <section className="buttons">
-        <button className="cart-btn primary-btn">Add to cart</button>
-        <button className="note-btn secondary-btn">Add note</button>
-        <button className="move-btn secondary-btn">
-          Move
-        <AvailableWishlists/>
+        {
+          user.cart.find(cartItem=>cartItem.product===item.product)?
+          <button onClick={()=>navigate("/cart")} className="secondary-btn">Go to cart</button>:
+          <button data-loading={addingToCart} className="cart-btn primary-btn">Add{addingToCart&&'ing...'} to cart</button>
+        }
+        {/* <button className="note-btn secondary-btn">Add note</button> */}
+        <button
+          className="move-btn secondary-btn"
+          onClick={handleToggleAvailableWishlists}
+        >
+          <span>Move </span>
+          <span className="all-centered">
+            <IoIosArrowDown />
+          </span>
+          {openAvailableWishlists && (
+            <AvailableWishlists
+              product={item.product}
+              activeListId={activeListId}
+              closeMenu={() => setOpenAvailableWishlists(false)}
+            />
+          )}
         </button>
-        <button className="share-btn secondary-btn">share</button>
-        <button className="delete-btn secondary-btn">delete</button>
+        {/* <button  className="share-btn secondary-btn">share</button> */}
+        <button disabled={deleting} onClick={()=>handleDeleteFromWishlist(activeListId,product._id)} className="delete-btn secondary-btn">delete{deleting&&'ing...'}</button>
       </section>
     </div>
   );

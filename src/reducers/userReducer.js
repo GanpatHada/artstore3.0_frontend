@@ -10,7 +10,7 @@ export const initialState = {
 const userReducer = (state, action) => {
   switch (action.type) {
     case "SET_USER":
-      return { ...state, user: action.payload,userLoading:false};
+      return { ...state, user: action.payload, userLoading: false };
     case "ADD_ADDRESS":
       return {
         ...state,
@@ -91,25 +91,100 @@ const userReducer = (state, action) => {
           cart: updatedCart,
         },
       };
-    };
+    }
 
     case "ADD_WISHLIST":
-      return {...state,user: {...state.user,wishlists:[...state.user.wishlists,action.payload]}};
-
-    case "DELETE_WISHLIST":
-      return {...state,user: {...state.user,wishlists:state.user.wishlists.filter(wishlist=>wishlist._id!==action.payload)}};
-
-    case "ADD_TO_WISHLIST":
-      return {...state,
+      return {
+        ...state,
         user: {
           ...state.user,
-          wishlists: state.user.wishlists.map((wishlist)=>{
-            if(wishlist._id===action.payload.wishlistId)
-              return {...wishlist,items:[...wishlist.items,action.payload.item]}
-            return wishlist
+          wishlists: [...state.user.wishlists, action.payload],
+        },
+      };
+
+    case "DELETE_WISHLIST":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlists: state.user.wishlists.filter(
+            (wishlist) => wishlist._id !== action.payload
+          ),
+        },
+      };
+
+    case "ADD_TO_WISHLIST":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlists: state.user.wishlists.map((wishlist) => {
+            if (wishlist._id === action.payload.wishlistId)
+              return {
+                ...wishlist,
+                items: [...wishlist.items, action.payload.item],
+              };
+            return wishlist;
           }),
         },
       };
+
+    case "MOVE_TO_WISHLIST": {
+      const { productId, sourceWishlistId, targetWishlistId } = action.payload;
+      const itemToMove = state.user.wishlists
+        .find((w) => w._id === sourceWishlistId)
+        ?.items.find((item) => item.product === productId);
+
+      if (!itemToMove) return state;
+
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlists: state.user.wishlists.map((wishlist) => {
+            if (wishlist._id === sourceWishlistId) {
+              return {
+                ...wishlist,
+                items: wishlist.items.filter(
+                  (item) => item.product !== productId
+                ),
+              };
+            }
+            if (wishlist._id === targetWishlistId) {
+              return {
+                ...wishlist,
+                items: [...wishlist.items, itemToMove],
+              };
+            }
+
+            return wishlist;
+          }),
+        },
+      };
+    }
+
+    case "DELETE_FROM_WISHLIST": {
+      const { wishlistId, productId } = action.payload;
+
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlists: state.user.wishlists.map((wishlist) => {
+            if (wishlist._id === wishlistId) {
+              return {
+                ...wishlist,
+                items: wishlist.items.filter(
+                  (item) => item.product !== productId
+                ),
+              };
+            }
+            return wishlist;
+          }),
+        },
+      };
+    }
+
     case "REMOVE_FROM_CART":
       return {
         ...state,

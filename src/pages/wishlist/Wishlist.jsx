@@ -49,7 +49,7 @@ const EmptyList = () => {
   );
 };
 
-const WishlistMenu=({activeList})=>{
+const WishlistMenu=({activeList,setActiveList})=>{
   const{user,setUserDetails,deleteWishlist}=useUser();
   const [loading,setLoading]=useState(false)
   const handleDeleteList=async()=>{
@@ -61,7 +61,8 @@ const WishlistMenu=({activeList})=>{
       toast.error(error.message||'Something went wrong while deleting wishlist')
     }
     finally{
-      setLoading(false)
+      setLoading(false);
+      setActiveList(user.wishlists[0]._id)
     }
   }
 
@@ -73,7 +74,7 @@ const WishlistMenu=({activeList})=>{
   )
 }
 
-const WishlistContent = ({ activeList }) => {
+const WishlistContent = ({ activeList,setActiveList }) => {
   const[showMenu,setShowMenu]=useState(false)
   const {
     user: { wishlists },
@@ -88,7 +89,7 @@ const WishlistContent = ({ activeList }) => {
         <h4>{activeListDetail?.listName}</h4>
         <button onMouseEnter={()=>setShowMenu(true)} onMouseLeave={()=>setShowMenu(false)} className="secondary-btn all-centered">
           <HiDotsHorizontal />
-       {showMenu&& <WishlistMenu activeList={activeList}/>}
+       {showMenu&& <WishlistMenu activeList={activeList} setActiveList={setActiveList}/>}
         </button>
       </section>
       <header>
@@ -101,13 +102,13 @@ const WishlistContent = ({ activeList }) => {
           </button>
         </div>
         <div>
-          <input type="search" placeholder="Search this list" />
+          {/* <input type="search" placeholder="Search this list" /> */}
         </div>
       </header>
       {activeListDetail?.items.length == 0 ?<EmptyList />: 
         <main id="wishlist-item-wrapper">
        { activeListDetail?.items.map((item) => (
-            <WishlistItem key={item.product} item={item} />
+            <WishlistItem activeListId={activeList} key={item.product} item={item} />
           ))}
         </main>
         }
@@ -130,7 +131,7 @@ const Wishlist = () => {
 
   useEffect(()=>{
      setActiveList(getActiveListId())
-  },[wishlists])
+  },[])
 
   const closeCreateWishlist = () => setCreateWishlist(false);
 
@@ -156,7 +157,7 @@ const Wishlist = () => {
             activeList={activeList}
             setActiveList={setActiveList}
           />
-          <WishlistContent activeList={activeList} />
+          <WishlistContent setActiveList={setActiveList} activeList={activeList} />
         </main>
       </div>
     </div>

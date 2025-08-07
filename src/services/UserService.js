@@ -147,6 +147,27 @@ export async function fetchDeleteWishlist(user,setUserDetails,wishlistId){
   }
 }
 
+
+export async function fetchMoveToWishlist(user,setUserDetails,sourceWishlistId,productId,targetWishlistId){
+
+  console.log(sourceWishlistId,productId,targetWishlistId)
+  try{
+    let data=await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/wishlists/${sourceWishlistId}/items/${productId}/move/${targetWishlistId}`,
+      {
+        method: "PATCH",
+      },
+    )
+    return data;
+  }
+  catch(error)
+  {
+    throw error;
+  }
+}
+
 export async function fetchAddToWishlist(user, setUserDetails, wishlistId, productId) {
   try {
     let data = await secureFetch(
@@ -167,12 +188,12 @@ export async function fetchAddToWishlist(user, setUserDetails, wishlistId, produ
   }
 }
 
-export async function fetchDeleteFromWishlist(user, setUserDetails, productId) {
+export async function fetchDeleteFromWishlist(user, setUserDetails,wishlistId,productId) {
   try {
     let data = await secureFetch(
       user,
       setUserDetails,
-      `${BACKEND_BASE_URL}/user/wishlist/${productId}`,
+      `${BACKEND_BASE_URL}/user/wishlists/${wishlistId}/items/${productId}`,
       {
         method: "DELETE",
       }
