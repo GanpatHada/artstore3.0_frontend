@@ -2,7 +2,6 @@ import { BACKEND_BASE_URL } from "../Constant";
 import { objectURLToFile } from "../utils/UserHelper";
 import { refreshAccessToken, secureFetch } from "./tokenService";
 
-
 export async function fetchUserDetails() {
   try {
     const accessToken = await refreshAccessToken(false);
@@ -20,7 +19,12 @@ export async function fetchUserDetails() {
   }
 }
 
-export async function fetchUpdateProfile({ user, setUserDetails, fullName, profileImageUrl }) {
+export async function fetchUpdateProfile({
+  user,
+  setUserDetails,
+  fullName,
+  profileImageUrl,
+}) {
   try {
     const formData = new FormData();
     if (fullName) {
@@ -35,10 +39,12 @@ export async function fetchUpdateProfile({ user, setUserDetails, fullName, profi
     let data = await secureFetch(
       user,
       setUserDetails,
-      `${BACKEND_BASE_URL}/user`, {
-      method: "PATCH",
-      body: formData,
-    });
+      `${BACKEND_BASE_URL}/user`,
+      {
+        method: "PATCH",
+        body: formData,
+      }
+    );
     return data;
   } catch (error) {
     throw error;
@@ -108,9 +114,9 @@ export async function fetchDeleteFromCart(user, setUserDetails, productId) {
   }
 }
 
-export async function fetchCreateWishlist(user,setUserDetails,listName){
-  try{
-    let data=await secureFetch(
+export async function fetchCreateWishlist(user, setUserDetails, listName) {
+  try {
+    let data = await secureFetch(
       user,
       setUserDetails,
       `${BACKEND_BASE_URL}/user/wishlists/`,
@@ -119,56 +125,59 @@ export async function fetchCreateWishlist(user,setUserDetails,listName){
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({listName}),
-      },
-    )
+        body: JSON.stringify({ listName }),
+      }
+    );
     return data;
-  }
-  catch(error)
-  {
+  } catch (error) {
     throw error;
   }
 }
-export async function fetchDeleteWishlist(user,setUserDetails,wishlistId){
-  try{
-    let data=await secureFetch(
+export async function fetchDeleteWishlist(user, setUserDetails, wishlistId) {
+  try {
+    let data = await secureFetch(
       user,
       setUserDetails,
       `${BACKEND_BASE_URL}/user/wishlists/${wishlistId}`,
       {
         method: "DELETE",
-      },
-    )
+      }
+    );
     return data;
-  }
-  catch(error)
-  {
+  } catch (error) {
     throw error;
   }
 }
 
-
-export async function fetchMoveToWishlist(user,setUserDetails,sourceWishlistId,productId,targetWishlistId){
-
-  console.log(sourceWishlistId,productId,targetWishlistId)
-  try{
-    let data=await secureFetch(
+export async function fetchMoveToWishlist(
+  user,
+  setUserDetails,
+  sourceWishlistId,
+  productId,
+  targetWishlistId
+) {
+  console.log(sourceWishlistId, productId, targetWishlistId);
+  try {
+    let data = await secureFetch(
       user,
       setUserDetails,
       `${BACKEND_BASE_URL}/user/wishlists/${sourceWishlistId}/items/${productId}/move/${targetWishlistId}`,
       {
         method: "PATCH",
-      },
-    )
+      }
+    );
     return data;
-  }
-  catch(error)
-  {
+  } catch (error) {
     throw error;
   }
 }
 
-export async function fetchAddToWishlist(user, setUserDetails, wishlistId, productId) {
+export async function fetchAddToWishlist(
+  user,
+  setUserDetails,
+  wishlistId,
+  productId
+) {
   try {
     let data = await secureFetch(
       user,
@@ -179,8 +188,8 @@ export async function fetchAddToWishlist(user, setUserDetails, wishlistId, produ
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({productId}),
-      },
+        body: JSON.stringify({ productId }),
+      }
     );
     return data;
   } catch (error) {
@@ -188,7 +197,12 @@ export async function fetchAddToWishlist(user, setUserDetails, wishlistId, produ
   }
 }
 
-export async function fetchDeleteFromWishlist(user, setUserDetails,wishlistId,productId) {
+export async function fetchDeleteFromWishlist(
+  user,
+  setUserDetails,
+  wishlistId,
+  productId
+) {
   try {
     let data = await secureFetch(
       user,
@@ -196,6 +210,54 @@ export async function fetchDeleteFromWishlist(user, setUserDetails,wishlistId,pr
       `${BACKEND_BASE_URL}/user/wishlists/${wishlistId}/items/${productId}`,
       {
         method: "DELETE",
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function fetchAddNoteInWishlistProduct(
+  user,
+  setUserDetails,
+  wishlistId,
+  productId,
+  note,
+  mode
+) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/wishlists/${wishlistId}/items/${productId}/note`,
+      {
+        method: mode,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(note),
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function fetchDeleteNoteFromWishlistProduct(
+  user,
+  setUserDetails,
+  wishlistId,
+  productId,
+) {
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/wishlists/${wishlistId}/items/${productId}/note`,
+      {
+        method: 'DELETE',
       }
     );
     return data;
@@ -242,21 +304,28 @@ export async function fetchAddAddress(user, setUserDetails, addressObj) {
     let data = await secureFetch(
       user,
       setUserDetails,
-      `${BACKEND_BASE_URL}/user/address/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(addressObj),
-    });
-    console.log(data)
+      `${BACKEND_BASE_URL}/user/address/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addressObj),
+      }
+    );
+    console.log(data);
     return data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function fetchEditAddress(user, setUserDetails, addressId, addressObj) {
+export async function fetchEditAddress(
+  user,
+  setUserDetails,
+  addressId,
+  addressObj
+) {
   try {
     let data = await secureFetch(
       user,
@@ -276,7 +345,6 @@ export async function fetchEditAddress(user, setUserDetails, addressId, addressO
   }
 }
 
-
 export async function fetchUserLogout(user, setUserDetails) {
   try {
     let data = await secureFetch(
@@ -288,7 +356,7 @@ export async function fetchUserLogout(user, setUserDetails) {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include"
+        credentials: "include",
       }
     );
     return data;
@@ -306,10 +374,10 @@ export async function fetchUserOrders(user, setUserDetails) {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       }
-    )
+    );
     return data;
   } catch (error) {
     throw error;

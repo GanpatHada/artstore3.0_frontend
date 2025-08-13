@@ -1,0 +1,52 @@
+#note-modal{
+    max-width: 400px;
+    width: 100%;
+    background-color: white;
+}
+#note-modal form {
+    padding: 1rem;
+}
+#note-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#note-modal label{
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.35rem;
+}
+#note-modal .action{
+    display: flex;
+    justify-content: space-between;
+}
+
+#note-modal .action div{
+    display: flex;
+    gap: 0.5rem;
+}
+
+#note-modal textarea{
+    width: 100%;
+    height: 100px;
+    resize: none;
+    font-family: inherit;
+    padding: 0.5rem;
+}
+
+#note-modal #comment-count{
+    color: gray;
+    font-size: 0.75rem;
+}
+
+#note-modal #priority{
+    border: 1px solid rgb(190, 190, 190);
+    background-color: whitesmoke;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+#note-modal #priority option{
+    background-color: white;
+}

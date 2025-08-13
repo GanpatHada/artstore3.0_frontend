@@ -9,6 +9,7 @@ import { RiFileList3Line } from "react-icons/ri";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { fetchDeleteWishlist } from "../../services/UserService";
 import { toast } from "react-toastify";
+import NoteModal from "../../components/modals/note_modal/NoteModal";
 
 const WishListSidebar = ({ activeList, setActiveList }) => {
   const {
@@ -75,7 +76,8 @@ const WishlistMenu=({activeList,setActiveList})=>{
 }
 
 const WishlistContent = ({ activeList,setActiveList }) => {
-  const[showMenu,setShowMenu]=useState(false)
+  const[showMenu,setShowMenu]=useState(false);
+  
   const {
     user: { wishlists },
   } = useUser();
@@ -85,6 +87,7 @@ const WishlistContent = ({ activeList,setActiveList }) => {
 
   return (
     <div id="wishlist-content">
+  
       <section id="hero">
         <h4>{activeListDetail?.listName}</h4>
         <button onMouseEnter={()=>setShowMenu(true)} onMouseLeave={()=>setShowMenu(false)} className="secondary-btn all-centered">
@@ -94,9 +97,9 @@ const WishlistContent = ({ activeList,setActiveList }) => {
       </section>
       <header>
         <div>
-          <button className="active">
+          {/* <button className="active">
             <BsGridFill />
-          </button>
+          </button> */}
           <button>
             <GiHamburgerMenu />
           </button>

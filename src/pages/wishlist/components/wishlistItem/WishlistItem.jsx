@@ -14,6 +14,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 import SpinLoader from "../../../../components/spin-loader/SpinLoader";
 import { useNavigate } from "react-router-dom";
+import NoteModal from "../../../../components/modals/note_modal/NoteModal";
+import { formattDate } from "../../../../utils/GlobalUtils";
 
 const AvailableWishlists = ({ activeListId, closeMenu, product }) => {
   const [loading, setLoading] = useState(false);
@@ -45,8 +47,11 @@ const AvailableWishlists = ({ activeListId, closeMenu, product }) => {
         sourceWishlistId: data.fromWishlistId,
         targetWishlistId: data.toWishlistId,
       };
-
       moveToWishlist(payload);
+
+      const targetWishlistName=wishlists.find(wishlist=>wishlist._id===targetWishlistId)?.listName
+
+      toast.info(`Product has been moved to ${targetWishlistName||""}`)
     } catch (error) {
       console.error("Move to wishlist failed:", error);
     } finally {
@@ -80,14 +85,29 @@ const AvailableWishlists = ({ activeListId, closeMenu, product }) => {
 };
 
 
-const WishlistItem = ({ item, activeListId }) => {
+const WishlistItem = ({ item, activeListId}) => {
+
   const { user,deleteFromWishlist,addToCart, setUserDetails } = useUser();
+  const [noteModal,setNoteModal]=useState(false);
+  const [initialNote,setInitialNote]=useState(null)
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const [openAvailableWishlists, setOpenAvailableWishlists] = useState(false);
   const [deleting,setDeleting]=useState(false);
   const [addingToCart,setAddingToCart]=useState(false);
   const navigate=useNavigate()
+
+
+  const handleNoteModal=(e)=>{
+    e.stopPropagation();
+    if(item.note)
+      setInitialNote(item.note);
+    else
+      setInitialNote(null)
+    setNoteModal(true);
+  }
+
+ 
 
 
   const handleToggleAvailableWishlists = (e) => {
@@ -112,13 +132,13 @@ const WishlistItem = ({ item, activeListId }) => {
     }
   };
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async () => {
     try {
       setAddingToCart(true)
       const addedProduct = await fetchAddToCart(
         user,
         setUserDetails,
-        productId
+        product._id
       );
       addToCart(addedProduct);
     } catch (error) {
@@ -145,6 +165,7 @@ const WishlistItem = ({ item, activeListId }) => {
   }, []);
   return (
     <div className="wishlist-item">
+      {noteModal&&<NoteModal wishlistId={activeListId} productId={product._id} initialNote={initialNote} closeModal={()=>setNoteModal(false)}/>}
       {loading && <WishlistItemLoader />}
       <section className="image-wrapper">
         <div
@@ -162,18 +183,27 @@ const WishlistItem = ({ item, activeListId }) => {
           />
         </section>
       </section>
+      
+      
 
       <section className="more-info">
-        <p>Item added : {item?.createdAt}</p>
+        {item.note&&
+        <>
+        <p>{item.note.comment}</p>
+        <p>Priority : {item.note.priority}</p>
+        </>
+        }
+
+        <p>Item added : {formattDate(item?.createdAt)}</p>
       </section>
 
       <section className="buttons">
         {
           user.cart.find(cartItem=>cartItem.product===item.product)?
           <button onClick={()=>navigate("/cart")} className="secondary-btn">Go to cart</button>:
-          <button data-loading={addingToCart} className="cart-btn primary-btn">Add{addingToCart&&'ing...'} to cart</button>
+          <button onClick={handleAddToCart} data-loading={addingToCart} className="cart-btn primary-btn">Add{addingToCart&&'ing...'} to cart</button>
         }
-        {/* <button className="note-btn secondary-btn">Add note</button> */}
+        <button onClick={handleNoteModal} className="note-btn secondary-btn">{item.note?'Edit':'Add'} note</button>
         <button
           className="move-btn secondary-btn"
           onClick={handleToggleAvailableWishlists}

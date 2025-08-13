@@ -12,6 +12,8 @@ export const deleteWishlistAction=(dispatch,wishlist)=>dispatch({type:'DELETE_WI
 export const addToWishlistAction=(dispatch,wishlistData)=>dispatch({type:'ADD_TO_WISHLIST',payload:wishlistData})
 export const moveToWishlistAction=(dispatch,wishlistData)=>dispatch({type:'MOVE_TO_WISHLIST',payload:wishlistData})
 export const deleteFromWishlistAction=(dispatch,wishlistData)=>dispatch({type:'DELETE_FROM_WISHLIST',payload:wishlistData})
+export const addNoteToWishlistItemAction=(dispatch,noteData)=>dispatch({type:'ADD_NOTE_TO_WISHLIST_ITEM',payload:noteData})
+export const deleteNoteFromWishlistItemAction=(dispatch,wishlistData)=>dispatch({type:'DELETE_NOTE_FROM_WISHLIST_ITEM',payload:wishlistData})
 
 
 export const removeFromWishlistAction=(dispatch,wishlistItem)=>dispatch({type:"REMOVE_FROM_WISHLIST",payload:wishlistItem})

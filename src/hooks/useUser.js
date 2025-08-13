@@ -2,12 +2,14 @@ import { useContext } from "react";
 import UserContext from "../context/userContext";
 import {
   addAddressAction,
+  addNoteToWishlistItemAction,
   addToCartAction,
   addToWishlistAction,
   addWishlistAction,
   decrementCartItemAction,
   deleteAddressAction,
   deleteFromWishlistAction,
+  deleteNoteFromWishlistItemAction,
   deleteWishlistAction,
   editAddressAction,
   incrementCartItemAction,
@@ -55,6 +57,9 @@ export const useUser = () => {
 
   const removeFromWishlist=(wishlistItem)=>removeFromWishlistAction(dispatch,wishlistItem)
 
+  const addNoteToWishlistItem=(noteData)=>addNoteToWishlistItemAction(dispatch,noteData)
+  const deleteNoteFromWishlistItem=(wishlistData)=>deleteNoteFromWishlistItemAction(dispatch,wishlistData)
+
   const deleteAddress=(addressId)=>deleteAddressAction(dispatch,addressId)
   const makeAddressPrimary=(addressId)=>makeAddressPrimaryAction(dispatch,addressId)
   const addAddress=(addressData)=>addAddressAction(dispatch,addressData)
@@ -79,7 +84,9 @@ export const useUser = () => {
     addWishlist,
     deleteWishlist,
     moveToWishlist,
-    deleteFromWishlist
+    deleteFromWishlist,
+    addNoteToWishlistItem,
+    deleteNoteFromWishlistItem
     
   };
 };

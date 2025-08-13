@@ -8,7 +8,6 @@
 }
 html {
   scroll-behavior: smooth;
-
 }
 #root {
   height: 100%;
@@ -43,7 +42,7 @@ button:disabled {
   background-color: whitesmoke;
   border: none;
   color: rgb(161, 161, 161);
-  border:1px solid transparent;
+  border: 1px solid transparent;
 }
 
 li {
@@ -75,7 +74,6 @@ img {
   text-decoration: underline;
 }
 
-
 /* --- Primary Button --- */
 .primary-btn {
   background-color: #ffd814;
@@ -85,7 +83,7 @@ img {
   border-radius: 1rem;
 }
 
-.primary-btn[data-loading="true"]{
+.primary-btn[data-loading="true"] {
   background-color: #fff7ac;
   color: #4b4b4b;
   cursor: not-allowed;
@@ -97,7 +95,7 @@ img {
 }
 
 .primary-btn:active:not(:disabled) {
- background-color:#dab200 ;
+  background-color: #dab200;
 }
 
 /* --- Secondary Button --- */
@@ -108,7 +106,7 @@ img {
   padding: 0.5rem 1rem;
   border-radius: 1rem;
 }
-.secondary-btn:hover{
+.secondary-btn:hover {
   background-color: whitesmoke;
 }
 a {
@@ -119,23 +117,59 @@ a {
   text-decoration: underline;
 }
 
-.main-logo-text{
+.main-logo-text {
   font-family: "Oleo Script Swash Caps", serif;
   font-weight: 700;
   color: white;
-
-  
 }
 
-.layover{
+.layover {
   height: 100vh;
   width: 100vw;
   position: fixed;
   z-index: 15;
   background-color: rgba(0, 0, 0, 0.404);
   inset: 0;
- 
 }
 
+.modal {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 6px rgba(102, 102, 102, 0.5);
+  overflow: hidden;
+  animation: shrinkToNormal 200ms ease-out;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+@keyframes shrinkToNormal {
+  0% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
 
+.modal header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--primary-border);
+    background-color: #f0f2f2;
 
+}
+.modal header button{
+    border: 1px solid var(--primary-border);
+    border-radius: 5px;
+    width: 2rem;
+    height: 2rem;
+    
+    &:hover{
+        border: 1px solid gray;
+    }
+}

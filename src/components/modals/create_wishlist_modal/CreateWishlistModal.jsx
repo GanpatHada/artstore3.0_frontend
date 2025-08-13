@@ -55,7 +55,7 @@ const CreateWishlistModal = ({closeCreateWishlist,addItem}) => {
   
   return (
     <div className="layover">
-      <div ref={modalRef} id="create-wishlist-modal">
+      <div ref={modalRef} id="create-wishlist-modal" className="modal">
         <header>
           <h4>Create a new wishlist</h4>
           <button className="all-centered" onClick={closeCreateWishlist}><RxCross1 /></button>
