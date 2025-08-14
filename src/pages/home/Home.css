@@ -1,9 +1,9 @@
-#home{
-    max-width: 1500px;
-    margin: auto;
-    position: relative;
-    background-color: transparent;
-    
+#home {
+
 }
-
-
+#home-content {
+  max-width: 1500px;
+  margin: auto;
+  height: fit-content;
+  position: relative;
+}

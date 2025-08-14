@@ -6,7 +6,7 @@ import {
   fetchUnderOneThousandProducts,
 } from "../../../../services/ProductService";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { makeCapitalize } from "../../../../utils/GlobalUtils";
 
 const LoadingSkelton = () => {
@@ -20,35 +20,48 @@ const LoadingSkelton = () => {
   );
 };
 
+const ExploreBox = () => {
+  return (
+    <main id="explore-box" className="all-centered">
+      <p>Explore Artstore</p>
+      <Link to={"/products"}><button className="secondary-btn">Explore</button></Link>
+    </main>
+  );
+};
+
 const PickupWhereYouLeftOff = ({ handleProductClick }) => {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    let viewedProducts =
-      JSON.parse(localStorage.getItem("viewedProducts")) || [];
-    setProducts(viewedProducts);
-  }, []);
+  const products = JSON.parse(localStorage.getItem("viewedProducts")) || [];
+
   return (
     <div className="category-wrapper">
       <header>
         <h4>Pickup where you left off</h4>
       </header>
-      <main>
-        <section>
-          {products.map((product) => (
-            <div>
-              <section
-                key={product.productId}
-                onClick={() => handleProductClick(product._id)}
-              >
-                <img src={product.productImage} alt="" />
-              </section>
-              <section>
-                <p>this is info</p>
-              </section>
-            </div>
-          ))}
-        </section>
-      </main>
+      {products.length === 0 ? (
+        <main>
+          <ExploreBox />
+        </main>
+      ) : (
+        <main>
+          <section>
+            {products.map((product) => (
+              <div key={product.productId}
+                  onClick={() => handleProductClick(product._id)}>
+                <div className="product-image-wrapper">
+                  <div
+                  className="product-image"
+                  style={{
+                    backgroundImage: `url(${
+                      product.productImage || "/fallback.jpg"
+                    })`,
+                  }}
+                ></div>
+                </div>
+              </div>
+            ))}
+          </section>
+        </main>
+      )}
     </div>
   );
 };
@@ -81,15 +94,25 @@ const ProductsUnder1k = ({ handleProductClick }) => {
         ) : (
           <section>
             {products.map((product) => (
-              <div>
-                <section
-                  key={product._id}
-                  onClick={() => handleProductClick(product._id)}
-                >
-                  <img src={product.productImage} alt="" />
-                </section>
-                <section>
-                  <span><strong>&#8377;{product?.price}</strong></span>&nbsp;
+              <div
+                key={product._id}
+                onClick={() => handleProductClick(product._id)}
+              >
+                <div className="product-image-wrapper">
+                  <div
+                  className="product-image"
+                  style={{
+                    backgroundImage: `url(${
+                      product.productImage || "/fallback.jpg"
+                    })`,
+                  }}
+                ></div>
+                </div>
+                <section className="product-info">
+                  <span>
+                    <strong>&#8377;{product?.price}</strong>
+                  </span>
+                  &nbsp;
                   <strike>&#8377;{product?.actualPrice}</strike>
                 </section>
               </div>
@@ -130,16 +153,23 @@ const DealOfTheDay = ({ handleProductClick }) => {
         ) : (
           <section>
             {products.map((product) => (
-              <div>
-                <section
+              <div
                 key={product._id}
                 onClick={() => handleProductClick(product._id)}
               >
-                <img src={product.productImage} alt="" />
-              </section>
-              <section>
-                <span className="tag">{makeCapitalize(product?.tag)}</span>
-              </section>
+               <div className="product-image-wrapper">
+                  <div
+                  className="product-image"
+                  style={{
+                    backgroundImage: `url(${
+                      product.productImage || "/fallback.jpg"
+                    })`,
+                  }}
+                ></div>
+                </div>
+                <section>
+                  <span className="tag">{makeCapitalize(product?.tag)}</span>
+                </section>
               </div>
             ))}
           </section>
@@ -178,19 +208,30 @@ const UpToFiftyOff = ({ handleProductClick }) => {
         ) : (
           <section>
             {products.map((product) => (
-             <div>
-               <section
-                className="category-preview"
+              <div
                 key={product._id}
                 onClick={() => handleProductClick(product._id)}
               >
-                <img src={product.productImage} alt="" />
-              </section>
-              <section>
-                <span><strong>&#8377;{product?.price}</strong></span>&nbsp;
-                <span className="high-discount">{product?.discount}% off</span>
-              </section>
-             </div>
+                <div className="product-image-wrapper">
+                  <div
+                  className="product-image"
+                  style={{
+                    backgroundImage: `url(${
+                      product.productImage || "/fallback.jpg"
+                    })`,
+                  }}
+                ></div>
+                </div>
+                <section>
+                  <span>
+                    <strong>&#8377;{product?.price}</strong>
+                  </span>
+                  &nbsp;
+                  <span className="high-discount">
+                    {product?.discount}% off
+                  </span>
+                </section>
+              </div>
             ))}
           </section>
         )}

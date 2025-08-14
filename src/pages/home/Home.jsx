@@ -1,14 +1,20 @@
-
 import "./Home.css";
 import Categories from "./components/categories/Categories";
 import SlideShow from "./components/slideshow/SlideShow";
 
-const Home = () => {
-
+const HomeContent = () => {
   return (
-    <div id="home">
+    <div id="home-content">
       <SlideShow />
       <Categories />
+    </div>
+  );
+};
+
+const Home = () => {
+  return (
+    <div id="home">
+      <HomeContent />
     </div>
   );
 };

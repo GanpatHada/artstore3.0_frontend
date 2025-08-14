@@ -1,4 +1,3 @@
-import { GrNext, GrPrevious } from "react-icons/gr";
 import poster1 from "../../../../images/artstore_poster_1.svg";
 import poster2 from "../../../../images/artstore_poster2.svg";
 import poster3 from "../../../../images/artstore_poster3.svg";
