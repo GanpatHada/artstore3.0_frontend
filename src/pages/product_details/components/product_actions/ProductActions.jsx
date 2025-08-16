@@ -15,84 +15,142 @@ import { GoPlus } from "react-icons/go";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 import CreateWishlistModal from "../../../../components/modals/create_wishlist_modal/CreateWishlistModal";
 
-
-const MyWishlists = forwardRef(({openCreateWishlist}, ref) => {
-  const { productDetails: { _id: productId } } = useProductDetails()
+const MyWishlists = forwardRef(({ openCreateWishlist }, ref) => {
+  const {
+    productDetails: { _id: productId },
+  } = useProductDetails();
   const { user, setUserDetails, addToWishlist } = useUser();
   const wishlists = user?.wishlists || [];
- 
+
+  const sortedWishlists = [...wishlists].sort(
+    (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0)
+  );
 
   const handleAddToWishlist = async (wishlistId) => {
     try {
-      const data = await fetchAddToWishlist(user, setUserDetails, wishlistId, productId);
+      const data = await fetchAddToWishlist(
+        user,
+        setUserDetails,
+        wishlistId,
+        productId
+      );
       addToWishlist(data);
-      toast.success('Product has been added to wishlist')
+      toast.success("Product has been added to wishlist");
     } catch (error) {
-      toast.error(error.message || 'Something went wrong while adding to wishlist')
+      toast.error(
+        error.message || "Something went wrong while adding to wishlist"
+      );
     }
-  }
+  };
 
   return (
     <>
       <div id="my-wishlists" ref={ref}>
-        {wishlists.map((wishlist) => (
-          <div className="wishlist" onClick={() => handleAddToWishlist(wishlist._id)} key={wishlist._id}>
+        {sortedWishlists.map((wishlist) => (
+          <div
+            className="wishlist"
+            onClick={() => handleAddToWishlist(wishlist._id)}
+            key={wishlist._id}
+          >
             <h5>{wishlist.listName}</h5>
             <span>{wishlist.privacy}</span>
           </div>
         ))}
 
         <button
-  onClick={(e) => {
-    e.stopPropagation();
-    openCreateWishlist()
-  }}
-  className="secondary-text-btn"
->
-  <span><GoPlus /></span>
-  Create another List
-</button>
+          onClick={(e) => {
+            e.stopPropagation();
+            openCreateWishlist();
+          }}
+          className="secondary-text-btn"
+        >
+          <span>
+            <GoPlus />
+          </span>
+          Create another List
+        </button>
       </div>
     </>
   );
 });
 
-const AddToWishlist = ({openCreateWishlist}) => {
+const AddToWishlist = ({ openCreateWishlist }) => {
   const [showWishlists, setShowWishlists] = useState(false);
+  const [loading,setLoading]=useState(false)
+  const {
+    productDetails: { _id: productId },
+  } = useProductDetails();
 
   const wishlistsRef = useRef(null);
   useClickOutside(wishlistsRef, () => setShowWishlists(false));
 
   const handleToggleWishlists = (e) => {
     e.stopPropagation();
-    setShowWishlists(!showWishlists)
-  }
+    setShowWishlists(!showWishlists);
+  };
+
+  const { user, setUserDetails, addToWishlist } = useUser();
+  const defaultWishlist = user?.wishlists.find(wishlist=>wishlist.isDefault)._id;
+
+  const handleAddToDefaultWishlist = async () => {
+    setLoading(true)
+    try {
+      const data = await fetchAddToWishlist(
+        user,
+        setUserDetails,
+        defaultWishlist,
+        productId
+      );
+      addToWishlist(data);
+      toast.success("Product has been added to wishlist");
+    } catch (error) {
+      toast.error(
+        error.message || "Something went wrong while adding to wishlist"
+      );
+    }
+    finally{
+      setLoading(false)
+    }
+  };
 
   return (
-    <section id='wishlist-section'>
+    <section id="wishlist-section">
       <button className="secondary-btn" id="add-to-wishlist">
-        <span className="button-text">Add to Wish List</span>
-        <span onClick={handleToggleWishlists} className="button-icon all-centered"><IoIosArrowDown /></span>
+        <span onClick={handleAddToDefaultWishlist} className="button-text">
+          Add{loading&&"ing..."} {!loading&&'to Wish List'}
+        </span>
+        <span
+          onClick={handleToggleWishlists}
+          style={{
+            transform: showWishlists ? "rotate(180deg)" : "rotate(0deg)",
+          }}
+          className="button-icon all-centered"
+        >
+          <IoIosArrowDown />
+        </span>
       </button>
-      {showWishlists && <MyWishlists openCreateWishlist={openCreateWishlist} ref={wishlistsRef} />}
+      {showWishlists && (
+        <MyWishlists
+          openCreateWishlist={openCreateWishlist}
+          ref={wishlistsRef}
+        />
+      )}
     </section>
-  )
-}
-
+  );
+};
 
 const ProductActions = () => {
-   const [createWishlist, setCreateWishlist] = useState(false);
-   const { user, addToCart, addToWishlist, setUserDetails } = useUser();
-   const [loading, setLoading] = useState(false);
-   const navigate = useNavigate();
-   const { productDetails } = useProductDetails();
-   const { setProducts, setAmount } = useCheckout()
-   
-   const closeCreateWishlist = () => setCreateWishlist(false)
-   const openCreateWishlist = () => setCreateWishlist(true)
+  const [createWishlist, setCreateWishlist] = useState(false);
+  const { user, addToCart, addToWishlist, setUserDetails } = useUser();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { productDetails } = useProductDetails();
+  const { setProducts, setAmount } = useCheckout();
 
-   console.log(createWishlist)
+  const closeCreateWishlist = () => setCreateWishlist(false);
+  const openCreateWishlist = () => setCreateWishlist(true);
 
+  console.log(createWishlist);
 
   const handleBuyNow = () => {
     const productToBuy = {
@@ -105,7 +163,7 @@ const ProductActions = () => {
 
     setProducts([productToBuy]);
     setAmount(productToBuy.price);
-    navigate("/checkout")
+    navigate("/checkout");
   };
 
   const handleAddToCart = async (e, productId) => {
@@ -124,14 +182,9 @@ const ProductActions = () => {
     }
   };
 
-
-
-
   const isAvailableInCart = (productId) => {
     return user?.cart.find((cartItem) => cartItem.product === productId);
   };
-
-
 
   const {
     productDetails: {
@@ -151,7 +204,12 @@ const ProductActions = () => {
 
   return (
     <section id="check-out-section">
-      {createWishlist&&<CreateWishlistModal addItem={_id} closeCreateWishlist={closeCreateWishlist} />}
+      {createWishlist && (
+        <CreateWishlistModal
+          addItem={_id}
+          closeCreateWishlist={closeCreateWishlist}
+        />
+      )}
       {loading && <SpinLoader />}
       <h2>&#8377; {price}</h2>
       <span id="free-delivery-text">
@@ -162,12 +220,22 @@ const ProductActions = () => {
         {getStockInfo().text}
       </span>
       <span id="delivery-info">
-        <p><span>Delivered by : </span>Artstore</p>
-        <p><span>Sold by : </span>{fullName}</p>
-        <p><span>Payment :</span>secure transection</p>
+        <p>
+          <span>Delivered by : </span>Artstore
+        </p>
+        <p>
+          <span>Sold by : </span>
+          {fullName}
+        </p>
+        <p>
+          <span>Payment :</span>secure transection
+        </p>
       </span>
       <section>
-        <button className="primary-btn" onClick={(e) => handleAddToCart(e, _id)}>
+        <button
+          className="primary-btn"
+          onClick={(e) => handleAddToCart(e, _id)}
+        >
           {isAvailableInCart(_id) ? "Go" : "Add"} to Cart
         </button>
         <button onClick={handleBuyNow} id="buy-now">
@@ -176,9 +244,6 @@ const ProductActions = () => {
         <hr />
         <AddToWishlist openCreateWishlist={openCreateWishlist} />
       </section>
-      {/* <button id="add-to-wishlist" onClick={(e) => handleAddToWishlist(e, _id)}>
-        {isAvailableInWishlist(_id) ? "Go" : "Add"} to Wishlist
-      </button> */}
     </section>
   );
 };

@@ -1,0 +1,55 @@
+#manage-wishlist-modal{
+    background-color: white;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    
+}
+
+#manage-wishlist-modal main form{
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#manage-wishlist-modal form > div{
+    display: flex;
+    /* justify-content: space-between; */
+    gap: 0.5rem;
+    align-items: center;
+}
+#manage-wishlist-modal form > div label{
+    font-size: 0.85rem;
+    font-weight: 600;
+    flex: 0.25;
+}
+#manage-wishlist-modal main div input[type='text']{
+    padding: 0.5rem;
+    flex: 1;
+    border: 1px solid gray;
+    border-radius: 0.25rem;
+}
+
+#manage-wishlist-modal main div input[type='text']:disabled{
+    background-color: rgb(233, 233, 233);
+}
+#manage-wishlist-modal form span{
+    font-size: 0.8rem;
+}
+
+#manage-wishlist-modal form input[type='checkbox']{
+    margin-right: 0.25rem;
+    position: relative;
+    top: 2.5px;
+    left: -2.5px;
+}
+
+#manage-wishlist-modal form button{
+    width: fit-content;
+    float: right;
+}
+
+#manage-wishlist-modal form > div:last-child{
+    justify-content:flex-end;
+}

@@ -102,6 +102,28 @@ const userReducer = (state, action) => {
         },
       };
 
+    case "UPDATE_WISHLIST":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlists: state.user.wishlists.map((wishlist) => {
+            if (wishlist._id === action.payload._id) {
+              return {
+                ...wishlist,
+                ...action.payload,
+              };
+            } else if (action.payload.isDefault) {
+              return {
+                ...wishlist,
+                isDefault: false,
+              };
+            }
+            return wishlist;
+          }),
+        },
+      };
+
     case "DELETE_WISHLIST":
       return {
         ...state,
@@ -186,61 +208,60 @@ const userReducer = (state, action) => {
     }
 
     case "ADD_NOTE_TO_WISHLIST_ITEM": {
-  const { wishlistId, productId, note } = action.payload;
+      const { wishlistId, productId, note } = action.payload;
 
-  return {
-    ...state,
-    user: {
-      ...state.user,
-      wishlists: state.user.wishlists.map((wishlist) => {
-        if (wishlist._id === wishlistId) {
-          return {
-            ...wishlist,
-            items: wishlist.items.map((item) => {
-              if (item.product === productId) {
-                return {
-                  ...item,
-                  note: { ...note } // Overwrite or add note
-                };
-              }
-              return item;
-            }),
-          };
-        }
-        return wishlist;
-      }),
-    },
-  };
-}
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlists: state.user.wishlists.map((wishlist) => {
+            if (wishlist._id === wishlistId) {
+              return {
+                ...wishlist,
+                items: wishlist.items.map((item) => {
+                  if (item.product === productId) {
+                    return {
+                      ...item,
+                      note: { ...note }, // Overwrite or add note
+                    };
+                  }
+                  return item;
+                }),
+              };
+            }
+            return wishlist;
+          }),
+        },
+      };
+    }
 
-case "DELETE_NOTE_FROM_WISHLIST_ITEM": {
-  const { wishlistId, productId } = action.payload;
+    case "DELETE_NOTE_FROM_WISHLIST_ITEM": {
+      const { wishlistId, productId } = action.payload;
 
-  return {
-    ...state,
-    user: {
-      ...state.user,
-      wishlists: state.user.wishlists.map((wishlist) => {
-        if (wishlist._id === wishlistId) {
-          return {
-            ...wishlist,
-            items: wishlist.items.map((item) => {
-              if (item.product === productId) {
-                return {
-                  ...item,
-                  note: null // Remove the note
-                };
-              }
-              return item;
-            }),
-          };
-        }
-        return wishlist;
-      }),
-    },
-  };
-}
-
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlists: state.user.wishlists.map((wishlist) => {
+            if (wishlist._id === wishlistId) {
+              return {
+                ...wishlist,
+                items: wishlist.items.map((item) => {
+                  if (item.product === productId) {
+                    return {
+                      ...item,
+                      note: null, // Remove the note
+                    };
+                  }
+                  return item;
+                }),
+              };
+            }
+            return wishlist;
+          }),
+        },
+      };
+    }
 
     case "REMOVE_FROM_CART":
       return {

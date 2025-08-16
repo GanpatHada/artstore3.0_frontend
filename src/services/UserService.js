@@ -133,6 +133,29 @@ export async function fetchCreateWishlist(user, setUserDetails, listName) {
     throw error;
   }
 }
+
+
+export async function fetchManageWishlist(user, setUserDetails,wishlistData) {
+  const {wishlistId,...remainData}=wishlistData;
+  try {
+    let data = await secureFetch(
+      user,
+      setUserDetails,
+      `${BACKEND_BASE_URL}/user/wishlists/${wishlistId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(remainData),
+      }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function fetchDeleteWishlist(user, setUserDetails, wishlistId) {
   try {
     let data = await secureFetch(

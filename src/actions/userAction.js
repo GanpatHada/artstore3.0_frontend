@@ -8,6 +8,7 @@ export const removeFromCartAction=(dispatch,cartItem)=>dispatch({type:"REMOVE_FR
 
 
 export const addWishlistAction=(dispatch,wishlist)=>dispatch({type:'ADD_WISHLIST',payload:wishlist})
+export const updateWishlistAction=(dispatch,wishlist)=>dispatch({type:'UPDATE_WISHLIST',payload:wishlist})
 export const deleteWishlistAction=(dispatch,wishlist)=>dispatch({type:'DELETE_WISHLIST',payload:wishlist})
 export const addToWishlistAction=(dispatch,wishlistData)=>dispatch({type:'ADD_TO_WISHLIST',payload:wishlistData})
 export const moveToWishlistAction=(dispatch,wishlistData)=>dispatch({type:'MOVE_TO_WISHLIST',payload:wishlistData})

@@ -20,6 +20,7 @@ import {
   setUserDetailsAction,
   startUserLoadingAction,
   stopUserLoadingAction,
+  updateWishlistAction,
 } from "../actions/userAction";
 
 export const useUser = () => {
@@ -38,6 +39,9 @@ export const useUser = () => {
 
   const addWishlist = (wishlist) =>
     addWishlistAction(dispatch, wishlist);
+
+  const updateWishlist = (wishlist) =>
+    updateWishlistAction(dispatch, wishlist);
 
 
   const deleteWishlist = (wishlist) =>
@@ -82,6 +86,7 @@ export const useUser = () => {
     addAddress,
     editAddress,
     addWishlist,
+    updateWishlist,
     deleteWishlist,
     moveToWishlist,
     deleteFromWishlist,

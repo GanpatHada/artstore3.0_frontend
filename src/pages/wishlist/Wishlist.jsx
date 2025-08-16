@@ -1,7 +1,6 @@
 import "./Wishlist.css";
 import WishlistItem from "./components/wishlistItem/WishlistItem";
 import { useUser } from "../../hooks/useUser";
-import { BsGridFill } from "react-icons/bs";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useEffect, useState } from "react";
 import CreateWishlistModal from "../../components/modals/create_wishlist_modal/CreateWishlistModal";
@@ -9,15 +8,20 @@ import { RiFileList3Line } from "react-icons/ri";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { fetchDeleteWishlist } from "../../services/UserService";
 import { toast } from "react-toastify";
-import NoteModal from "../../components/modals/note_modal/NoteModal";
+import ManageWishlistModal from "../../components/modals/manage_wishlist_modal/ManageWishlistModal";
 
 const WishListSidebar = ({ activeList, setActiveList }) => {
   const {
     user: { wishlists },
   } = useUser();
+
+  const sortedWishlists = [...wishlists].sort(
+    (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0)
+  );
+
   return (
     <aside>
-      {wishlists.map((wishlist) => {
+      {sortedWishlists.map((wishlist) => {
         return (
           <div
             onClick={() => setActiveList(wishlist._id)}
@@ -50,7 +54,7 @@ const EmptyList = () => {
   );
 };
 
-const WishlistMenu=({activeList,setActiveList})=>{
+const WishlistMenu=({activeList,setActiveList,openManageWishlist})=>{
   const{user,setUserDetails,deleteWishlist}=useUser();
   const [loading,setLoading]=useState(false)
   const handleDeleteList=async()=>{
@@ -58,24 +62,25 @@ const WishlistMenu=({activeList,setActiveList})=>{
       setLoading(true)
       const wishlistId=await fetchDeleteWishlist(user,setUserDetails,activeList);
       deleteWishlist(wishlistId);
+      setActiveList(user.wishlists[0]._id)
     } catch (error) {
       toast.error(error.message||'Something went wrong while deleting wishlist')
     }
     finally{
       setLoading(false);
-      setActiveList(user.wishlists[0]._id)
+      
     }
   }
 
   return(
     <div id="wishlist-menu">
-        <button>Manage List</button>
+        <button onClick={openManageWishlist}>Manage List</button>
         <button disabled={loading} onClick={handleDeleteList}>{loading?'Deleting ...':'Delete List'}</button>
     </div>
   )
 }
 
-const WishlistContent = ({ activeList,setActiveList }) => {
+const WishlistContent = ({ activeList,setActiveList,openManageWishlist }) => {
   const[showMenu,setShowMenu]=useState(false);
   
   const {
@@ -92,7 +97,7 @@ const WishlistContent = ({ activeList,setActiveList }) => {
         <h4>{activeListDetail?.listName}</h4>
         <button onMouseEnter={()=>setShowMenu(true)} onMouseLeave={()=>setShowMenu(false)} className="secondary-btn all-centered">
           <HiDotsHorizontal />
-       {showMenu&& <WishlistMenu activeList={activeList} setActiveList={setActiveList}/>}
+       {showMenu&& <WishlistMenu openManageWishlist={openManageWishlist} activeList={activeList} setActiveList={setActiveList}/>}
         </button>
       </section>
       <header>
@@ -108,7 +113,7 @@ const WishlistContent = ({ activeList,setActiveList }) => {
           {/* <input type="search" placeholder="Search this list" /> */}
         </div>
       </header>
-      {activeListDetail?.items.length == 0 ?<EmptyList />: 
+      {activeListDetail?.items.length === 0 ?<EmptyList />: 
         <main id="wishlist-item-wrapper">
        { activeListDetail?.items.map((item) => (
             <WishlistItem activeListId={activeList} key={item.product} item={item} />
@@ -126,15 +131,23 @@ const Wishlist = () => {
   } = useUser();
   const [activeList, setActiveList] = useState(null);
   const [createWishlist, setCreateWishlist] = useState(false);
+  const [manageWishlist,setManageWishlist]=useState(false)
 
-  function getActiveListId() {
-    const activeListId = wishlists.find((wishlist) => wishlist.isDefault)._id;
-    return activeListId;
+
+  const openManageWishlist=(e)=>{
+    e.stopPropagation();
+    setManageWishlist(true)
   }
 
+  const closeManageWishlist=()=>{
+    setManageWishlist(false)
+  }
+
+  const activeListId = wishlists.find((wishlist) => wishlist.isDefault)._id;
+    
   useEffect(()=>{
-     setActiveList(getActiveListId())
-  },[])
+     setActiveList(activeListId)
+  },[activeListId])
 
   const closeCreateWishlist = () => setCreateWishlist(false);
 
@@ -148,6 +161,9 @@ const Wishlist = () => {
       {createWishlist && (
         <CreateWishlistModal closeCreateWishlist={closeCreateWishlist} />
       )}
+
+      {manageWishlist&& <ManageWishlistModal activeList={activeList}  closeManageWishlist={closeManageWishlist}/>}
+      
       <div id="wishlist-wrapper">
         <header>
           <h2>Your Wishlist</h2>
@@ -160,7 +176,7 @@ const Wishlist = () => {
             activeList={activeList}
             setActiveList={setActiveList}
           />
-          <WishlistContent setActiveList={setActiveList} activeList={activeList} />
+          <WishlistContent openManageWishlist={openManageWishlist} setActiveList={setActiveList} activeList={activeList} />
         </main>
       </div>
     </div>
