@@ -88,7 +88,6 @@ const ManageWishlistModal = ({ closeManageWishlist, activeList }) => {
               <label htmlFor="email">E mail : </label>
               <input
                 value={formData.email}
-                required={true}
                 type="text"
                 name="email"
                 onChange={handleFormData}
