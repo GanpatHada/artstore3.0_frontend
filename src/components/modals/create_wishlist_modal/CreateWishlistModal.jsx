@@ -6,11 +6,11 @@ import {useUser} from '../../../hooks/useUser'
 import { fetchAddToWishlist, fetchCreateWishlist } from "../../../services/UserService";
 import { toast } from "react-toastify";
 
-const CreateWishlistModal = ({closeCreateWishlist,addItem}) => {
+const CreateWishlistModal = ({closeModal,addItem}) => {
   const modalRef = useRef(null);
   const {user,setUserDetails,addWishlist}=useUser();
   const wishlistNames=user.wishlists.map(wishlist=>wishlist.listName);
-  useClickOutside(modalRef, closeCreateWishlist);
+  useClickOutside(modalRef, closeModal);
 
 
   const nextShppingListName=function getNextShoppingListName() {
@@ -44,7 +44,7 @@ const CreateWishlistModal = ({closeCreateWishlist,addItem}) => {
       addWishlist(list);
       if(itemAdded)
          toast.success(`Product has been added to ${list.listName}`)
-      closeCreateWishlist()  
+      closeModal()  
     } catch (error) {
       toast.error(error.message||'Something went wrong while creating wishlist')
     }
@@ -58,7 +58,7 @@ const CreateWishlistModal = ({closeCreateWishlist,addItem}) => {
       <div ref={modalRef} id="create-wishlist-modal" className="modal">
         <header>
           <h4>Create a new wishlist</h4>
-          <button className="all-centered" onClick={closeCreateWishlist}><RxCross1 /></button>
+          <button className="all-centered" onClick={closeModal}><RxCross1 /></button>
         </header>
         <main>
           <form action="">
@@ -69,7 +69,7 @@ const CreateWishlistModal = ({closeCreateWishlist,addItem}) => {
             </div>
             <div>
               <button data-loading={loading} disabled={loading} onClick={handleCreate} className="primary-btn">{loading?'Creating ...':'Create'}</button>
-              <button onClick={closeCreateWishlist} className="secondary-btn">Cancel</button>
+              <button onClick={closeModal} className="secondary-btn">Cancel</button>
             </div>    
           </form>
         </main>

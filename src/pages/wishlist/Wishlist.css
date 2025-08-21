@@ -66,29 +66,8 @@
     position: relative;
     padding: 0.25rem 0.75rem;
 }
-#wishlist-menu{
-    position: absolute;
-    top: 1.65rem;
-    right: -0.5rem;
-    z-index: 5;
-    width: max-content;
-    background-color: white;
-    border: 1px solid var(--primary-border);
-    padding: 0.5rem;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-}
 
-#wishlist-menu button{
-    font-size: 0.8rem;
-    padding: 0.5rem;
-    background-color: transparent;
-    text-align: left;
-    &:hover{
-        color: var(--primary-color);
-    }
-}
+
 #wishlist-content > header{
     display: flex;
     justify-content: space-between;
@@ -153,21 +132,7 @@
     padding: 0.5rem 0rem;
 }
 
-.empty-list{
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgb(37, 37, 37);
-    min-height: 100px;
-}
-.empty-list div:first-child{
-    font-size: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: gray;
-}
+
 
 @media screen and (max-width:576px) {
     #wishlist-item-wrapper{ 

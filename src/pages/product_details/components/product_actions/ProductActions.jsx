@@ -141,7 +141,7 @@ const AddToWishlist = ({ openCreateWishlist }) => {
 
 const ProductActions = () => {
   const [createWishlist, setCreateWishlist] = useState(false);
-  const { user, addToCart, addToWishlist, setUserDetails } = useUser();
+  const { user, addToCart,setUserDetails } = useUser();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { productDetails } = useProductDetails();
@@ -207,7 +207,7 @@ const ProductActions = () => {
       {createWishlist && (
         <CreateWishlistModal
           addItem={_id}
-          closeCreateWishlist={closeCreateWishlist}
+          closeModal={closeCreateWishlist}
         />
       )}
       {loading && <SpinLoader />}

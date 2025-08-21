@@ -6,8 +6,10 @@ import { useUser } from "../../../hooks/useUser";
 import { fetchManageWishlist } from "../../../services/UserService";
 import SpinLoader from "../../spin-loader/SpinLoader";
 import { toast } from "react-toastify";
-const ManageWishlistModal = ({ closeManageWishlist, activeList }) => {
+import { useWishlist } from "../../../hooks/useWishlist";
+const ManageWishlistModal = () => {
   const { user,setUserDetails,updateWishlist } = useUser();
+  const {activeList,closeModal}=useWishlist()
   const [loading,setLoading]=useState(false)
   const wishlists = user.wishlists;
   const modalRef = useRef(null);
@@ -22,7 +24,7 @@ const ManageWishlistModal = ({ closeManageWishlist, activeList }) => {
     (wishlist) => wishlist._id === activeList
   );
 
-  useClickOutside(modalRef, closeManageWishlist);
+  useClickOutside(modalRef, closeModal);
 
   const handleFormData = (e) => {
     const { name, type, value, checked } = e.target;
@@ -57,7 +59,7 @@ const ManageWishlistModal = ({ closeManageWishlist, activeList }) => {
     }
     finally{
       setLoading(false);
-      closeManageWishlist()
+      closeModal()
     }
   };
 
@@ -67,7 +69,7 @@ const ManageWishlistModal = ({ closeManageWishlist, activeList }) => {
         {loading&&<SpinLoader/>}
         <header>
           <h4>Manage Wishlist</h4>
-          <button className="all-centered" onClick={closeManageWishlist}>
+          <button className="all-centered" onClick={closeModal}>
             <RxCross1 />
           </button>
         </header>

@@ -1,0 +1,15 @@
+.empty-list{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(37, 37, 37);
+    min-height: 100px;
+}
+.empty-list div:first-child{
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: gray;
+}

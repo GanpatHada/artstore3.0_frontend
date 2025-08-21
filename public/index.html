@@ -7,8 +7,14 @@
 
     <!-- Primary Meta Tags -->
     <title>Artstore, Buy Original Indian Artworks Online</title>
-    <meta name="title" content="Artstore, Buy Original Indian Artworks Online" />
-    <meta name="description" content="Discover and shop unique Indian paintings including Warli, Madhubani, and more. Handcrafted artwork directly from local artists." />
+    <meta
+      name="title"
+      content="Artstore, Buy Original Indian Artworks Online"
+    />
+    <meta
+      name="description"
+      content="Discover and shop unique Indian paintings including Warli, Madhubani, and more. Handcrafted artwork directly from local artists."
+    />
     <meta name="theme-color" content="#000000" />
 
     <!-- Favicon -->
@@ -18,22 +24,69 @@
     <!-- Manifest -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
+    <!-- Preload critical LCP image -->
+    <link
+      rel="preload"
+      as="image"
+      href="/static/media/artstore_poster_1.a916e945221d041e0187.webp"
+      fetchpriority="high"
+    />
+
+    <!-- DNS Prefetch & Preconnect for faster third-party loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Google Fonts (optimized with display=swap) -->
+    <!-- Preconnect helps browser establish connection early -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Only include the fonts you actually use -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Oleo+Script+Swash+Caps:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://artstoreonline.vercel.app/" />
-    <meta property="og:title" content="Artstore - Buy Original Indian Artworks Online" />
-    <meta property="og:description" content="Shop authentic Indian art like Warli, Madhubani, and more. Directly from talented local artists." />
-    <meta property="og:image" content="https://artstoreonline.vercel.app/a.svg" />
+    <meta
+      property="og:title"
+      content="Artstore - Buy Original Indian Artworks Online"
+    />
+    <meta
+      property="og:description"
+      content="Shop authentic Indian art like Warli, Madhubani, and more. Directly from talented local artists."
+    />
+    <meta
+      property="og:image"
+      content="https://artstoreonline.vercel.app/a.svg"
+    />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://artstoreonline.vercel.app/" />
-    <meta property="twitter:title" content="Artstore - Buy Original Indian Artworks Online" />
-    <meta property="twitter:description" content="Shop authentic Indian art like Warli, Madhubani, and more. Directly from talented local artists." />
-    <meta property="twitter:image" content="https://artstoreonline.vercel.app/a.svg" />
+    <meta
+      property="twitter:title"
+      content="Artstore - Buy Original Indian Artworks Online"
+    />
+    <meta
+      property="twitter:description"
+      content="Shop authentic Indian art like Warli, Madhubani, and more. Directly from talented local artists."
+    />
+    <meta
+      property="twitter:image"
+      content="https://artstoreonline.vercel.app/a.svg"
+    />
 
     <!-- Fonts and Icons -->
-    <script src="https://kit.fontawesome.com/d813d6fe46.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/d813d6fe46.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
   </head>
 
   <body>

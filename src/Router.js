@@ -28,6 +28,7 @@ import AddAddress from "./pages/add_address/AddAddress";
 
 import { CartProvider } from "./context/CartContext";
 import ProductDetailsProvider from "./context/ProductDetailsContext";
+import { WishlistProvider } from "./context/WishlistContext";
 
 const privateWrapper = (component) => <PrivateRoute>{component}</PrivateRoute>;
 
@@ -79,7 +80,10 @@ const router = createBrowserRouter([
       },
       {
         path: "wishlist",
-        element: privateWrapper(<Wishlist />),
+        element: privateWrapper(
+        <WishlistProvider>
+          <Wishlist />
+        </WishlistProvider>),
       },
       {
         path: "my_account",

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./NoteModal.css";
 import { RxCross1 } from "react-icons/rx";
 import SpinLoader from "../../spin-loader/SpinLoader";

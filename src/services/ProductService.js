@@ -2,10 +2,22 @@ import { BACKEND_BASE_URL } from "../Constant";
 import { secureFetch } from "./tokenService";
 
 
-export async function fetchProducts(productIds) {
-  let url=`${BACKEND_BASE_URL}/products?ids=${productIds}`;
-  if(!productIds)
-     url = `${BACKEND_BASE_URL}/products/`;
+export async function fetchProducts(productIds = [], fields = []) {
+  const params = new URLSearchParams();
+
+  if (productIds.length > 0) {
+    params.append("ids", productIds.join(",")); 
+  }
+
+  if (fields.length > 0) {
+    params.append("fields", fields.join(","));
+  }
+
+  let url = `${BACKEND_BASE_URL}/products`;
+  if (params.toString()) {
+    url += `?${params.toString()}`;
+  }
+
   try {
     let response = await fetch(url, {
       method: "GET",
@@ -13,14 +25,19 @@ export async function fetchProducts(productIds) {
         "Content-Type": "application/json",
       },
     });
+
     response = await response.json();
-    if(!response.success)
-      throw new Error(response.message)
-    return response.data
+
+    if (!response.success) {
+      throw new Error(response.message);
+    }
+
+    return response.data;
   } catch (error) {
-   throw error;
+    throw error;
   }
 }
+
 
 
 

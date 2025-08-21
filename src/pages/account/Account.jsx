@@ -7,6 +7,9 @@ import { BiLogOutCircle } from "react-icons/bi";
 import { fetchUserLogout } from "../../services/UserService";
 import { useUser } from "../../hooks/useUser";
 import { makeCapitalize } from "../../utils/GlobalUtils";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import DotLoader from '../../components/dot-loader/DotLoader'
 
 const accountNavs = [
   {
@@ -31,16 +34,25 @@ const accountNavs = [
 
 const SignoutButton = () => {
   const { user, setUserDetails } = useUser();
+  const [loading,setLoading]=useState(false)
   const handleLogout = async () => {
+   try {
+    setLoading(true);
     const data = await fetchUserLogout(user, setUserDetails);
     setUserDetails(data);
+   } catch (error) {
+    toast.error(error.message||'Something went wrong while logging out')
+   }
+   finally{
+    setLoading(false)
+   }
   };
   return (
     <button onClick={handleLogout} id="signout-button">
       <span>
         <BiLogOutCircle />
       </span>
-      Signout
+      {loading?<DotLoader/>:<span>Signout</span>}
     </button>
   )
 }
