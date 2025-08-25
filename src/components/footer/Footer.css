@@ -17,15 +17,15 @@
     flex-direction: column;
     min-width: min-content;
     width: auto;
+    gap: 0.35rem;
 }
 #main-footer main > div h4{
     font-weight: bold;
     font-size: 1rem;
-    margin: 0.3rem 0rem;
+    margin: 0.5rem 0rem;
 }
 #main-footer main > div a{
     font-size: 0.8rem;
-    margin: 0.1rem;
     color: rgba(255, 255, 255, 0.801);
 }
 #main-footer main > div a:hover{

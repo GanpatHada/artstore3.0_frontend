@@ -15,12 +15,13 @@ import { GoPlus } from "react-icons/go";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 import CreateWishlistModal from "../../../../components/modals/create_wishlist_modal/CreateWishlistModal";
 
-const MyWishlists = forwardRef(({ openCreateWishlist }, ref) => {
+const MyWishlists = forwardRef(({openCreateWishlist}, ref) => {
   const {
     productDetails: { _id: productId },
   } = useProductDetails();
   const { user, setUserDetails, addToWishlist } = useUser();
   const wishlists = user?.wishlists || [];
+  const navigate=useNavigate()
 
   const sortedWishlists = [...wishlists].sort(
     (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0)
@@ -60,6 +61,8 @@ const MyWishlists = forwardRef(({ openCreateWishlist }, ref) => {
         <button
           onClick={(e) => {
             e.stopPropagation();
+            if(!user)
+               return navigate("/login")
             openCreateWishlist();
           }}
           className="secondary-text-btn"
@@ -76,7 +79,8 @@ const MyWishlists = forwardRef(({ openCreateWishlist }, ref) => {
 
 const AddToWishlist = ({ openCreateWishlist }) => {
   const [showWishlists, setShowWishlists] = useState(false);
-  const [loading,setLoading]=useState(false)
+  const [loading,setLoading]=useState(false);
+  const navigate=useNavigate()
   const {
     productDetails: { _id: productId },
   } = useProductDetails();
@@ -93,6 +97,8 @@ const AddToWishlist = ({ openCreateWishlist }) => {
   const defaultWishlist = user?.wishlists.find(wishlist=>wishlist.isDefault)._id;
 
   const handleAddToDefaultWishlist = async () => {
+    if(!user)
+      return navigate("/login")
     setLoading(true)
     try {
       const data = await fetchAddToWishlist(

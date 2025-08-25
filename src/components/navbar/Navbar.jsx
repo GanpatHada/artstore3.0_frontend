@@ -79,7 +79,7 @@ const Cart = () => {
   const { user } = useUser();
   return (
     <Link id='cart' to="/cart">
-      <img src={cartLogo} alt="" />
+      <img src={cartLogo} alt="..." />
       {user && <i id="cart-badge">{user?.cart?.length}</i>}
     </Link>
   );

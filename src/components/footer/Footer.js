@@ -28,14 +28,15 @@ const Footer = () => {
         </div>
         <div>
           <h4>Quick Links</h4>
-          <Link>Your Account</Link>
-          <Link>Your Orders</Link>
-          <Link>Rate the app</Link>
-          <Link>Suggestions</Link>
+          <Link to={"/my_account/profile"}>Your Profile</Link>
+          <Link to={"/my_account/orders"}>Your Orders</Link>
+          <Link to={"/my_account/address"}>Your Addresses</Link>
+          <Link to={"/cart"}>Your Cart</Link>
+          <Link to={"/wishlist"}>Your Wishlists</Link>
         </div>
       </main>
       <footer>
-        copyright &#169; All rights reserved @ artstore3.vercel.app 2024
+        copyright &#169; All rights reserved @ artstoreonline.vercel.app 2024
       </footer>
     </footer>
   );
