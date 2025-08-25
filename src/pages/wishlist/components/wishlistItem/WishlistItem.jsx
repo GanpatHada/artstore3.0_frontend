@@ -8,7 +8,6 @@ import {
   fetchMoveToWishlist,
 } from "../../../../services/UserService";
 import StarsCreator from "../../../../components/stars_creator/StarsCreator";
-import WishlistItemLoader from "../wishlist-item-loader/WishlistItemLoader";
 import { IoIosArrowDown } from "react-icons/io";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 import SpinLoader from "../../../../components/spin-loader/SpinLoader";
@@ -52,7 +51,7 @@ const AvailableWishlists = ({ activeListId, closeMenu, product }) => {
 
       toast.info(`Product has been moved to ${targetWishlistName||""}`)
     } catch (error) {
-      console.error("Move to wishlist failed:", error);
+      toast.error(error.message||'Unable to move product')
     } finally {
       setLoading(false);
       closeMenu();
@@ -64,16 +63,14 @@ const AvailableWishlists = ({ activeListId, closeMenu, product }) => {
   );
 
   return (
-    <div id="available-wishlists" ref={menuRef} className="p-2 w-64 bg-white shadow rounded">
-      {loading && <SpinLoader />}
-      {!loading && otherWishlists.length === 0 && (
-        <p className="text-sm text-gray-500">No other wishlists available.</p>
-      )}
-      {!loading &&
+    <div id="available-wishlists" ref={menuRef} className="">
+      {loading&&<SpinLoader/>}
+      {otherWishlists.length === 0?
+        <p className="">No other wishlists available.</p>:
         otherWishlists.map((wishlist) => (
           <div
             key={wishlist._id}
-            className="wishlist cursor-pointer px-2 py-1 hover:bg-gray-100 rounded"
+            className="wishlist"
             onClick={(e) => handleMoveToWislist(e, wishlist._id)}
           >
             {wishlist.listName}
@@ -154,8 +151,9 @@ const WishlistItem = ({ product, activeListId }) => {
         <section className="ratings">
           <StarsCreator starsCount={product?.averageRatings} showCount={false} />
         </section>
+        <h4>&#8377;{product?.price}</h4>
       </section>
-
+      
       <section className="more-info">
         {currentItem?.note && (
           <>

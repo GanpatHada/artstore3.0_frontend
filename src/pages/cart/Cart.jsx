@@ -23,7 +23,8 @@ const CartHeader = () => {
 const CartContent = () => {
   const { user: { cart } } = useUser();
   const { cartItems, cartItemsLoading } = useCart();
-
+  
+  
 
   const cartItemsFiltered = useMemo(() => {
     const ids = cart.map((c) => c.product);
@@ -126,7 +127,7 @@ const CheckOutBox = () => {
 
 const Cart = () => {
   const { user: { cart } } = useUser();
-  const productIds = cart.map((cartItem) => cartItem.product).join(",");
+  const productIds = cart.map((cartItem) => cartItem.product);
   const {setSelectedAll, setCartItems, startLoading, stopLoading,cartItems,selectedProductIds} = useCart();
 
   useEffect(() => {

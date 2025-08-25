@@ -1,26 +1,67 @@
 import "./CartItem.css";
 import { toast } from "react-toastify";
-import {fetchDecrementCartItem,fetchDeleteFromCart,fetchIncrementCartItem,} from "../../../../services/UserService";
+import {
+  fetchAddToWishlist,
+  fetchDecrementCartItem,
+  fetchDeleteFromCart,
+  fetchIncrementCartItem,
+} from "../../../../services/UserService";
 import { useUser } from "../../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { IoTrashBinOutline } from "react-icons/io5";
-import { IoMdAdd } from "react-icons/io";
+import { IoIosArrowDown, IoMdAdd } from "react-icons/io";
 import { AiOutlineMinus } from "react-icons/ai";
 import { makeCapitalize } from "../../../../utils/GlobalUtils";
 import { useCart } from "../../../../hooks/useCart";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useClickOutside } from "../../../../hooks/useClickOutside";
+import SpinLoader from "../../../../components/spin-loader/SpinLoader";
 
-const QunatitySelector = ({ productId,handleDeleteFromCart}) => {
-  const { incrementCartItem, decrementCartItem, user, setUserDetails } = useUser();
-  const [qunatityUpdating,setQunatityUpdating]=useState(false)
+const MyWishlists = ({setOpenWishlists,productId}) => {
+  const [loading,setLoading]=useState(false);
+  const {user,setUserDetails,removeFromCart,addToWishlist}=useUser();
+  const menuRef = useRef(null);
+  useClickOutside(menuRef,()=>setOpenWishlists(false));
+
+
+  const handleMoveToWishlist=async(wishlistId)=>{
+      try {
+        setLoading(true)
+        const data=await fetchAddToWishlist(user,setUserDetails,wishlistId,productId)
+        const deletedProductId=await fetchDeleteFromCart(user,setUserDetails,productId);
+        removeFromCart(deletedProductId)
+        addToWishlist(data)
+      } catch (error) {
+        toast.error(error.message||'Something went wrong while moving product')
+      }
+      finally{
+        setLoading(false)
+      }
+  }
+
+  const {
+    user: { wishlists },
+  } = useUser();
+  return (
+    <div ref={menuRef} id="my-wishlists">
+      {loading&&<SpinLoader/>}
+      {wishlists.map((wishlist) => {
+        return <option key={wishlist._id} onClick={()=>handleMoveToWishlist(wishlist._id)}>{wishlist.listName}</option>;
+      })}
+    </div>
+  );
+};
+
+const QunatitySelector = ({ productId, handleDeleteFromCart }) => {
+  const { incrementCartItem, decrementCartItem, user, setUserDetails } =
+    useUser();
+  const [qunatityUpdating, setQunatityUpdating] = useState(false);
   const getProductQuantity = (productId) => {
-    return (
-      user.cart.find((product) => product.product === productId).quantity
-    );
+    return user.cart.find((product) => product.product === productId).quantity;
   };
   const updateCartItemQuantity = async (type, productId) => {
     try {
-      setQunatityUpdating(true)
+      setQunatityUpdating(true);
       switch (type) {
         case "INCREMENT": {
           await fetchIncrementCartItem(user, setUserDetails, productId);
@@ -46,7 +87,10 @@ const QunatitySelector = ({ productId,handleDeleteFromCart}) => {
     }
   };
   return (
-    <div className="quantity-selector" style={{opacity:qunatityUpdating?'20%':'100%'}}>
+    <div
+      className="quantity-selector"
+      style={{ opacity: qunatityUpdating ? "20%" : "100%" }}
+    >
       <button onClick={() => updateCartItemQuantity("DECREMENT", productId)}>
         {getProductQuantity(productId) > 1 ? (
           <AiOutlineMinus />
@@ -62,7 +106,7 @@ const QunatitySelector = ({ productId,handleDeleteFromCart}) => {
   );
 };
 
-const ItemSelector = ({ productId,inStock }) => {
+const ItemSelector = ({ productId, inStock }) => {
   const { selectedProductIds, toggleSelect } = useCart();
   return (
     <input
@@ -75,7 +119,7 @@ const ItemSelector = ({ productId,inStock }) => {
   );
 };
 
-const CartItemPrice = ({tags, discount, price, actualPrice}) => {
+const CartItemPrice = ({ tags, discount, price, actualPrice }) => {
   return (
     <section className="cart-item-price-section">
       <p className="tags">{makeCapitalize(tags[0])}</p>
@@ -92,13 +136,15 @@ const CartItemPrice = ({tags, discount, price, actualPrice}) => {
   );
 };
 
-const CartItem = ({ cartItem}) => {
+const CartItem = ({ cartItem }) => {
   const navigate = useNavigate();
   const { user, setUserDetails, removeFromCart } = useUser();
-  const [deleting,setDeleting]=useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [openWishlists, setOpenWishlists] = useState(false);
 
   const stockInfo = (stock) => {
-    if (stock === 0) return { color: "#cc0c39", text: "Currently out of stock" };
+    if (stock === 0)
+      return { color: "#cc0c39", text: "Currently out of stock" };
     if (stock < 10)
       return { color: "#cc0c39", text: `Only ${stock} left in stock` };
     return { color: "green", text: `In stock (${stock})` };
@@ -106,22 +152,28 @@ const CartItem = ({ cartItem}) => {
 
   const handleDeleteFromCart = async (productId) => {
     try {
-      setDeleting(true)
-      const deletedItem = await fetchDeleteFromCart(user,setUserDetails,productId);
+      setDeleting(true);
+      const deletedItem = await fetchDeleteFromCart(
+        user,
+        setUserDetails,
+        productId
+      );
       removeFromCart(deletedItem);
-
     } catch (error) {
       toast.error(error.message || "something went wrong while deleting");
     } finally {
-      setDeleting(false)
+      setDeleting(false);
     }
   };
 
   return (
-    <div className={`cart-item ${deleting&&'loading'}`}>
-      <ItemSelector productId={cartItem._id} inStock={cartItem.stock>0} />
+    <div className={`cart-item ${deleting && "loading"}`}>
+      <ItemSelector productId={cartItem._id} inStock={cartItem.stock > 0} />
       <section className="cart-item-image-section">
-        <img src={cartItem.productImages[0]} alt="N/A" />
+        <div
+          className="cart-item-image"
+          style={{ backgroundImage: `url(${cartItem.productImages[0]})` }}
+        ></div>
       </section>
       <section className="cart-item-info-section">
         <p
@@ -131,21 +183,53 @@ const CartItem = ({ cartItem}) => {
           {cartItem.title}
         </p>
         <p
-          style={{ color: stockInfo(cartItem.stock).color,fontWeight:'bold' }}
+          style={{ color: stockInfo(cartItem.stock).color, fontWeight: "bold" }}
           className="stock-info"
         >
           {stockInfo(cartItem.stock).text}
         </p>
-        <p><strong>{makeCapitalize(cartItem.category)}</strong></p>
-        <p>{makeCapitalize(cartItem.medium)} | {makeCapitalize(cartItem.surface)}</p>
+        <p>
+          <strong>{makeCapitalize(cartItem.category)}</strong>
+        </p>
+        <p>
+          {makeCapitalize(cartItem.medium)} | {makeCapitalize(cartItem.surface)}
+        </p>
         <section className="cart-button-section">
-          <QunatitySelector productId={cartItem._id} handleDeleteFromCart={handleDeleteFromCart} />
-          <button className="secondary-text-btn" 
-          onClick={() => handleDeleteFromCart(cartItem._id)}> Remove
-          </button>
+          <QunatitySelector
+            productId={cartItem._id}
+            handleDeleteFromCart={handleDeleteFromCart}
+          />
+          <section>
+            <button
+              className="secondary-text-btn"
+              onClick={() => handleDeleteFromCart(cartItem._id)}
+            >
+              {" "}
+              Remove
+            </button>
+          </section>
           <span>|</span>
 
-          <button className="secondary-text-btn">Move to wishlist</button>
+          <section id="move-to-wishlist">
+            {openWishlists && (
+              <MyWishlists
+                productId={cartItem._id}
+                setOpenWishlists={setOpenWishlists}
+              />
+            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenWishlists(!openWishlists);
+              }}
+              className="secondary-text-btn"
+            >
+              Move to wishlist
+            </button>
+          </section>
+          <i>
+            <IoIosArrowDown />
+          </i>
           <span>|</span>
 
           <button className="secondary-text-btn">Share</button>

@@ -8,7 +8,9 @@ import { toast } from 'react-toastify';
 const WishlistActionMenu = () => {
    const { user, setUserDetails, deleteWishlist } = useUser();
     const [loading, setLoading] = useState(false);
-    const {openModal,activeList}=useWishlist()
+    const {openModal,activeList}=useWishlist();
+    const {user:{wishlists}}=useUser()
+    const {setActiveList}=useWishlist()
   
     const openManageWishlistModal = (e) => {
       e.stopPropagation();
@@ -23,6 +25,7 @@ const WishlistActionMenu = () => {
           setUserDetails,
           activeList
         );
+        setActiveList(wishlists.find(wishlist=>wishlist.isDefault)._id)
         deleteWishlist(wishlistId);
       } catch (error) {
         toast.error(

@@ -2,7 +2,7 @@ import "./Wishlist.css";
 import WishlistItem from "./components/wishlistItem/WishlistItem";
 import { useUser } from "../../hooks/useUser";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import CreateWishlistModal from "../../components/modals/create_wishlist_modal/CreateWishlistModal";
 import { HiDotsHorizontal } from "react-icons/hi";
 import ManageWishlistModal from "../../components/modals/manage_wishlist_modal/ManageWishlistModal";
@@ -32,7 +32,8 @@ const WishListSidebar = () => {
             key={wishlist._id}
             style={{
               background:
-                wishlist._id === activeList ? "whitesmoke" : "transparent",
+                wishlist._id === activeList ? "whitesmoke" : "",
+              border:wishlist._id===activeList?"1px solid #bbbbbb":"1px solid transparent"
             }}
           >
             <strong>{wishlist.listName}</strong>
@@ -49,7 +50,7 @@ const WishlistContent = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); // <-- added search state
+  const [searchQuery, setSearchQuery] = useState("");
 
   const {
     user: { wishlists },
@@ -60,11 +61,12 @@ const WishlistContent = () => {
   );
 
   const getProductDetails = async () => {
-    const items = activeListDetail?.items.map((item) => item.product) || [];
-    if (items.length === 0) return setProducts([]);
+    const productIds =
+      activeListDetail?.items.map((item) => item.product) || [];
+    if (productIds.length === 0) return setProducts([]);
     try {
       setLoading(true);
-      const data = await fetchProducts(items, [
+      const data = await fetchProducts(productIds, [
         "title",
         "category",
         "averageRatings",
@@ -72,7 +74,6 @@ const WishlistContent = () => {
         "artist",
         "productImages",
       ]);
-
       setProducts(data);
     } catch (error) {
       toast.error(error.message || "Something went wrong");
@@ -127,14 +128,28 @@ const WishlistContent = () => {
         <EmptyList />
       ) : (
         <main id="wishlist-item-wrapper">
-          {filteredProducts.map((product) => (
+  {activeListDetail?.items.length === 0 ? (
+    <EmptyList />
+  ) : (
+    activeListDetail.items
+      .filter((item) =>
+        products.map((p) => p._id).includes(item.product)
+      )
+      .map((item) => {
+        const product = products.find((p) => p._id === item.product);
+        return (
+          product.title.toLowerCase().includes(searchQuery.toLowerCase()) && (
             <WishlistItem
               key={product._id}
               product={product}
               activeListId={activeList}
             />
-          ))}
-        </main>
+          )
+        );
+      })
+  )}
+</main>
+
       )}
     </div>
   );

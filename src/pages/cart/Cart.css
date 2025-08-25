@@ -39,6 +39,11 @@
   background-color: lightgray;
   margin-inline: 1rem;
 }
+#cart-items-wrapper #subtotal{
+  padding: 1rem;
+  text-align: right;
+  background-color: white;
+}
 #empty-cart {
   flex-direction: column;
   flex: 1;

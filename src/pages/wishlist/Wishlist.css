@@ -134,10 +134,30 @@
 
 
 
-@media screen and (max-width:576px) {
-    #wishlist-item-wrapper{ 
-        grid-template-columns: 1fr 1fr;
-        grid-auto-rows: auto;
-        
+@media screen and (max-width:767px) {
+    #wishlist-wrapper > main{
+        flex-direction: column;
     }
+#wishlist-wrapper > main > aside {
+    flex-direction: row;
+    flex: 1;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+#wishlist-wrapper > main > aside > div{
+    flex: 1;
+    min-width: max-content;
+    background-color: rgba(245, 245, 245, 0.5);
+}
+#wishlist-content > header input{
+    width: 100%;
+    width:80%;
+    &:focus{
+        outline: 2px solid var(--secondary-color);
+        outline-offset: 2px;
+        width: 80%;
+    }
+
+}
 }

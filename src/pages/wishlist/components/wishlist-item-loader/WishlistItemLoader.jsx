@@ -1,4 +1,3 @@
-import React from "react";
 import "./WishlistItemLoader.css";
 
 const WishlistItemLoader = ({ count = 1 }) => {
