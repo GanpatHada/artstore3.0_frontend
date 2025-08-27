@@ -1,7 +1,7 @@
 import { BACKEND_BASE_URL } from "../Constant";
 
-export async function fetchUserLogin(emailOrPhone, password) {
-  const url = `${BACKEND_BASE_URL}/user/login`;
+export async function fetchUserLogin(emailOrPhone='guest@gmail.com', password='guest123') {
+  const url = `${BACKEND_BASE_URL}/auth/user/login`;
   try {
     const res = await fetch(url, {
       method: "POST",
@@ -21,7 +21,7 @@ export async function fetchUserLogin(emailOrPhone, password) {
 }
 
 export async function fetchUserRegistration(fullName, email, phone, password) {
-  const url = `${BACKEND_BASE_URL}/user/register`;
+  const url = `${BACKEND_BASE_URL}/auth/user/signup`;
   try {
     const res = await fetch(url, {
       method: "POST",

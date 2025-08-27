@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import AuthHeader from "./AuthHeader";
 import "./Auth.css";
 import { useUser } from "../../hooks/useUser";
+import SampleLoginButton from "./SampleLoginButton";
 
 const Login = () => {
   const { setUserDetails} = useUser();
@@ -127,6 +128,8 @@ const Login = () => {
             Don't have an account? <Link to="/signup">Signup</Link> here
           </p>
         </form>
+        
+        <SampleLoginButton/>
       </section>
     </div>
   );

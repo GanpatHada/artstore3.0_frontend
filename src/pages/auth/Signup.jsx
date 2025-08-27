@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { verifySignupFields } from "../../utils/AuthHelper";
 import { toast } from "react-toastify";
 import "./Auth.css";
+import SampleLoginButton from "./SampleLoginButton";
 const Signup = () => {
   const [signupDetails, setSignupDetails] = useState({
     fullName: "",
@@ -59,7 +60,7 @@ const handleSignup = async (e) => {
   try {
     setLoading(true);
     const data = await fetchUserRegistration(fullName, email, phone, password);
-    navigate("/login",{state:{email:data}});
+    navigate("/login",{state:{email:data.email}});
   } catch (error) {
     toast.error(error|| "Unable to process your request at the moment.");
   } finally {
@@ -170,6 +171,7 @@ const handleSignup = async (e) => {
           <p id="login-link">
             Already have an account <Link to={`/login`}>Login</Link>
           </p>
+          <SampleLoginButton/>
         </form>
       </div>
     </div>

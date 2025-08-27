@@ -107,11 +107,11 @@
 }
 .auth-button{
     width: 100%;
-    border-radius: 1.2em;
+    border-radius: 2em;
     color: #0f1111;
     font-family: inherit;
     font-size: 0.8em;
-    padding: 0.8em;
+    padding: 0.75em;
    
 }
 .auth-button img{
@@ -147,4 +147,27 @@ input:focus{
     
     
 }
+#sample-login-btn {
+    background: linear-gradient(to left, #3f92ff, #1178ff);
+    height: 2.25rem;
+    color: white;
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    justify-content: center;
+}
+
+#sample-login-btn img{
+    height: 1.25rem;
+    width: 1.25rem;
+    filter: brightness(50);
+}
+
+#sample-login-btn:hover {
+    background: linear-gradient(to left, #1178ff, #006eff);
+    
+}
+
 
