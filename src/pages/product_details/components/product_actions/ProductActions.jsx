@@ -15,6 +15,19 @@ import { GoPlus } from "react-icons/go";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 import CreateWishlistModal from "../../../../components/modals/create_wishlist_modal/CreateWishlistModal";
 
+
+const QuantitySelector=({quantity,setQuantity,closeList})=>{
+  const listRef=useRef(null);
+  useClickOutside(listRef,closeList)
+  return (
+    <ul ref={listRef} id="quantity-list">
+      {[1,2,3,4,5].map(num=>{
+        return <li onClick={()=>setQuantity(num)} className={num===quantity?'active':''}>{num}</li>
+      })}
+    </ul>
+  )
+}
+
 const MyWishlists = forwardRef(({openCreateWishlist}, ref) => {
   const {
     productDetails: { _id: productId },
@@ -148,6 +161,8 @@ const AddToWishlist = ({ openCreateWishlist }) => {
 const ProductActions = () => {
   const [createWishlist, setCreateWishlist] = useState(false);
   const { user, addToCart,setUserDetails } = useUser();
+  const [quantity, setQuantity] = useState(1);
+  const [showQuantityList,setShowQuantityList]=useState(false)
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { productDetails } = useProductDetails();
@@ -156,7 +171,9 @@ const ProductActions = () => {
   const closeCreateWishlist = () => setCreateWishlist(false);
   const openCreateWishlist = () => setCreateWishlist(true);
 
-  console.log(createWishlist);
+
+  console.log(user.cart)
+
 
   const handleBuyNow = () => {
     const productToBuy = {
@@ -164,7 +181,7 @@ const ProductActions = () => {
       title: productDetails.title,
       productImage: productDetails.productImages[0],
       price: productDetails.price,
-      quantity: 1,
+      quantity: quantity,
     };
 
     setProducts([productToBuy]);
@@ -178,7 +195,7 @@ const ProductActions = () => {
     if (isAvailableInCart(productId)) return navigate("/cart");
     try {
       setLoading(true);
-      const result = await fetchAddToCart(user, setUserDetails, productId);
+      const result = await fetchAddToCart(user, setUserDetails,productId,quantity);
       addToCart(result);
       toast.success("product added to cart");
     } catch (error) {
@@ -237,6 +254,27 @@ const ProductActions = () => {
           <span>Payment :</span>secure transection
         </p>
       </span>
+      
+      <button onClick={(e) => {
+          e.stopPropagation();
+          setShowQuantityList(!showQuantityList);
+        }} id="quantity-select">
+        <span>Quantity: {quantity}</span>
+        <span
+        className="all-centered"
+      >
+        <IoIosArrowDown />
+      </span>
+      
+      </button>
+
+      {showQuantityList&&<QuantitySelector 
+      quantity={quantity} 
+      setQuantity={setQuantity} 
+      closeList={()=>setShowQuantityList(false)}
+      />}
+      
+
       <section>
         <button
           className="primary-btn"

@@ -10,7 +10,7 @@ function redirectToLogin(delay = 1000) {
 
 export async function refreshAccessToken(redirect = true) {
   try {
-    const res = await fetch(`${BACKEND_BASE_URL}/user/refreshAccessToken`, {
+    const res = await fetch(`${BACKEND_BASE_URL}/auth/user/refreshAccessToken`, {
       method: "POST",
       credentials: "include",
     });

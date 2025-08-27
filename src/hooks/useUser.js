@@ -6,13 +6,11 @@ import {
   addToCartAction,
   addToWishlistAction,
   addWishlistAction,
-  decrementCartItemAction,
   deleteAddressAction,
   deleteFromWishlistAction,
   deleteNoteFromWishlistItemAction,
   deleteWishlistAction,
   editAddressAction,
-  incrementCartItemAction,
   makeAddressPrimaryAction,
   moveToWishlistAction,
   removeFromCartAction,
@@ -20,6 +18,7 @@ import {
   setUserDetailsAction,
   startUserLoadingAction,
   stopUserLoadingAction,
+  updateCartItemAction,
   updateWishlistAction,
 } from "../actions/userAction";
 
@@ -32,8 +31,7 @@ export const useUser = () => {
   const stopUserLoading = () => stopUserLoadingAction(dispatch);
 
   const addToCart = (cartItem) => addToCartAction(dispatch, cartItem);
-  const incrementCartItem=(cartItem)=>incrementCartItemAction(dispatch,cartItem)
-  const decrementCartItem=(cartItem)=>decrementCartItemAction(dispatch,cartItem)
+  const updateCartItem=(cartItem)=>updateCartItemAction(dispatch,cartItem)
   const removeFromCart = (cartItem) => removeFromCartAction(dispatch, cartItem);
 
 
@@ -76,8 +74,6 @@ export const useUser = () => {
     user,
     userLoading,
     addToCart,
-    incrementCartItem,
-    decrementCartItem,
     addToWishlist,
     removeFromCart,
     removeFromWishlist,
@@ -91,7 +87,8 @@ export const useUser = () => {
     moveToWishlist,
     deleteFromWishlist,
     addNoteToWishlistItem,
-    deleteNoteFromWishlistItem
+    deleteNoteFromWishlistItem,
+    updateCartItem
     
   };
 };

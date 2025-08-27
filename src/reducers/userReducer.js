@@ -57,33 +57,18 @@ const userReducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          cart: [...state.user.cart, { product: action.payload, quantity: 1 }],
+          cart: [...state.user.cart, action.payload],
         },
       };
-    case "INCREMENT_TO_CART_ITEM": {
-      const updatedCart = state.user.cart.map((item) =>
-        item.product === action.payload
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      );
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          cart: updatedCart,
-        },
-      };
-    }
+    case "UPDATE_CART_ITEM": {
+      const { productId, quantity } = action.payload;
 
-    case "DECREMENT_TO_CART_ITEM": {
       const updatedCart = state.user.cart
         .map((item) =>
-          item.product === action.payload
-            ? { ...item, quantity: item.quantity - 1 }
+          item.product === productId
+            ? { ...item, quantity } 
             : item
         )
-        .filter((item) => item.quantity > 0); // remove item if quantity is 0
-
       return {
         ...state,
         user: {

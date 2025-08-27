@@ -51,12 +51,12 @@ export async function fetchUpdateProfile({
   }
 }
 
-export async function fetchAddToCart(user, setUserDetails, productId) {
+export async function fetchAddToCart(user, setUserDetails, productId,quantity=1) {
   try {
     let data = await secureFetch(
       user,
       setUserDetails,
-      `${BACKEND_BASE_URL}/user/cart/${productId}`,
+      `${BACKEND_BASE_URL}/user/cart/${productId}?quantity=${quantity}`,
       {
         method: "POST",
       }
@@ -66,12 +66,12 @@ export async function fetchAddToCart(user, setUserDetails, productId) {
     throw error;
   }
 }
-export async function fetchIncrementCartItem(user, setUserDetails, productId) {
+export async function fetchUpdateQuantity(user, setUserDetails, productId, action) {
   try {
     let data = await secureFetch(
       user,
       setUserDetails,
-      `${BACKEND_BASE_URL}/user/cart/${productId}/increment`,
+      `${BACKEND_BASE_URL}/user/cart/${productId}?action=${action}`,
       {
         method: "PATCH",
       }
@@ -82,21 +82,7 @@ export async function fetchIncrementCartItem(user, setUserDetails, productId) {
   }
 }
 
-export async function fetchDecrementCartItem(user, setUserDetails, productId) {
-  try {
-    let data = await secureFetch(
-      user,
-      setUserDetails,
-      `${BACKEND_BASE_URL}/user/cart/${productId}/decrement`,
-      {
-        method: "PATCH",
-      }
-    );
-    return data;
-  } catch (error) {
-    throw error;
-  }
-}
+
 
 export async function fetchDeleteFromCart(user, setUserDetails, productId) {
   try {

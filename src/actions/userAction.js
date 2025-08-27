@@ -2,8 +2,7 @@ export const setUserDetailsAction=(dispatch,user)=>dispatch({type:'SET_USER',pay
 export const startUserLoadingAction=(dispatch)=>dispatch({type:'START_USER_LOADING'})
 export const stopUserLoadingAction=(dispatch)=>dispatch({type:'STOP_USER_LOADING'})
 export const addToCartAction=(dispatch,cartItem)=>dispatch({type:'ADD_TO_CART',payload:cartItem})
-export const incrementCartItemAction=(dispatch,cartItem)=>dispatch({type:'INCREMENT_TO_CART_ITEM',payload:cartItem})
-export const decrementCartItemAction=(dispatch,cartItem)=>dispatch({type:'DECREMENT_TO_CART_ITEM',payload:cartItem})
+export const updateCartItemAction=(dispatch,cartItem)=>dispatch({type:'UPDATE_CART_ITEM',payload:cartItem})
 export const removeFromCartAction=(dispatch,cartItem)=>dispatch({type:"REMOVE_FROM_CART",payload:cartItem})
 
 

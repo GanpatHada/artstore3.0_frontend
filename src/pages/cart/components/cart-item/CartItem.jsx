@@ -2,9 +2,8 @@ import "./CartItem.css";
 import { toast } from "react-toastify";
 import {
   fetchAddToWishlist,
-  fetchDecrementCartItem,
   fetchDeleteFromCart,
-  fetchIncrementCartItem,
+  fetchUpdateQuantity,
 } from "../../../../services/UserService";
 import { useUser } from "../../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
@@ -17,89 +16,101 @@ import { useRef, useState } from "react";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 import SpinLoader from "../../../../components/spin-loader/SpinLoader";
 
-const MyWishlists = ({setOpenWishlists,productId}) => {
-  const [loading,setLoading]=useState(false);
-  const {user,setUserDetails,removeFromCart,addToWishlist}=useUser();
+const MyWishlists = ({ setOpenWishlists, productId }) => {
+  const [loading, setLoading] = useState(false);
+  const { user, setUserDetails, removeFromCart, addToWishlist } = useUser();
   const menuRef = useRef(null);
-  useClickOutside(menuRef,()=>setOpenWishlists(false));
+  useClickOutside(menuRef, () => setOpenWishlists(false));
 
-
-  const handleMoveToWishlist=async(wishlistId)=>{
-      try {
-        setLoading(true)
-        const data=await fetchAddToWishlist(user,setUserDetails,wishlistId,productId)
-        const deletedProductId=await fetchDeleteFromCart(user,setUserDetails,productId);
-        removeFromCart(deletedProductId)
-        addToWishlist(data)
-      } catch (error) {
-        toast.error(error.message||'Something went wrong while moving product')
-      }
-      finally{
-        setLoading(false)
-      }
-  }
+  const handleMoveToWishlist = async (wishlistId) => {
+    try {
+      setLoading(true);
+      const data = await fetchAddToWishlist(
+        user,
+        setUserDetails,
+        wishlistId,
+        productId
+      );
+      const deletedProductId = await fetchDeleteFromCart(
+        user,
+        setUserDetails,
+        productId
+      );
+      removeFromCart(deletedProductId);
+      addToWishlist(data);
+    } catch (error) {
+      toast.error(error.message || "Something went wrong while moving product");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const {
     user: { wishlists },
   } = useUser();
   return (
     <div ref={menuRef} id="my-wishlists">
-      {loading&&<SpinLoader/>}
+      {loading && <SpinLoader />}
       {wishlists.map((wishlist) => {
-        return <option key={wishlist._id} onClick={()=>handleMoveToWishlist(wishlist._id)}>{wishlist.listName}</option>;
+        return (
+          <option
+            key={wishlist._id}
+            onClick={() => handleMoveToWishlist(wishlist._id)}
+          >
+            {wishlist.listName}
+          </option>
+        );
       })}
     </div>
   );
 };
 
-const QunatitySelector = ({ productId, handleDeleteFromCart }) => {
-  const { incrementCartItem, decrementCartItem, user, setUserDetails } =
-    useUser();
-  const [qunatityUpdating, setQunatityUpdating] = useState(false);
+const QunatitySelector = ({ productId,handleDeleteFromCart }) => {
+  const { updateCartItem, user, setUserDetails } = useUser();
+  const [quantityUpdating, setQuantityUpdating] = useState(false);
   const getProductQuantity = (productId) => {
     return user.cart.find((product) => product.product === productId).quantity;
   };
+
   const updateCartItemQuantity = async (type, productId) => {
     try {
-      setQunatityUpdating(true);
-      switch (type) {
-        case "INCREMENT": {
-          await fetchIncrementCartItem(user, setUserDetails, productId);
-          incrementCartItem(productId);
-          break;
-        }
-        case "DECREMENT": {
-          if (getProductQuantity(productId) > 1) {
-            await fetchDecrementCartItem(user, setUserDetails, productId);
-            decrementCartItem(productId);
-          } else {
-            await handleDeleteFromCart(productId);
-          }
-          break;
-        }
-        default:
-          return 0;
-      }
+      const action = type.toLowerCase();
+      setQuantityUpdating(true);
+      const data = await fetchUpdateQuantity(
+        user,
+        setUserDetails,
+        productId,
+        action
+      );
+      updateCartItem(data);
     } catch (error) {
       toast.error(error.message || "Something went wrong");
     } finally {
-      setQunatityUpdating(false);
+      setQuantityUpdating(false);
     }
   };
   return (
     <div
       className="quantity-selector"
-      style={{ opacity: qunatityUpdating ? "20%" : "100%" }}
+      style={{ opacity: quantityUpdating ? "20%" : "100%" }}
     >
-      <button onClick={() => updateCartItemQuantity("DECREMENT", productId)}>
-        {getProductQuantity(productId) > 1 ? (
+      {getProductQuantity(productId) > 1 ? (
+        <button
+          onClick={() => updateCartItemQuantity("DECREMENT",productId)}
+        >
           <AiOutlineMinus />
-        ) : (
+        </button>
+      ) : (
+        <button onClick={()=>handleDeleteFromCart(productId)}>
           <IoTrashBinOutline />
-        )}
-      </button>
+        </button>
+      )}
+
       {getProductQuantity(productId)}
-      <button onClick={() => updateCartItemQuantity("INCREMENT", productId)}>
+
+      <button
+        onClick={() => updateCartItemQuantity("INCREMENT",productId)}
+      >
         <IoMdAdd />
       </button>
     </div>
@@ -195,10 +206,7 @@ const CartItem = ({ cartItem }) => {
           {makeCapitalize(cartItem.medium)} | {makeCapitalize(cartItem.surface)}
         </p>
         <section className="cart-button-section">
-          <QunatitySelector
-            productId={cartItem._id}
-            handleDeleteFromCart={handleDeleteFromCart}
-          />
+          <QunatitySelector productId={cartItem._id} handleDeleteFromCart={handleDeleteFromCart} />
           <section>
             <button
               className="secondary-text-btn"

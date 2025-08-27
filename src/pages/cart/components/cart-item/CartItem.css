@@ -109,6 +109,7 @@ section#move-to-wishlist{
   overflow: hidden;
   border: 2px solid rgb(255, 145, 0);
   position: relative;
+  font-size: 0.8rem;
 }
 .cart-button-section .quantity-selector > button {
   width: 2rem;
