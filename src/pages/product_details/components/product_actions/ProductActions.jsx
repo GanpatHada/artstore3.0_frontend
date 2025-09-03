@@ -172,9 +172,6 @@ const ProductActions = () => {
   const openCreateWishlist = () => setCreateWishlist(true);
 
 
-  console.log(user.cart)
-
-
   const handleBuyNow = () => {
     const productToBuy = {
       productId: productDetails._id,
@@ -206,7 +203,7 @@ const ProductActions = () => {
   };
 
   const isAvailableInCart = (productId) => {
-    return user?.cart.find((cartItem) => cartItem.product === productId);
+    return user?.cart.find((cartItem) => cartItem.product === productId) || false;
   };
 
   const {

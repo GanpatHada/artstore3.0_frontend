@@ -46,7 +46,7 @@ const PickupWhereYouLeftOff = ({ handleProductClick }) => {
           <section>
             {products.map((product) => (
               <div key={product.productId}
-                  onClick={() => handleProductClick(product._id)}>
+                  onClick={() => handleProductClick(product.productId)}>
                 <div className="product-image-wrapper">
                   <div
                   className="product-image"

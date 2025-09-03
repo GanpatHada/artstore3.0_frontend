@@ -1,14 +1,34 @@
 #product-details-page #image-section{
     display: flex;
-    flex:0.5;
     grid-area: product-image;
-    display: flex;
     align-items: start;   
 }
-#product-details-page #product-image-wrapper{
-    width: 100%;
-    position: sticky;
-    top: 10px;
+
+#product-all-images{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.25rem;
+}
+#product-all-images div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0000002a;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+   
+}
+#product-all-images div.active{
+    outline: 2px solid var(--secondary-color);
+}
+#product-active-image{
+    flex: 4;
+    padding: 0.25rem;
+    display: flex;
+    align-items:flex-start;
 }
 
 @media screen and (max-width:768px){
