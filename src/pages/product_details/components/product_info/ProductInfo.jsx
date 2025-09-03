@@ -72,7 +72,7 @@ const BankOffers = () => {
           </button>
         )}
         <div id="bank-offers-wrapper" ref={bankOffersSlide}>
-          {bankOffers.map((offer, index) => {
+          {bankOffers.length===0?<p style={{color:'gray'}}>No Offers !</p>:bankOffers.map((offer, index) => {
             return (
               <div key={index} className="bank-offer">
                 <h5>{offer.bank}</h5>

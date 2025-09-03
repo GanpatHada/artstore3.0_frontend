@@ -8,17 +8,18 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.25rem;
+    gap: 1rem;
+    padding: 0.5rem;
 }
 #product-all-images div{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #0000002a;
+    background-color: #7979792a;
     border-radius: 8px;
     overflow: hidden;
     aspect-ratio: 1/1;
+    padding: 0.25rem;
    
 }
 #product-all-images div.active{
@@ -26,7 +27,7 @@
 }
 #product-active-image{
     flex: 4;
-    padding: 0.25rem;
+    padding: 0.5rem;
     display: flex;
     align-items:flex-start;
 }

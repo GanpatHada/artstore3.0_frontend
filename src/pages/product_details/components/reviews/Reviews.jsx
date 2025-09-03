@@ -78,7 +78,7 @@ const Reviews = () => {
   return (
     <section id="reviews-section">
       <h3>Top Reviews</h3>
-      {arrangeReviews(reviews,user?._id).map((review) => {
+      {arrangeReviews(reviews,user?._id).length===0?<p style={{color:'gray'}}>No reviews !</p>:arrangeReviews(reviews,user?._id).map((review) => {
         return <Review key={review._id} review={review} productId={_id} />;
       })}
     </section>
