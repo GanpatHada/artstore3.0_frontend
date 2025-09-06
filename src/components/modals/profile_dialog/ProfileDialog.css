@@ -6,19 +6,23 @@
     border-radius: 0.8rem;
     box-shadow: 0 0 8px 5px rgba(82, 82, 82, 0.486);
     animation:  dialog-animation 0.2s ease-in forwards;
-    position: relative;
     opacity: 0.5;
     overflow: hidden;
+    position: relative;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     
 }
 @keyframes dialog-animation {
     0%{
         opacity: 0.5;
-        top: 20px;
+        top: 48%;
     }
     100%{
         opacity: 1;
-        top: 0px;
+        top: 50%;
+        
     }
 }
 #profile-dialog header{

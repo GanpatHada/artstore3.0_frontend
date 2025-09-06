@@ -1,6 +1,8 @@
 #app-navbar {
   background-color: #131921;
   display: flex;
+  position: relative;
+  z-index: 12;
 }
 
 #app-navbar > ul {
@@ -33,7 +35,7 @@
   }
 }
 #app-navbar a#cart img {
-  width: 2.5rem;
+  height: 2rem;
 }
 
 #app-navbar a span {
@@ -63,7 +65,19 @@
   font-style: normal;
 }
 
+#account-nav-wrapper{
+  position: relative;
+  z-index: 12;
+}
 
+#account-nav-mobile{
+  color: white;
+  font-size: 1.5rem;
+}
+#account-nav-mobile span{
+  font-size: 0.9rem!important;
+  margin-right: 0.5rem;
+}
 
 @media only screen and (max-width: 1024px) {
   #app-navbar > ul > li:not(:last-child) {

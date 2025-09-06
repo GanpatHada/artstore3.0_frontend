@@ -12,6 +12,7 @@ import EmptyList from "./components/empty-list/EmptyList";
 import { fetchProducts } from "../../services/ProductService";
 import { toast } from "react-toastify";
 import WishlistItemLoader from "./components/wishlist-item-loader/WishlistItemLoader";
+import { useLocation } from "react-router-dom";
 
 const WishListSidebar = () => {
   const {
@@ -46,11 +47,16 @@ const WishListSidebar = () => {
 };
 
 const WishlistContent = () => {
-  const { activeList } = useWishlist();
+  const { activeList,setActiveList } = useWishlist();
   const [showMenu, setShowMenu] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+
+  const location = useLocation();
+  const activeListInState = location.state?.activeList;
+
 
   const {
     user: { wishlists },
@@ -83,8 +89,10 @@ const WishlistContent = () => {
   };
 
   useEffect(() => {
+    if(activeListInState)
+      setActiveList(activeListInState)
     getProductDetails();
-  }, [activeList]);
+  }, [activeList,location]);
 
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchQuery.toLowerCase())

@@ -1,12 +1,13 @@
 import {useRef, useState } from "react";
-import { useUser } from "../../hooks/useUser";
-import Layover from "../layover/Layover";
 import "./ProfileDialog.css";
 import { IoMdClose } from "react-icons/io";
-import defaultProfile from '../../images/userImage.png'
-import SpinLoader from '../../components/spin-loader/SpinLoader'
-import { fetchUpdateProfile } from "../../services/UserService";
+import defaultProfile from '../../../images/userImage.png'
+import SpinLoader from '../../../components/spin-loader/SpinLoader'
 import { toast } from "react-toastify";
+import { useUser } from "../../../hooks/useUser";
+import { fetchUpdateProfile } from "../../../services/UserService";
+
+
 const ProfileDialog = ({closeProfileDialog}) => {
   const {
     user,setUserDetails
@@ -61,12 +62,12 @@ const getTextBorder=()=>{
 
 
   return (
-    <Layover>
-      <div id="profile-dialog">
+    <div className="layover">
+      <div id="profile-dialog" className="modal">
          {loading && <SpinLoader/>}
         <header>
           <h4>Edit profile name</h4>
-          <button onClick={closeProfileDialog}>
+          <button className="all-centered" onClick={closeProfileDialog}>
             <IoMdClose />
           </button>
         </header>
@@ -89,7 +90,7 @@ const getTextBorder=()=>{
           </section>
         </main>
       </div>
-    </Layover>
+    </div>
   );
 };
 
