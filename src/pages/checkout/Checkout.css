@@ -13,18 +13,9 @@
    justify-content: center;
    gap: 0.5rem;
    position: relative;
+   flex-wrap: wrap;
 }
-#checkout-page > header::after{
-    content: "Artstore";
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-    font-weight: bold;
-    
-    
-}
+
 #checkout-page > header span{
     font-size: 1.6rem;
     color: var(--primary-color);
@@ -33,10 +24,15 @@
     font-weight: 400;
     font-size: 1.6rem;
 }
+#checkout-page header img{
+    height: 1.2rem;
+    width: fit-content;
+}
 #checkout-page-wrapper{
     max-width: 1200px;
     margin: auto;
     flex: 1;
+    width: 100%;
     
 }
 #checkout-page-wrapper >div{
