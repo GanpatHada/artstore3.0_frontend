@@ -16,12 +16,12 @@ import { useClickOutside } from "../../../../hooks/useClickOutside";
 import CreateWishlistModal from "../../../../components/modals/create_wishlist_modal/CreateWishlistModal";
 
 
-const QuantitySelector=({quantity,setQuantity,closeList})=>{
+const QuantitySelector=({quantity,setQuantity,closeList,stock})=>{
   const listRef=useRef(null);
   useClickOutside(listRef,closeList)
   return (
     <ul ref={listRef} id="quantity-list">
-      {[1,2,3,4,5].map(num=>{
+      {[1,2,3,4,5].filter(num=>num<=stock).map(num=>{
         return <li onClick={()=>setQuantity(num)} className={num===quantity?'active':''}>{num}</li>
       })}
     </ul>
@@ -179,6 +179,7 @@ const ProductActions = () => {
       productImage: productDetails.productImages[0],
       price: productDetails.price,
       quantity: quantity,
+      stock:productDetails.stock
     };
 
     setProducts([productToBuy]);
@@ -216,7 +217,7 @@ const ProductActions = () => {
   } = useProductDetails();
 
   const getStockInfo = () => {
-    if (stock < 1) return { text: "Out of stock", color: "red" };
+    if (stock < 1) return { text: "Out of stock", color: "#cc0c39" };
     if (stock < 10)
       return { text: `Only ${stock} left in stock`, color: "orangered" };
     return { text: `${stock} in stock`, color: "green" };
@@ -239,6 +240,7 @@ const ProductActions = () => {
       <span id="stock-text" style={{ color: getStockInfo().color }}>
         {getStockInfo().text}
       </span>
+      {!productDetails.isActive&&<h5 style={{color:'#cc0c39'}}>Currently not available</h5>}
       <span id="delivery-info">
         <p>
           <span>Delivered by : </span>Artstore
@@ -248,11 +250,11 @@ const ProductActions = () => {
           {fullName}
         </p>
         <p>
-          <span>Payment :</span>secure transection
+          <span>Payment : </span>secure transection
         </p>
       </span>
       
-      <button onClick={(e) => {
+      {productDetails.isActive&&<button onClick={(e) => {
           e.stopPropagation();
           setShowQuantityList(!showQuantityList);
         }} id="quantity-select">
@@ -263,11 +265,12 @@ const ProductActions = () => {
         <IoIosArrowDown />
       </span>
       
-      </button>
+      </button>}
 
       {showQuantityList&&<QuantitySelector 
       quantity={quantity} 
       setQuantity={setQuantity} 
+      stock={stock}
       closeList={()=>setShowQuantityList(false)}
       />}
       
@@ -279,7 +282,7 @@ const ProductActions = () => {
         >
           {isAvailableInCart(_id) ? "Go" : "Add"} to Cart
         </button>
-        <button onClick={handleBuyNow} id="buy-now">
+        <button disabled={!productDetails.isActive||stock===0} onClick={handleBuyNow} id="buy-now">
           Buy Now
         </button>
         <hr />

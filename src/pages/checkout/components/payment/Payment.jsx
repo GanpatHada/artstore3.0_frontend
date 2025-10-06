@@ -70,6 +70,7 @@ const Payment = () => {
         try {
           setLoading(true);
           const orderDetails = await fetchVerifyPayment(user,setUserDetails,verifyPaymentParams);  
+          setUserDetails({...user,cart:orderDetails.updatedCart,myOrders:orderDetails.updatedMyOrders});
           navigate("/payment-success",{state:orderDetails})
         } catch (error) {
           toast.error(error.message || 'Something went wrong while finishing order')

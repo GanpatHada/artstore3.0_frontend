@@ -65,7 +65,7 @@ const MyWishlists = ({ setOpenWishlists, productId }) => {
   );
 };
 
-const QunatitySelector = ({ productId,handleDeleteFromCart }) => {
+const QunatitySelector = ({ productId,handleDeleteFromCart,stock}) => {
   const { updateCartItem, user, setUserDetails } = useUser();
   const [quantityUpdating, setQuantityUpdating] = useState(false);
   const getProductQuantity = (productId) => {
@@ -101,7 +101,7 @@ const QunatitySelector = ({ productId,handleDeleteFromCart }) => {
           <AiOutlineMinus />
         </button>
       ) : (
-        <button onClick={()=>handleDeleteFromCart(productId)}>
+        <button  onClick={()=>handleDeleteFromCart(productId)}>
           <IoTrashBinOutline />
         </button>
       )}
@@ -109,6 +109,7 @@ const QunatitySelector = ({ productId,handleDeleteFromCart }) => {
       {getProductQuantity(productId)}
 
       <button
+        disabled={getProductQuantity(productId)===stock}
         onClick={() => updateCartItemQuantity("INCREMENT",productId)}
       >
         <IoMdAdd />
@@ -117,7 +118,7 @@ const QunatitySelector = ({ productId,handleDeleteFromCart }) => {
   );
 };
 
-const ItemSelector = ({ productId, inStock }) => {
+const ItemSelector = ({ productId, inStock, isActive }) => {
   const { selectedProductIds, toggleSelect } = useCart();
   return (
     <input
@@ -125,7 +126,7 @@ const ItemSelector = ({ productId, inStock }) => {
       type="checkbox"
       checked={selectedProductIds.includes(productId)}
       onChange={() => toggleSelect(productId)}
-      disabled={!inStock}
+      disabled={!inStock||!isActive}
     />
   );
 };
@@ -179,7 +180,7 @@ const CartItem = ({ cartItem }) => {
 
   return (
     <div className={`cart-item ${deleting && "loading"}`}>
-      <ItemSelector productId={cartItem._id} inStock={cartItem.stock > 0} />
+      <ItemSelector productId={cartItem._id} inStock={cartItem.stock > 0} isActive={cartItem.isActive} />
       <section className="cart-item-image-section">
         <div
           className="cart-item-image"
@@ -199,6 +200,7 @@ const CartItem = ({ cartItem }) => {
         >
           {stockInfo(cartItem.stock).text}
         </p>
+        {!cartItem.isActive&&<p style={{color:'#cc0c39',fontWeight:"bold"}}>Currently not available</p>}
         <p>
           <strong>{makeCapitalize(cartItem.category)}</strong>
         </p>
@@ -206,7 +208,7 @@ const CartItem = ({ cartItem }) => {
           {makeCapitalize(cartItem.medium)} | {makeCapitalize(cartItem.surface)}
         </p>
         <section className="cart-button-section">
-          <QunatitySelector productId={cartItem._id} handleDeleteFromCart={handleDeleteFromCart} />
+          <QunatitySelector productId={cartItem._id} handleDeleteFromCart={handleDeleteFromCart} stock={cartItem.stock} />
           <section>
             <button
               className="secondary-text-btn"

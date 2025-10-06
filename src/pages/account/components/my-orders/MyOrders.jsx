@@ -22,6 +22,8 @@ const MyOrders = () => {
   const { user, setUserDetails } = useUser();
   const [orders, setOrders] = useState([]);
 
+  console.log(user.myOrders);
+
   useEffect(() => {
     const getMyOrders = async () => {
       const ordersList = await fetchUserOrders(user, setUserDetails);

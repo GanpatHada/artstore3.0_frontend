@@ -9,7 +9,6 @@ import { fetchProducts } from "../../services/ProductService";
 import { useCart } from "../../hooks/useCart";
 import { toast } from "react-toastify";
 import CartItemLoader from "./components/cart_item_loader/CartItemLoader";
-import { cartSubTotal } from "../../utils/UserHelper";
 
 const CartHeader = () => {
   return (
@@ -128,7 +127,7 @@ const CheckOutBox = () => {
 const Cart = () => {
   const { user: { cart } } = useUser();
   const productIds = cart.map((cartItem) => cartItem.product);
-  const {setSelectedAll, setCartItems, startLoading, stopLoading,cartItems,selectedProductIds} = useCart();
+  const {setSelectedAll, setCartItems, startLoading, stopLoading} = useCart();
 
   useEffect(() => {
     const getCartItems = async () => {
@@ -136,7 +135,7 @@ const Cart = () => {
         startLoading()
         const data = await fetchProducts(productIds);
         setCartItems(data);
-        setSelectedAll(data.filter((product) => product.stock !== 0));
+        setSelectedAll(data.filter((product) => product.stock !== 0&&product.isActive));
       } catch (error) {
         toast.error(error.message || "unable to load cart products");
       } finally {

@@ -46,7 +46,7 @@ const OrderItemHeader = ({ order }) => {
         </li>
         <li>
           <p>TOTAL</p>
-          <p>{totalAmount}</p>
+          <p>₹{totalAmount}</p>
         </li>
         <li>
           <p>SHIP TO</p>
