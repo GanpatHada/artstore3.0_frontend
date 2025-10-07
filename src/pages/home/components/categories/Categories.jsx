@@ -1,33 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "./Categories.css";
-import {
-  fetchLimitedTimeDealProducts,
-  fetchMinimumFiftyOffProducts,
-  fetchUnderOneThousandProducts,
-} from "../../../../services/ProductService";
+import { fetchSpecialProducts } from "../../../../services/ProductService";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { makeCapitalize } from "../../../../utils/GlobalUtils";
 
-const LoadingSkelton = () => {
-  return (
-    <section className="loading-skeleton">
-      <div className="skeleton"></div>
-      <div className="skeleton"></div>
-      <div className="skeleton"></div>
-      <div className="skeleton"></div>
-    </section>
-  );
-};
+const LoadingSkelton = () => (
+  <section className="loading-skeleton">
+    <div className="skeleton"></div>
+    <div className="skeleton"></div>
+    <div className="skeleton"></div>
+    <div className="skeleton"></div>
+  </section>
+);
 
-const ExploreBox = () => {
-  return (
-    <main id="explore-box" className="all-centered">
-      <p>Explore Artstore</p>
-      <Link to={"/products"}><button className="secondary-btn">Explore</button></Link>
-    </main>
-  );
-};
+const ExploreBox = () => (
+  <main id="explore-box" className="all-centered">
+    <p>Explore Artstore</p>
+    <Link to={"/products"}>
+      <button className="secondary-btn">Explore</button>
+    </Link>
+  </main>
+);
 
 const PickupWhereYouLeftOff = ({ handleProductClick }) => {
   const products = JSON.parse(localStorage.getItem("viewedProducts")) || [];
@@ -37,84 +31,26 @@ const PickupWhereYouLeftOff = ({ handleProductClick }) => {
       <header>
         <h4>Pickup where you left off</h4>
       </header>
-      {products.length === 0 ? (
-        <main>
+      <main>
+        {products.length === 0 ? (
           <ExploreBox />
-        </main>
-      ) : (
-        <main>
-          <section>
-            {products.map((product) => (
-              <div key={product.productId}
-                  onClick={() => handleProductClick(product.productId)}>
-                <div className="product-image-wrapper">
-                  <div
-                  className="product-image"
-                  style={{
-                    backgroundImage: `url(${
-                      product.productImage || "/fallback.jpg"
-                    })`,
-                  }}
-                ></div>
-                </div>
-              </div>
-            ))}
-          </section>
-        </main>
-      )}
-    </div>
-  );
-};
-const ProductsUnder1k = ({ handleProductClick }) => {
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
-  const getProductsUnderOneThousand = async () => {
-    try {
-      setLoading(true);
-      const products = await fetchUnderOneThousandProducts();
-      setProducts(products);
-    } catch (error) {
-      toast.error(error.message || "something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getProductsUnderOneThousand();
-  }, []);
-  return (
-    <div className="category-wrapper">
-      <header>
-        <h4>Products under 1,000 Rs.</h4>
-      </header>
-      <main>
-        {loading ? (
-          <LoadingSkelton />
         ) : (
           <section>
             {products.map((product) => (
               <div
-                key={product._id}
-                onClick={() => handleProductClick(product._id)}
+                key={product.productId}
+                onClick={() => handleProductClick(product.productId)}
               >
                 <div className="product-image-wrapper">
                   <div
-                  className="product-image"
-                  style={{
-                    backgroundImage: `url(${
-                      product.productImage || "/fallback.jpg"
-                    })`,
-                  }}
-                ></div>
+                    className="product-image"
+                    style={{
+                      backgroundImage: `url(${
+                        product.productImage || "/fallback.jpg"
+                      })`,
+                    }}
+                  ></div>
                 </div>
-                <section className="product-info">
-                  <span>
-                    <strong>&#8377;{product?.price}</strong>
-                  </span>
-                  &nbsp;
-                  <strike>&#8377;{product?.actualPrice}</strike>
-                </section>
               </div>
             ))}
           </section>
@@ -123,42 +59,32 @@ const ProductsUnder1k = ({ handleProductClick }) => {
     </div>
   );
 };
-const DealOfTheDay = ({ handleProductClick }) => {
-  const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
 
-  const productsOnLimitedTimeDeal = async () => {
-    try {
-      setLoading(true);
-      const products = await fetchLimitedTimeDealProducts();
-      setProducts(products);
-    } catch (error) {
-      toast.error(error.message || "something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+const ProductCategory = ({
+  title,
+  products,
+  loading,
+  handleProductClick,
+  showPrice,
+  showTag,
+  showDiscount
+}) => {
+  if (loading) return <LoadingSkelton />;
 
-  useEffect(() => {
-    productsOnLimitedTimeDeal();
-  }, []);
   return (
     <div className="category-wrapper">
       <header>
-        <h4>Deal of the day</h4>
+        <h4>{title}</h4>
       </header>
       <main>
-        {loading ? (
-          <LoadingSkelton />
-        ) : (
-          <section>
-            {products.map((product) => (
-              <div
-                key={product._id}
-                onClick={() => handleProductClick(product._id)}
-              >
-               <div className="product-image-wrapper">
-                  <div
+        <section>
+          {products?.map((product) => (
+            <div
+              key={product._id}
+              onClick={() => handleProductClick(product._id)}
+            >
+              <div className="product-image-wrapper">
+                <div
                   className="product-image"
                   style={{
                     backgroundImage: `url(${
@@ -166,75 +92,24 @@ const DealOfTheDay = ({ handleProductClick }) => {
                     })`,
                   }}
                 ></div>
-                </div>
-                <section>
-                  <span className="tag">{makeCapitalize(product?.tag)}</span>
-                </section>
               </div>
-            ))}
-          </section>
-        )}
-      </main>
-    </div>
-  );
-};
-const UpToFiftyOff = ({ handleProductClick }) => {
-  const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
-
-  const getMinimumFiftyOffProducts = async () => {
-    try {
-      setLoading(true);
-      const products = await fetchMinimumFiftyOffProducts();
-      setProducts(products);
-    } catch (error) {
-      toast.error(error.message || "something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getMinimumFiftyOffProducts();
-  }, []);
-  return (
-    <div className="category-wrapper">
-      <header>
-        <h4>More than 50% off</h4>
-      </header>
-      <main>
-        {loading ? (
-          <LoadingSkelton />
-        ) : (
-          <section>
-            {products.map((product) => (
-              <div
-                key={product._id}
-                onClick={() => handleProductClick(product._id)}
-              >
-                <div className="product-image-wrapper">
-                  <div
-                  className="product-image"
-                  style={{
-                    backgroundImage: `url(${
-                      product.productImage || "/fallback.jpg"
-                    })`,
-                  }}
-                ></div>
-                </div>
-                <section>
-                  <span>
-                    <strong>&#8377;{product?.price}</strong>
-                  </span>
-                  &nbsp;
-                  <span className="high-discount">
-                    {product?.discount}% off
-                  </span>
-                </section>
-              </div>
-            ))}
-          </section>
-        )}
+              {showPrice && (
+                <span>
+                  <strong>&#8377;{product?.price} &nbsp; </strong>{showDiscount && (
+                <span className="high-discount">
+                  {product.discount}% off
+                </span>
+              )}
+                </span>
+              )}
+              {showTag && (
+                <span className="tag">{makeCapitalize(product.tag)}</span>
+              )}
+              
+              
+            </div>
+          ))}
+        </section>
       </main>
     </div>
   );
@@ -244,13 +119,62 @@ const Categories = () => {
   const navigate = useNavigate();
   const handleProductClick = (productId) => navigate(`/products/${productId}`);
 
+  const [loading, setLoading] = useState(false);
+  const [specialProducts, setSpecialProducts] = useState({
+    under1k: [],
+    highDiscount: [],
+    limitedDeal: [],
+  });
+
+  const getSpecialProducts = async () => {
+    try {
+      setLoading(true);
+      const products = await fetchSpecialProducts();
+      setSpecialProducts({
+        under1k: products?.under1k || [],
+        highDiscount: products?.highDiscount || [],
+        limitedDeal: products?.limitedDeal || [],
+      });
+    } catch (error) {
+      toast.error(
+        error.message || "Something went wrong while fetching products"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getSpecialProducts();
+  }, []);
+
   return (
     <section id="categories">
       <PickupWhereYouLeftOff handleProductClick={handleProductClick} />
-      <ProductsUnder1k handleProductClick={handleProductClick} />
-      <DealOfTheDay handleProductClick={handleProductClick} />
-      <UpToFiftyOff handleProductClick={handleProductClick} />
+      <ProductCategory
+        title="Products under 1,000 Rs."
+        products={specialProducts.under1k}
+        loading={loading}
+        handleProductClick={handleProductClick}
+        showPrice
+      />
+      <ProductCategory
+        title="Deal of the day"
+        products={specialProducts.limitedDeal}
+        loading={loading}
+        handleProductClick={handleProductClick}
+        showTag
+      />
+      <ProductCategory
+        title="More than 50% off"
+        products={specialProducts.highDiscount}
+        loading={loading}
+        handleProductClick={handleProductClick}
+        showPrice
+        showDiscount
+      />
     </section>
   );
 };
+
 export default Categories;

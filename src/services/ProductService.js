@@ -61,59 +61,21 @@ export async function fetchProductDetails(productId,requiredFields){
    throw error;
   }
 }
-export async function fetchUnderOneThousandProducts(){
+
+export async function fetchSpecialProducts(){
   try {
-    let response=await fetch(`${BACKEND_BASE_URL}/products/productsUnderOneThousand`,{
-      method:"GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      
-    })
-    response=await response.json();
-    if(!response.success)
-      throw new Error(response.message)
-    return response.data
+    let res=await fetch(`${BACKEND_BASE_URL}/products/special?type=under1k,highDiscount,limitedDeal`);
+    res=await res.json();
+    if(res.success){
+      return res.data;
+    }
+    throw new Error(res.message);
   } catch (error) {
-   throw error;
+    throw error;
   }
+
 }
 
-export async function fetchLimitedTimeDealProducts(){
-  try {
-    let response=await fetch(`${BACKEND_BASE_URL}/products/getProductsOnLimitedTimeDeal`,{
-      method:"GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      
-    })
-    response=await response.json();
-    if(!response.success)
-      throw new Error(response.message)
-    return response.data
-  } catch (error) {
-   throw error;
-  }
-}
-
-export async function fetchMinimumFiftyOffProducts(){
-  try {
-    let response=await fetch(`${BACKEND_BASE_URL}/products/getProductOnHighlyDiscount`,{
-      method:"GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      
-    })
-    response=await response.json();
-    if(!response.success)
-      throw new Error(response.message)
-    return response.data
-  } catch (error) {
-   throw error;
-  }
-}
 
 export async function fetchgetReview(user,setUserDetails,productId){
   const data=await secureFetch(
