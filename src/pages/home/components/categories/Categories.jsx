@@ -5,13 +5,13 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { makeCapitalize } from "../../../../utils/GlobalUtils";
 
-const LoadingSkelton = () => (
-  <section className="loading-skeleton">
-    <div className="skeleton"></div>
-    <div className="skeleton"></div>
-    <div className="skeleton"></div>
-    <div className="skeleton"></div>
-  </section>
+const LoadingSkeleton = () => (
+  <div className="loading-skeleton">
+    {[1, 2, 3, 4].map((i) => (
+      <div key={i} className="skeleton-card">
+      </div>
+    ))}
+  </div>
 );
 
 const ExploreBox = () => (
@@ -67,49 +67,50 @@ const ProductCategory = ({
   handleProductClick,
   showPrice,
   showTag,
-  showDiscount
+  showDiscount,
 }) => {
-  if (loading) return <LoadingSkelton />;
-
   return (
     <div className="category-wrapper">
       <header>
         <h4>{title}</h4>
       </header>
       <main>
-        <section>
-          {products?.map((product) => (
-            <div
-              key={product._id}
-              onClick={() => handleProductClick(product._id)}
-            >
-              <div className="product-image-wrapper">
-                <div
-                  className="product-image"
-                  style={{
-                    backgroundImage: `url(${
-                      product.productImage || "/fallback.jpg"
-                    })`,
-                  }}
-                ></div>
+        {loading ? (
+          <LoadingSkeleton />
+        ) : (
+          <section>
+            {products?.map((product) => (
+              <div
+                key={product._id}
+                onClick={() => handleProductClick(product._id)}
+              >
+                <div className="product-image-wrapper">
+                  <div
+                    className="product-image"
+                    style={{
+                      backgroundImage: `url(${
+                        product.productImage || "/fallback.jpg"
+                      })`,
+                    }}
+                  ></div>
+                </div>
+                {showPrice && (
+                  <span>
+                    <strong>&#8377;{product?.price} &nbsp;</strong>
+                    {showDiscount && (
+                      <span className="high-discount">
+                        {product.discount}% off
+                      </span>
+                    )}
+                  </span>
+                )}
+                {showTag && (
+                  <span className="tag">{makeCapitalize(product.tag)}</span>
+                )}
               </div>
-              {showPrice && (
-                <span>
-                  <strong>&#8377;{product?.price} &nbsp; </strong>{showDiscount && (
-                <span className="high-discount">
-                  {product.discount}% off
-                </span>
-              )}
-                </span>
-              )}
-              {showTag && (
-                <span className="tag">{makeCapitalize(product.tag)}</span>
-              )}
-              
-              
-            </div>
-          ))}
-        </section>
+            ))}
+          </section>
+        )}
       </main>
     </div>
   );
