@@ -43,7 +43,7 @@
     
     
 }
-#seller-auth-action > button{
+#seller-auth-action > a{
     flex: 1;
     background-color: rgba(255, 255, 255, 0);
     color: black;
@@ -52,6 +52,10 @@
     border-radius: 50px;
     color:white;
     font-size: 0.8vw;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
 }
 

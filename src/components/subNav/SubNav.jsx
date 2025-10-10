@@ -24,6 +24,10 @@ const SubNav = () => {
     });
   }
 
+  const handleSellOnArtstore=()=>{
+    return navigate("/seller")
+  }
+
   return (
     <section id="sub-nav">
       <li onClick={handleAllClick}>All</li>
@@ -37,6 +41,7 @@ const SubNav = () => {
           </li>
         );
       })}
+      <li style={{color:'orange'}} onClick={handleSellOnArtstore}>Sell</li>
     </section>
   );
 };
