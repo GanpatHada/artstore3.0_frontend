@@ -28,9 +28,10 @@ const Payment = () => {
   const createOrder = async (totalAmount) => {
     try {
       setLoading(true);
-      const createdOrder = await fetchCreateOrder(user,totalAmount);
+      const createdOrder = await fetchCreateOrder(user,setUserDetails,totalAmount);
       return createdOrder;
     } catch (error) {
+      console.log(error)
       toast.error(error.message || "Something went wrong during order creation");
       return null;
     } finally {

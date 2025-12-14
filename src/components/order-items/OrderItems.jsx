@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import "./OrderItems.css";
 const OrderItem = ({ orderItem }) => {
   const { image, name, product, myReview } = orderItem;

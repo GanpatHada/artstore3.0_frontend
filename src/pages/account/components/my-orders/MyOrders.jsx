@@ -22,7 +22,7 @@ const MyOrders = () => {
   const { user, setUserDetails } = useUser();
   const [orders, setOrders] = useState([]);
 
-  console.log(user.myOrders);
+  console.log(user);
 
   useEffect(() => {
     const getMyOrders = async () => {
