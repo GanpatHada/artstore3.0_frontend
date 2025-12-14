@@ -7,6 +7,7 @@ export async function fetchCreateOrder(amount) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: user.user.accessToken,
       },
       body: JSON.stringify({ amount }),
     });
