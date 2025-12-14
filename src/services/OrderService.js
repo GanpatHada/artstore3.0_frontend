@@ -1,7 +1,7 @@
 import { BACKEND_BASE_URL } from "../Constant";
 import { secureFetch } from "./tokenService";
 
-export async function fetchCreateOrder(amount) {
+export async function fetchCreateOrder(user,amount) {
   try {
     let response = await fetch(`${BACKEND_BASE_URL}/order`, {
       method: "POST",
