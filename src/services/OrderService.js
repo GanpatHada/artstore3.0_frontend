@@ -25,8 +25,6 @@ export async function fetchCreateOrder(user, setUserDetails, amount) {
   }
 }
 
-// Get order details
-
 
 
 // Verify payment
