@@ -134,7 +134,7 @@ const ItemSelector = ({ productId, inStock, isActive }) => {
 const CartItemPrice = ({ tags, discount, price, actualPrice }) => {
   return (
     <section className="cart-item-price-section">
-      <p className="tags">{makeCapitalize(tags[0])}</p>
+      {tags[0]&&<p className="tags">{makeCapitalize(tags[0])}</p>}
       <div>
         {discount > 0 && <span className="discount">-{discount}%</span>}
         <strong>{price.toLocaleString("en-In")}</strong>
